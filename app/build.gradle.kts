@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "io.sadwhy.party"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "io.sadwhy.party"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
     }
