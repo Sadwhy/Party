@@ -15,6 +15,10 @@ android {
         versionName = "1.0"
     }
 
+    viewBinding {
+	enabled = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
