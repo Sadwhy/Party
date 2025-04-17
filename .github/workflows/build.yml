@@ -26,13 +26,24 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew assembleDebug
+      run: ./gradlew assembleRelease
+
+    - name: Sign APK
+      uses: r0adkll/sign-android-release@v1
+      with:
+        releaseDirectory: app/build/outputs/apk/release
+        signingKeyBase64: ${{ secrets.KEYSTORE_FILE }}
+        alias: ${{ secrets.KEY_ALIAS }}
+        keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+        keyPassword: ${{ secrets.KEY_PASSWORD }}
+      env:
+        BUILD_TOOLS_VERSION: "34.0.0"
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
       with:
           name: Party
-          path: "app/build/outputs/apk/debug/app-debug.apk"
+          path: "app/build/outputs/apk/release/app-release-signed.apk"
 
     - name: Upload APK to Telegram
       shell: bash
@@ -45,7 +56,7 @@ jobs:
     
         curl -s -X POST "https://api.telegram.org/bot${BOT_ID}/sendDocument" \
           -F chat_id="${CHANNEL_ID}" \
-          -F document="@app/build/outputs/apk/debug/app-debug.apk" \
+          -F document="@app/build/outputs/apk/release/app-release-signed.apk" \
           -F caption="${COMMES} - ${SHA}" \
           -F parse_mode=Markdown
 
