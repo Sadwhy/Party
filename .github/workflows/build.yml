@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
           name: Party
-          path: "app/build/outputs/apk/debug/app-debug.apk"   
+          path: "app/build/outputs/apk/debug/app-debug.apk"
 
     - name: Upload APK to Telegram
       shell: bash
@@ -45,10 +45,9 @@ jobs:
         SHORT_SHA=$(git rev-parse --short HEAD)
     
         # Escape MarkdownV2 special characters in both
-        ESCAPED_MESSAGE=$(printf "%s" "$COMMIT_MESSAGE" \
-          | sed 's/[][_*()~`>#+\-=|{}.!]/\\&/g')
-        ESCAPED_SHA=$(printf "%s" "$SHORT_SHA" \
-          | sed 's/[][_*()~`>#+\-=|{}.!]/\\&/g')
+        # All special characters according to Telegram MarkdownV2: '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'
+        ESCAPED_MESSAGE=$(echo "$COMMIT_MESSAGE" | sed -e 's/[_*[\]()~`>#+=|{}.!-]/\\&/g')
+        ESCAPED_SHA=$(echo "$SHORT_SHA" | sed -e 's/[_*[\]()~`>#+=|{}.!-]/\\&/g')
     
         # Build the caption
         CAPTION="${ESCAPED_MESSAGE} - \`${ESCAPED_SHA}\`"
