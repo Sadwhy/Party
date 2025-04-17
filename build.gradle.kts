@@ -1,5 +1,11 @@
 plugins {
-    autowire(libs.plugins.android.application) apply false
-    autowire(libs.plugins.android.library) apply false
-    autowire(libs.plugins.kotlin.android) apply false
+    kotlin("android") version "1.9.23" apply false
+    id("com.android.application") version "8.3.1" apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
