@@ -92,6 +92,7 @@ fabric.properties
 # Gradle projects
 .gradle
 build/
+kls_database.db
 
 # Mkdocs temporary serving folder
 docs-gen
