@@ -36,18 +36,14 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-}
-
-dependencies {
+    // Core
     implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    implementation("com.highcapable.betterandroid:ui-component:1.0.5")
-    implementation("com.highcapable.betterandroid:ui-extension:1.0.5")
-    implementation("com.highcapable.betterandroid:system-extension:1.0.5")
+    // BetterAndroid
+    implementation("com.highcapable.betterandroid:ui-component:v1.0.7")
+    implementation("com.highcapable.betterandroid:ui-extension:v1.0.6")
+    implementation("com.highcapable.betterandroid:system-extension:v1.0.2")
 }
