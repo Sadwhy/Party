@@ -43,7 +43,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // BetterAndroid
-    implementation("com.highcapable.betterandroid:ui-component:v1.0.7")
-    implementation("com.highcapable.betterandroid:ui-extension:v1.0.6")
-    implementation("com.highcapable.betterandroid:system-extension:v1.0.2")
+    implementation("com.highcapable.betterandroid:ui-component:1.0.7")
+    implementation("com.highcapable.betterandroid:ui-extension:1.0.6")
+    implementation("com.highcapable.betterandroid:system-extension:1.0.2")
 }
