@@ -15,8 +15,9 @@ android {
         versionName = "1.0"
     }
 
-    viewBinding {
-	enabled = true
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
     }
 
     buildTypes {
