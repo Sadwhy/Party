@@ -37,19 +37,19 @@ jobs:
           name: Party
           path: "app/build/outputs/apk/debug/app-debug.apk"   
 
-      - name: Upload APK to Telegram
-        shell: bash
-        env:
-          BOT_ID: ${{ secrets.TELEGRAM_BOT_ID }}
-          CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-        run: |
-          regex='s/[\_\*\[\]\(\)\~\`\>\#\+\-\=\|\{\}\.\!]/\\&/g'
-          message=$(printf "*Nightly Release*\n${{ env.COMMIT }}" | sed -E "$regex")
-          curl -F "chat_id=${{ env.CHANNEL_ID }}" \
-          -F "document=@app/build/outputs/apk/debug/app-debug.apk" \
-          -F "caption=${message}" \
-          -F "parse_mode=MarkdownV2" \
-          https://api.telegram.org/bot${{ env.BOT_ID }}/sendDocument
+    - name: Upload APK to Telegram
+      shell: bash
+      env:
+         BOT_ID: ${{ secrets.TELEGRAM_BOT_ID }}
+         CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      run: |
+        regex='s/[\_\*\[\]\(\)\~\`\>\#\+\-\=\|\{\}\.\!]/\\&/g'
+        message=$(printf "*Nightly Release*\n${{ env.COMMIT }}" | sed -E "$regex")
+        curl -F "chat_id=${{ env.CHANNEL_ID }}" \
+        -F "document=@app/build/outputs/apk/debug/app-debug.apk" \
+        -F "caption=${message}" \
+        -F "parse_mode=MarkdownV2" \
+        https://api.telegram.org/bot${{ env.BOT_ID }}/sendDocument
 
     - name: Delete Old Pre-Releases
       id: delete-pre-releases
