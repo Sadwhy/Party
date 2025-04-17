@@ -34,32 +34,31 @@ jobs:
           name: Party
           path: "app/build/outputs/apk/debug/app-debug.apk"   
 
-
-  - name: Upload APK to Telegram
-    shell: bash
-    env:
-      BOT_ID: ${{ secrets.TELEGRAM_BOT_ID }}
-      CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-    run: |
-      # Get the commit message and short SHA
-      COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
-      SHORT_SHA=$(git rev-parse --short HEAD)
-  
-      # Escape MarkdownV2 special characters in both
-      ESCAPED_MESSAGE=$(printf "%s" "$COMMIT_MESSAGE" \
-        | sed 's/[][_*()~`>#+\-=|{}.!]/\\&/g')
-      ESCAPED_SHA=$(printf "%s" "$SHORT_SHA" \
-        | sed 's/[][_*()~`>#+\-=|{}.!]/\\&/g')
-  
-      # Build the caption
-      CAPTION="${ESCAPED_MESSAGE} - \`${ESCAPED_SHA}\`"
-  
-      # Upload to Telegram
-      curl -s -X POST "https://api.telegram.org/bot${BOT_ID}/sendDocument" \
-        -F chat_id="${CHANNEL_ID}" \
-        -F document="@app/build/outputs/apk/debug/app-debug.apk" \
-        -F caption="${CAPTION}" \
-        -F parse_mode=MarkdownV2
+    - name: Upload APK to Telegram
+      shell: bash
+      env:
+        BOT_ID: ${{ secrets.TELEGRAM_BOT_ID }}
+        CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+      run: |
+        # Get the commit message and short SHA
+        COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
+        SHORT_SHA=$(git rev-parse --short HEAD)
+    
+        # Escape MarkdownV2 special characters in both
+        ESCAPED_MESSAGE=$(printf "%s" "$COMMIT_MESSAGE" \
+          | sed 's/[][_*()~`>#+\-=|{}.!]/\\&/g')
+        ESCAPED_SHA=$(printf "%s" "$SHORT_SHA" \
+          | sed 's/[][_*()~`>#+\-=|{}.!]/\\&/g')
+    
+        # Build the caption
+        CAPTION="${ESCAPED_MESSAGE} - \`${ESCAPED_SHA}\`"
+    
+        # Upload to Telegram
+        curl -s -X POST "https://api.telegram.org/bot${BOT_ID}/sendDocument" \
+          -F chat_id="${CHANNEL_ID}" \
+          -F document="@app/build/outputs/apk/debug/app-debug.apk" \
+          -F caption="${CAPTION}" \
+          -F parse_mode=MarkdownV2
 
     - name: Delete Old Pre-Releases
       id: delete-pre-releases
