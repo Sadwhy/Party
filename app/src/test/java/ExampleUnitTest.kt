@@ -1,4 +1,4 @@
-package __PACKAGE_NAME__
+package io.sadwhy.party
 
 import org.junit.Test
 

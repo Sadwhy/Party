@@ -9,8 +9,6 @@
 
 A template for quickly creating basic Android project.
 
-English | [简体中文](README-zh-CN.md)
-
 | <img src="https://github.com/BetterAndroid/.github/blob/main/img-src/logo.png?raw=true" width = "30" height = "30" alt="LOGO"/> | [BetterAndroid](https://github.com/BetterAndroid) |
 | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
 
