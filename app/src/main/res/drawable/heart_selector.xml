@@ -10,10 +10,4 @@
         android:id="@+id/state_off"
         android:drawable="@drawable/ic_heart_outline"
         android:state_checked="false" />
-    
-    <transition
-        android:fromId="@id/state_off"
-        android:toId="@id/state_on"
-        android:drawable="@drawable/ic_heart_anim"
-        android:reversible="true" />
 </animated-selector>
