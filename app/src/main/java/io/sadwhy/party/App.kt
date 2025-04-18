@@ -15,6 +15,7 @@ import coil3.request.crossfade
 class Party : Application(), SingletonImageLoader.Factory {
     override fun onCreate() {
         super.onCreate()
+    }
 
     override fun newImageLoader(context: PlatformContext): ImageLoader {
         return ImageLoader.Builder(context)
@@ -32,10 +33,5 @@ class Party : Application(), SingletonImageLoader.Factory {
             .allowHardware(false)
             .crossfade(true)
             .build()
-    }
-
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
-        // You can perform early initializations here if needed
     }
 }
