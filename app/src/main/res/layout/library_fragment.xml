@@ -1,5 +1,4 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/library_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +17,7 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <!-- Header: Profile + Username button, More button -->
+            <!-- Header: Profile pic and Username as separate clickables, More as ImageButton -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,55 +25,49 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="8dp">
 
-                <!-- PFP + Username as single invisible button -->
-                <Button
-                    android:id="@+id/buttonProfile"
+                <!-- Profile Picture Button -->
+                <ImageButton
+                    android:id="@+id/buttonPfp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_home_filled"
+                    android:scaleType="centerCrop"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Profile pic"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Username Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonUsername"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="0dp"
-                    android:layout_marginEnd="8dp"
-                    android:drawablePadding="8dp">
+                    android:text="HardcodedUser"
+                    android:textSize="16sp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                <!-- Spacer to push 'More' to right -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_home_filled"
-                            android:scaleType="centerCrop"
-                            android:layout_marginEnd="6dp"
-                            android:background="@drawable/rounded_mask" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="HardcodedUser"
-                            android:textStyle="bold"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-                </Button>
-
-                <!-- 3-dot more button -->
-                <Button
+                <!-- More Options Button -->
+                <ImageButton
                     android:id="@+id/buttonMore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="4dp"
-                    android:layout_gravity="end"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_home_filled"
-                        android:contentDescription="More" />
-                </Button>
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home_filled"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="More options"
+                    android:clickable="true"
+                    android:focusable="true" />
             </LinearLayout>
 
             <!-- Post description -->
@@ -85,68 +78,57 @@
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Image with max aspect ratio 16:9 -->
+            <!-- Single Image with max 16:9 aspect and rounded corners -->
             <ImageView
                 android:id="@+id/postImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:maxHeight="200dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ic_home_filled"
+                android:scaleType="centerCrop"
                 android:background="@drawable/rounded_mask"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:maxWidth="360dp"
+                android:maxHeight="202dp" />
 
-            <!-- Action bar: like, share, bookmark -->
+            <!-- Actions: Like, Share, Bookmark -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <Button
+                <ImageButton
                     android:id="@+id/buttonLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="4dp">
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home_filled"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Like"
+                    android:clickable="true"
+                    android:focusable="true" />
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_home_filled"
-                        android:contentDescription="Like" />
-                </Button>
-
-                <Button
+                <ImageButton
                     android:id="@+id/buttonShare"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="4dp"
-                    android:layout_marginStart="16dp">
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home_filled"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Share"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="16dp" />
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_home_filled"
-                        android:contentDescription="Share" />
-                </Button>
-
-                <Button
+                <ImageButton
                     android:id="@+id/buttonBookmark"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="4dp"
-                    android:layout_marginStart="16dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_home_filled"
-                        android:contentDescription="Bookmark" />
-                </Button>
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home_filled"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Bookmark"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="16dp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
