@@ -11,27 +11,25 @@
     <color name="light_blue_900">#FF01579B</color>
 
     <!-- Primary brand color -->
-    <color name="primary_light">#6750A4</color>
-    <color name="on_primary_light">#FFFFFF</color>
-    <color name="primary_container_light">#EADDFF</color>
-    <color name="on_primary_container_light">#21005D</color>
+    <color name="primary">#6750A4</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#EADDFF</color>
+    <color name="on_primary_container">#21005D</color>
 
     <!-- Secondary brand color -->
-    <color name="secondary_light">#625B71</color>
-    <color name="on_secondary_light">#FFFFFF</color>
-    <color name="secondary_container_light">#E8DEF8</color>
-    <color name="on_secondary_container_light">#1D192B</color>
+    <color name="secondary">#625B71</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="secondary_container">#E8DEF8</color>
+    <color name="on_secondary_container">#1D192B</color>
 
     <!-- Background and surface colors -->
-    <color name="background_light">#FFFBFE</color>
-    <color name="on_background_light">#1C1B1F</color>
-    <color name="surface_light">#FFFBFE</color>
-    <color name="on_surface_light">#1C1B1F</color>
+    <color name="background">#FFFBFE</color>
+    <color name="on_background">#1C1B1F</color>
+    <color name="surface">#FFFBFE</color>
+    <color name="on_surface">#1C1B1F</color>
 
     <!-- Error colors -->
-    <color name="error_light">#B3261E</color>
-    <color name="on_error_light">#FFFFFF</color>
+    <color name="error">#B3261E</color>
+    <color name="on_error">#FFFFFF</color>
 
-    <!-- Additional colors -->
-    <color name="primary_dark">#3700B3</color>
 </resources>
