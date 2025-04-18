@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="BottomNavbarActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:width">56dp</item>
+        <item name="android:height">24dp</item>
+        <item name="android:color">?attr/colorPrimaryInverse</item>
+    </style>
+
+    <style name="NavView" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">?attr/navBackground</item>
+        <item name="itemActiveIndicatorStyle">@style/BottomNavbarActiveIndicator</item>
+        <item name="itemIconTint">@color/nav_bar_icon</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemPaddingBottom">8dp</item>
+        <item name="itemPaddingTop">12dp</item>
+        <item name="activeIndicatorLabelPadding">2dp</item>
+        <item name="itemMinHeight">@dimen/nav_height</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+</resources>
