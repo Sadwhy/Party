@@ -76,7 +76,7 @@
 
                 <ImageView
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="50dp"
                     app:layout_flexGrow="1"
                     android:layout_marginEnd="4dp"
                     android:scaleType="centerCrop"
@@ -84,7 +84,15 @@
 
                 <ImageView
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="50dp"
+                    app:layout_flexGrow="1"
+                    android:layout_marginEnd="4dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_home_filled" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
                     app:layout_flexGrow="1"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_home_filled" />
