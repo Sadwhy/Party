@@ -14,7 +14,6 @@
         <item name="itemPaddingBottom">8dp</item>
         <item name="itemPaddingTop">12dp</item>
         <item name="activeIndicatorLabelPadding">2dp</item>
-        <item name="itemMinHeight">@dimen/nav_height</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
     </style>
