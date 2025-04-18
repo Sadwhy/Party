@@ -47,7 +47,8 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0-alpha12")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
-    // Nav bar
+    // UI
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
