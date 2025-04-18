@@ -15,7 +15,6 @@
         <item name="colorOnSecondaryContainer">@color/on_secondary_container_light</item>
 
         <!-- Background and surface colors -->
-        <item name="colorBackground">@color/background_light</item>
         <item name="colorOnBackground">@color/on_background_light</item>
         <item name="colorSurface">@color/surface_light</item>
         <item name="colorOnSurface">@color/on_surface_light</item>
