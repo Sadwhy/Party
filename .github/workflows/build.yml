@@ -57,8 +57,7 @@ jobs:
         curl -s -X POST "https://api.telegram.org/bot${BOT_ID}/sendDocument" \
           -F chat_id="${CHANNEL_ID}" \
           -F document="@app/build/outputs/apk/release/app-release-unsigned-signed.apk" \
-          -F caption="${COMMES} - ${SHA}" \
-          -F parse_mode=Markdown
+          -F caption="${COMMES} - ${SHA}"
 
     - name: Delete Old Pre-Releases
       id: delete-pre-releases
