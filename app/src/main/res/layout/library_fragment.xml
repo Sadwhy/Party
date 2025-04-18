@@ -18,7 +18,7 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <!-- Header: profile pic, username, more -->
+            <!-- Header: Profile + Username button, More button -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,104 +26,127 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="8dp">
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_home_filled"
-                    android:scaleType="centerCrop"
-                    android:layout_marginEnd="8dp"
-                    android:contentDescription="Profile" />
-
-                <TextView
-                    android:layout_width="0dp"
+                <!-- PFP + Username as single invisible button -->
+                <Button
+                    android:id="@+id/buttonProfile"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="HardcodedUser"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:drawablePadding="8dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_home_filled"
-                    android:contentDescription="More" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_home_filled"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="6dp"
+                            android:background="@drawable/rounded_mask" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="HardcodedUser"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </Button>
+
+                <!-- 3-dot more button -->
+                <Button
+                    android:id="@+id/buttonMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="4dp"
+                    android:layout_gravity="end"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_home_filled"
+                        android:contentDescription="More" />
+                </Button>
             </LinearLayout>
 
-            <!-- Post text -->
+            <!-- Post description -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Here’s a hardcoded post description with some sample content to preview the layout visually."
+                android:text="@string/lorem_ipsum"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Image grid -->
-            <com.google.android.flexbox.FlexboxLayout
+            <!-- Image with max aspect ratio 16:9 -->
+            <ImageView
+                android:id="@+id/postImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:flexWrap="wrap"
-                app:justifyContent="flex_start"
-                app:alignItems="stretch">
+                android:adjustViewBounds="true"
+                android:maxHeight="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_home_filled"
+                android:background="@drawable/rounded_mask"
+                android:layout_marginBottom="8dp" />
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    app:layout_flexGrow="1"
-                    android:layout_marginEnd="4dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_home_filled" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    app:layout_flexGrow="1"
-                    android:layout_marginEnd="4dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_home_filled" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    app:layout_flexGrow="1"
-                    android:layout_marginEnd="4dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_home_filled" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    app:layout_flexGrow="1"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_home_filled" />
-            </com.google.android.flexbox.FlexboxLayout>
-
-            <!-- Like/comment bar -->
+            <!-- Action bar: like, share, bookmark -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_home_filled"
-                    android:contentDescription="Like" />
-
-                <TextView
+                <Button
+                    android:id="@+id/buttonLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="123"
-                    android:layout_marginStart="6dp"
-                    android:textSize="14sp" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="4dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="24dp"
-                    android:src="@drawable/ic_home_filled"
-                    android:contentDescription="Comment" />
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_home_filled"
+                        android:contentDescription="Like" />
+                </Button>
+
+                <Button
+                    android:id="@+id/buttonShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="4dp"
+                    android:layout_marginStart="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_home_filled"
+                        android:contentDescription="Share" />
+                </Button>
+
+                <Button
+                    android:id="@+id/buttonBookmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="4dp"
+                    android:layout_marginStart="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_home_filled"
+                        android:contentDescription="Bookmark" />
+                </Button>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
