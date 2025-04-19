@@ -5,15 +5,15 @@
      android:id="@+id/library_fragment"
      android:layout_width="match_parent"
      android:layout_height="match_parent"
-     android:background="?android:attr/windowBackground"
-     android:fillViewport="true">
+     android:background="?android:attr/windowBackground">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            android:background="?attr/colorOnSecondaryContainer">>
 
             <LinearLayout
                 android:layout_width="match_parent"
