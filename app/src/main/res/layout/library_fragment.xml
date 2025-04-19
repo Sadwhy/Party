@@ -109,7 +109,8 @@
                 android:textSize="0dp"
                 android:contentDescription="Like"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true"
+                android:layout_marginStart="16dp"/>
 
             <ToggleButton
                 android:id="@+id/toggleBookmark"
@@ -121,7 +122,8 @@
                 android:textSize="0dp"
                 android:contentDescription="Bookmark"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true"
+                android:layout_marginStart="16dp"/>
 
                 <ImageButton
                     android:id="@+id/buttonShare"
