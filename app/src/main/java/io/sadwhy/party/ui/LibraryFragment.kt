@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import coil3.load
-import coil3.clear
-import io.getstream.photoview.dialog.PhotoViewDialog
+import io.getstream.photoview.PhotoViewDialog
 import io.sadwhy.party.databinding.LibraryFragmentBinding
 
 class LibraryFragment : Fragment() {
@@ -40,9 +39,6 @@ class LibraryFragment : Fragment() {
       if (isChecked) {
         binding.postImage.load(imageUrls[0])
         binding.postImageA.load(imageUrls[1])
-      } else {
-        binding.postImage.clear()
-        binding.postImageA.clear()
       }
     }
 
