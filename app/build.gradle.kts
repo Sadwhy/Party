@@ -52,8 +52,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
-    // Image loaded
-    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    // Image loader
+    implementation("io.coil-kt.coil3:coil:3.1.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation("io.getstream:photoview:1.0.3")
