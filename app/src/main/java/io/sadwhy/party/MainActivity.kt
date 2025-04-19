@@ -1,6 +1,7 @@
 package io.sadwhy.party
 
 import android.os.Bundle
+import android.graphics.Color.TRANSPARENT
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
