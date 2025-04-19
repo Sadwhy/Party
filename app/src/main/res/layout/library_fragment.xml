@@ -111,24 +111,25 @@
                 android:clickable="true"
                 android:focusable="true"/>
 
+            <ToggleButton
+                android:id="@+id/toggleBookmark"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/bookmark_selector"
+                android:textOff=""
+                android:textOn=""
+                android:textSize="0dp"
+                android:contentDescription="Bookmark"
+                android:clickable="true"
+                android:focusable="true"/>
+
                 <ImageButton
                     android:id="@+id/buttonShare"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_home_filled"
+                    android:src="@drawable/ic_round_share"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Share"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginStart="16dp" />
-
-                <ImageButton
-                    android:id="@+id/buttonBookmark"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_home_filled"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Bookmark"
                     android:clickable="true"
                     android:focusable="true"
                     android:layout_marginStart="16dp" />
