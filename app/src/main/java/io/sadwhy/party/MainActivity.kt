@@ -7,7 +7,6 @@ import androidx.navigation.ui.setupWithNavController
 import io.sadwhy.party.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
