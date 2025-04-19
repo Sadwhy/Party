@@ -1,141 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/library_fragment"
+    xmlns:flexbox="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
+        android:id="@+id/library_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:layout_margin="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
 
-            <!-- Header: Profile pic and Username as separate clickables, More as ImageButton -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:layout_marginBottom="8dp">
+                android:orientation="vertical"
+                android:padding="12dp">
 
-                <!-- Profile Picture Button -->
-                <ImageButton
-                    android:id="@+id/buttonPfp"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_home_filled"
-                    android:scaleType="centerCrop"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Profile pic"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginEnd="8dp" />
-
-                <!-- Username Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonUsername"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
+                <!-- Header: Profile pic and Username as separate clickables, More as ImageButton -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="HardcodedUser"
-                    android:textSize="16sp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:insetLeft="0dp"
-                    android:insetRight="0dp"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp" />
+                    android:layout_marginBottom="8dp">
 
-                <!-- Spacer to push 'More' to right -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    <!-- Profile Picture Button -->
+                    <ImageButton
+                        android:id="@+id/buttonPfp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_home_filled"
+                        android:scaleType="centerCrop"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Profile pic"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="8dp" />
 
-                <!-- More Options Button -->
-                <ImageButton
-                    android:id="@+id/buttonMore"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_home_filled"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="More options"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    <!-- Username Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonUsername"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HardcodedUser"
+                        android:textSize="16sp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp" />
+
+                    <!-- Spacer to push 'More' to right -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <!-- More Options Button -->
+                    <ImageButton
+                        android:id="@+id/buttonMore"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_home_filled"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="More options"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <!-- Post description -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lorem_ipsum"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Single Image with max 16:9 aspect and rounded corners -->
+
+                <!-- Additional images using Flexbox -->
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_start"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/rounded_mask"
+                    android:clipToOutline="true">
+
+
+                <ImageView
+                    android:id="@+id/postImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="8dp" />
+
+                <ImageView
+                    android:id="@+id/postImageA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="8dp" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <!-- Actions: Like, Share, Bookmark -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ToggleButton
+                        android:id="@+id/toggleLike"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/heart_selector"
+                        android:textOff=""
+                        android:textOn=""
+                        android:textSize="0dp"
+                        android:contentDescription="Like"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <ToggleButton
+                        android:id="@+id/toggleBookmark"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/bookmark_selector"
+                        android:textOff=""
+                        android:textOn=""
+                        android:textSize="0dp"
+                        android:contentDescription="Bookmark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="16dp" />
+
+                    <ImageButton
+                        android:id="@+id/buttonShare"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_round_share"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Share"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginStart="16dp" />
+                </LinearLayout>
             </LinearLayout>
-
-            <!-- Post description -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lorem_ipsum"
-                android:textSize="14sp"
-                android:layout_marginBottom="8dp" />
-
-            <!-- Single Image with max 16:9 aspect and rounded corners -->
-            <ImageView
-                android:id="@+id/postImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:background="@drawable/rounded_mask"
-                android:clipToOutline="true"
-                android:layout_marginBottom="8dp"/>
-
-            <!-- Actions: Like, Share, Bookmark -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-            <ToggleButton
-                android:id="@+id/toggleLike"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/heart_selector"
-                android:textOff=""
-                android:textOn=""
-                android:textSize="0dp"
-                android:contentDescription="Like"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_marginStart="16dp"/>
-
-            <ToggleButton
-                android:id="@+id/toggleBookmark"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/bookmark_selector"
-                android:textOff=""
-                android:textOn=""
-                android:textSize="0dp"
-                android:contentDescription="Bookmark"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_marginStart="16dp"/>
-
-                <ImageButton
-                    android:id="@+id/buttonShare"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_round_share"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Share"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginStart="16dp" />
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+</ScrollView>

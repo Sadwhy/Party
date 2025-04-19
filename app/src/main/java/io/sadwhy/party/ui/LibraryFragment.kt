@@ -28,8 +28,7 @@ class LibraryFragment : Fragment() {
         binding.toggleLike.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 binding.postImage.load("https://d.fixupx.com/DarkOddCon/status/1912812028210913632")
-            } else {
-                binding.postImage.load("https://d.fixupx.com/lazycataw/status/1912738980879016263")
+                binding.postImageA.load("https://d.fixupx.com/lazycataw/status/1912738980879016263")
             }
         }
     }

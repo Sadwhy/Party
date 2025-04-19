@@ -55,4 +55,5 @@ dependencies {
     // Image loaded
     implementation("io.coil-kt.coil3:coil-compose:3.1.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }
