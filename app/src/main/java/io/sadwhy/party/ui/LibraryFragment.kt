@@ -25,7 +25,12 @@ class LibraryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        binding.postImage.load("https://d.fixupx.com/DarkOddCon/status/1912812028210913632")
+        
+        if (binding.toggleLike) {
+            binding.postImage.load("https://d.fixupx.com/DarkOddCon/status/1912812028210913632")
+        } else {
+            binding.postImage.load("https://d.fixupx.com/lazycataw/status/1912738980879016263")
+        }
     }
 
     override fun onDestroyView() {

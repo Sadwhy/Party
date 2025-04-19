@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:layout_marginBottom="8dp">
 
                 <!-- Profile Picture Button -->
@@ -88,9 +89,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:background="@drawable/rounded_mask"
-                android:layout_marginBottom="8dp"
-                android:maxWidth="360dp"
-                android:maxHeight="202dp" />
+                android:layout_marginBottom="8dp"/>
 
             <!-- Actions: Like, Share, Bookmark -->
             <LinearLayout
