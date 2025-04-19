@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:contentDescription="Home"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/heart"
+        android:icon="@drawable/ic_heart_filled"
+        android:title="Heart"
+        android:contentDescription="Heart"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/more"
+        android:title="More"
+        android:contentDescription="More"
+        app:showAsAction="never" />
+
+</menu>
