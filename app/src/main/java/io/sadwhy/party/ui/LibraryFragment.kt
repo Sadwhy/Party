@@ -32,8 +32,9 @@ class LibraryFragment : Fragment() {
             listOf(
                 "https://d.fixupx.com/DarkOddCon/status/1912812028210913632",
                 "https://d.fixupx.com/lazycataw/status/1912738980879016263",
-                "https://d.fixupx.com/FeintHeart721/status/1913544604726837686",
-                "https://d.fixupx.com/panpianoatelier/status/1913206722485002329",
+                "https://coomer.su/data/07/cf/07cf242a44eef7f1d968241638159f971c056d659150304916584e9ddf04f097.jpg?f=444487380599058432.png",
+                "https://coomer.su/data/04/4a/044a45a2757fd6a77a6df8ae0c23ddf4a7868dde405bfe137e6dbaa3289b6fef.jpg?f=444487209794416641.png",
+                "https://coomer.su/data/36/e0/36e09ed160da32adb5b246d71ecf9051e278a59d5d38ec1ba956fcc24de52f37.jpg?f=444487320121389056.png"
             )
 
         binding.toggleLike.setOnCheckedChangeListener { _, isChecked ->
