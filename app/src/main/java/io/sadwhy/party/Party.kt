@@ -1,6 +1,7 @@
 package io.sadwhy.party
 
 import android.app.Application
+import com.google.android.material.color.DynamicColors
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
@@ -15,6 +16,7 @@ class Party :
     SingletonImageLoader.Factory {
     override fun onCreate() {
         super.onCreate()
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
     override fun newImageLoader(context: PlatformContext): ImageLoader =
