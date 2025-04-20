@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Party" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.App" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="navBackground">?colorSurfaceContainer</item>
         <item name="android:forceDarkAllowed">true</item>
     </style>
+
+    <style name="Theme.Party" parent="Theme.App" />
+
 </resources>
