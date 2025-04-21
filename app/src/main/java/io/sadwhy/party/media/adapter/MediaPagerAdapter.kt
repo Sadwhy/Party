@@ -1,16 +1,13 @@
 package io.sadwhy.party.media.adapter
 
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import android.graphics.drawable.Drawable
-import coil3.request.target.Target
+import coil3.ImageLoader
 import coil3.request.ImageRequest
-import coil3.load
-import kotlin.math.minOf
-import io.sadwhy.party.media.model.Post
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
-
+import kotlin.math.min
 
 class MediaPagerAdapter(
     private val imageUrls: List<String>,
@@ -27,28 +24,34 @@ class MediaPagerAdapter(
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val photoView = holder.binding.postImage
+        val context = photoView.context
+        val imageLoader = ImageLoader(context)
 
-        photoView.load(imageUrls[position]) {
-            target { drawable ->
-                photoView.setImageDrawable(drawable)
+        val request = ImageRequest.Builder(context)
+            .data(imageUrls[position])
+            .target { result ->
+                photoView.setImageDrawable(result)
 
-                val imageWidth = drawable.intrinsicWidth
-                val imageHeight = drawable.intrinsicHeight
+                val drawable = result as? BitmapDrawable
+                val bitmap = drawable?.bitmap
 
-                if (imageWidth > 0 && imageHeight > 0) {
-                    // Calculate actual image ratio
+                if (bitmap != null) {
+                    val imageWidth = bitmap.width
+                    val imageHeight = bitmap.height
                     val ratio = imageHeight.toFloat() / imageWidth
                     val maxRatio = 16f / 9f
                     val viewWidth = photoView.width.takeIf { it > 0 } ?: photoView.measuredWidth
 
                     if (viewWidth > 0) {
-                        val clampedRatio = minOf(ratio, maxRatio)
+                        val clampedRatio = min(ratio, maxRatio)
                         val finalHeight = (viewWidth * clampedRatio).toInt()
                         onImageHeightReady(finalHeight)
                     }
                 }
             }
-        }
+            .build()
+
+        imageLoader.enqueue(request)
     }
 
     override fun getItemCount(): Int = imageUrls.size
