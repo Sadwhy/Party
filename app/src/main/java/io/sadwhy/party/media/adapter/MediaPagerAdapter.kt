@@ -3,7 +3,8 @@ package io.sadwhy.party.media.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
+import coil3.load
+import io.sadwhy.party.media.model.Post
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 
 class MediaPagerAdapter(

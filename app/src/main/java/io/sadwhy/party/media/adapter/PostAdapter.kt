@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import io.sadwhy.party.databinding.ItemPostBinding
 import io.sadwhy.party.media.model.Post
+import io.sadwhy.party.databinding.ItemPostBinding
 
 class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallback()) {
 

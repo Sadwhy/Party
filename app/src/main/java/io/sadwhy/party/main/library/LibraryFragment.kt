@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.sadwhy.party.media.model.Post
-import io.sadwhy.party.media.adapter.MediaPagerAdapter
+import io.sadwhy.party.media.adapter.PostAdapter
 import io.getstream.photoview.dialog.PhotoViewDialog
 import io.sadwhy.party.databinding.LibraryFragmentBinding
 
