@@ -1,7 +1,6 @@
 package io.sadwhy.party
 
 import android.app.Application
-import com.google.android.material.color.DynamicColors
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
@@ -10,6 +9,7 @@ import coil3.disk.directory
 import coil3.memory.MemoryCache
 import coil3.request.allowHardware
 import coil3.request.crossfade
+import com.google.android.material.color.DynamicColors
 
 class Party :
     Application(),

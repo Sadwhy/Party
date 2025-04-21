@@ -1,12 +1,9 @@
 package io.sadwhy.party
 
-import android.os.Bundle
 import android.graphics.Color.TRANSPARENT
-import android.view.View
+import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
-import androidx.navigation.NavController
-import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -23,12 +20,11 @@ class MainActivity : AppCompatActivity() {
 
         enableEdgeToEdge(
             SystemBarStyle.auto(TRANSPARENT, TRANSPARENT),
-            SystemBarStyle.dark(TRANSPARENT)
+            SystemBarStyle.dark(TRANSPARENT),
         )
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         binding.bottomNav.setupWithNavController(navController)
-        
     }
 }
