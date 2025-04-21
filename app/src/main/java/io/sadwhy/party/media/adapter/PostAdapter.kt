@@ -1,6 +1,7 @@
 package io.sadwhy.party.media.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -30,9 +31,14 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
                 "https://coomer.su/data/36/e0/36e09ed160da32adb5b246d71ecf9051e278a59d5d38ec1ba956fcc24de52f37.jpg?f=444487320121389056.png"
             )
 
-            holder.binding.mediaPager.adapter = MediaPagerAdapter(imageUrls)
-            
-            buttonUsername.text = post.username
+            holder.binding.mediaPager.adapter = MediaPagerAdapter(imageUrls) { height ->
+                holder.binding.mediaPager.post {
+                    val layoutParams = holder.binding.mediaPager.layoutParams
+                    layoutParams.height = height
+                    holder.binding.mediaPager.layoutParams = layoutParams
+                }
+            }            
+
             textDescription.text = post.description
 
             // Set up click listeners if needed
