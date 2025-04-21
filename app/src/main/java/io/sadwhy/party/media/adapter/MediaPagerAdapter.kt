@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
-import coil3.toBitMap
+import coil3.toBitmap
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
