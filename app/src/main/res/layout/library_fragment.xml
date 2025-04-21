@@ -8,6 +8,21 @@
      android:layout_height="match_parent"
      android:background="?android:attr/windowBackground">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:liftOnScroll="true"
+        android:elevation="10dp">
+    
+        <com.google.android.material.appbar.MaterialToolbar
+             android:id="@+id/topAppBar"
+             android:layout_width="match_parent"
+             android:layout_height="?attr/actionBarSize"
+             android:background="?android:attr/windowBackground"
+             app:layout_scrollFlags="scroll|enterAlways|snap"/>
+    
+    </com.google.android.material.appbar.AppBarLayout>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
