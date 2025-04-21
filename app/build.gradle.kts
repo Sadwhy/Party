@@ -51,11 +51,10 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-
+    
     // Image loader
     implementation("io.coil-kt.coil3:coil:3.1.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
-    implementation("io.getstream:photoview:1.0.3")
-    implementation("io.getstream:photoview-dialog:1.0.3")
+    implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
 }
