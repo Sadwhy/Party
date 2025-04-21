@@ -29,26 +29,26 @@ class MediaPagerAdapter(
 
         val request = ImageRequest.Builder(context)
             .data(imageUrls[position])
-            .target { result ->
-                photoView.setImageDrawable(result)
-
-                val drawable = result as? BitmapDrawable
-                val bitmap = drawable?.bitmap
-
-                if (bitmap != null) {
-                    val imageWidth = bitmap.width
-                    val imageHeight = bitmap.height
-                    val ratio = imageHeight.toFloat() / imageWidth
-                    val maxRatio = 16f / 9f
-                    val viewWidth = photoView.width.takeIf { it > 0 } ?: photoView.measuredWidth
-
-                    if (viewWidth > 0) {
-                        val clampedRatio = min(ratio, maxRatio)
-                        val finalHeight = (viewWidth * clampedRatio).toInt()
-                        onImageHeightReady(finalHeight)
+            .target(
+                onSuccess = { drawable ->
+                    photoView.setImageDrawable(drawable)
+        
+                    val bitmap = (drawable as? BitmapDrawable)?.bitmap
+                    if (bitmap != null) {
+                        val imageWidth = bitmap.width
+                        val imageHeight = bitmap.height
+                        val ratio = imageHeight.toFloat() / imageWidth
+                        val maxRatio = 16f / 9f
+                        val viewWidth = photoView.width.takeIf { it > 0 } ?: photoView.measuredWidth
+        
+                        if (viewWidth > 0) {
+                            val clampedRatio = min(ratio, maxRatio)
+                            val finalHeight = (viewWidth * clampedRatio).toInt()
+                            onImageHeightReady(finalHeight)
+                        }
                     }
                 }
-            }
+            )
             .build()
 
         imageLoader.enqueue(request)
