@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.toBitmap
+import com.davemorrissey.labs.subscaleview.ImageSource
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
@@ -40,7 +42,7 @@ class MediaPagerAdapter(
                 .target(
                     onSuccess = { result ->
                         val bitmap = result.toBitmap()
-                        photoView.setImage(bitmap)
+                        photoView.setImage(ImageSource.bitmap(bitmap))
 
                         val imageWidth = bitmap.width
                         val imageHeight = bitmap.height
