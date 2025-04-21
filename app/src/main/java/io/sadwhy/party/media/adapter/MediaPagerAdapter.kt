@@ -40,7 +40,7 @@ class MediaPagerAdapter(
                 .target(
                     onSuccess = { result ->
                         val bitmap = result.toBitmap()
-                        photoView.setImageBitmap(bitmap)
+                        photoView.setImage(bitmap)
 
                         val imageWidth = bitmap.width
                         val imageHeight = bitmap.height
