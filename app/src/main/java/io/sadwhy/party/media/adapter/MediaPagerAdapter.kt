@@ -31,7 +31,7 @@ class MediaPagerAdapter(
 
         val request = ImageRequest.Builder(context)
             .data(imageUrls[position])
-            .lsitener(
+            .listener(
                 onSuccess = { _, result ->
                     val drawable = result.drawable
                     photoView.setImageDrawable(drawable)
