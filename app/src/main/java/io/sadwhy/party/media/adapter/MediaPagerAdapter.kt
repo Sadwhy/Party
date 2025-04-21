@@ -21,9 +21,7 @@ class MediaPagerAdapter(
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val photoView = holder.binding.postImage
-        photoView.load(imageUrls[position]) {
-            crossfade(true)
-        }
+        photoView.load(imageUrls[position])
     }
 
     override fun getItemCount(): Int = imageUrls.size
