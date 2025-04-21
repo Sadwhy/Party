@@ -1,4 +1,4 @@
-package io.sadwhy.party.ui
+package io.sadwhy.party.main.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

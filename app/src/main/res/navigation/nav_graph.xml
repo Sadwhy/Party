@@ -5,16 +5,16 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="io.sadwhy.party.ui.HomeFragment"
+        android:name="io.sadwhy.party.main.home.HomeFragment"
         android:label="Home" />
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="io.sadwhy.party.ui.SearchFragment"
+        android:name="io.sadwhy.party.main.search.SearchFragment"
         android:label="Search" />
 
     <fragment
         android:id="@+id/libraryFragment"
-        android:name="io.sadwhy.party.ui.LibraryFragment"
+        android:name="io.sadwhy.party.main.library.LibraryFragment"
         android:label="Library" />
 </navigation>
