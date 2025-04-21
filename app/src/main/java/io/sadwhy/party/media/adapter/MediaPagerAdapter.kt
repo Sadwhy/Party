@@ -4,10 +4,9 @@ import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil3.request.SuccessResult
-import coil3.Image
 import coil3.ImageLoader
 import coil3.request.ImageRequest
+import coil3.toBitMap
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
@@ -31,9 +30,9 @@ class MediaPagerAdapter(
 
         val request = ImageRequest.Builder(context)
             .data(imageUrls[position])
-            .listener(
-                onSuccess = { _, result ->
-                    val drawable = result.drawable
+            .target(
+                onSuccess = { result ->
+                    val drawable = result.toBitmap()
                     photoView.setImageDrawable(drawable)
         
                     val bitmap = (drawable as? BitmapDrawable)?.bitmap
