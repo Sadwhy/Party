@@ -6,7 +6,7 @@
     android:layout_margin="10dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="?attr/colorSurface">
+    app:cardBackgroundColor="?attr/colorSurfaceInverse">
 
     <!-- Main vertical holder-->
     <LinearLayout
@@ -31,6 +31,7 @@
                 android:src="@drawable/ic_account_circle"
                 android:scaleType="centerCrop"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
+                app:tint="?attr/colorOnSurfaceInverse"
                 android:contentDescription="Profile pic"
                 android:layout_marginEnd="8dp" />
 
@@ -46,7 +47,8 @@
                 android:insetLeft="0dp"
                 android:insetRight="0dp"
                 android:minWidth="0dp"
-                android:minHeight="0dp" />
+                android:minHeight="0dp"
+                android:textColor="?attr/colorOnPrimary"/>
 
             <!-- Gravity divider -->
             <View
@@ -60,6 +62,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_round_dots_vertical"
+                app:tint="?attr/colorOnSurfaceInverse"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:contentDescription="More options" />
         </LinearLayout>
@@ -125,6 +128,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_round_share"
+                app:tint="?attr/colorOnSurfaceInverse"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Share"
                 android:layout_marginStart="16dp" />
