@@ -4,6 +4,7 @@
         <item name="appBackground">?colorSurface</item>
         <item name="navBackground">?colorSurfaceContainer</item>
         <item name="android:forceDarkAllowed">true</item>
+        <item name="appBarLayoutStyle">@style/PartyAppBarLayout</item>
     </style>
 
     <style name="Theme.Party" parent="Theme.App" />

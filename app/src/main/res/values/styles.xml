@@ -17,4 +17,10 @@
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
     </style>
+    
+    <style name="PartyAppBarLayout" parent="Widget.Material3.AppBarLayout">
+        <item name="android:background">?appBackground</item>
+        <item name="liftOnScrollColor">?navBackground</item>
+    </style>
+
 </resources>
