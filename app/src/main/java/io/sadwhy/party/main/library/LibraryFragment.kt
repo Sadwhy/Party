@@ -11,7 +11,6 @@ import io.sadwhy.party.media.model.Post
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 
 class LibraryFragment : Fragment(R.layout.library_fragment) {
-
     private var binding: LibraryFragmentBinding by autoCleared()
     private val postAdapter = PostAdapter()
 
