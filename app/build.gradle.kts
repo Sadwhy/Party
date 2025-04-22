@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -47,6 +48,7 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0-alpha12")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("androidx.fragment:fragment-ktx:1.8.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
 
     // UI
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
