@@ -6,7 +6,7 @@
     android:layout_margin="10dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="?attr/colorOnSurface">
+    app:cardBackgroundColor="?attr/colorSurface">
 
     <!-- Main vertical holder-->
     <LinearLayout
@@ -59,7 +59,7 @@
                 android:id="@+id/buttonMore"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_round_dots_vertical_24"
+                android:src="@drawable/ic_round_dots_vertical"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:contentDescription="More options" />
         </LinearLayout>
