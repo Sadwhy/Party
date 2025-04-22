@@ -1,52 +1,34 @@
 package io.sadwhy.party.main.library
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.sadwhy.party.R
 import io.sadwhy.party.databinding.LibraryFragmentBinding
 import io.sadwhy.party.media.adapter.PostAdapter
 import io.sadwhy.party.media.model.Post
+import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 
-class LibraryFragment : Fragment() {
-    private var _binding: LibraryFragmentBinding? = null
-    private val binding get() = _binding!!
+class LibraryFragment : Fragment(R.layout.library_fragment) {
 
+    private var binding: LibraryFragmentBinding by autoCleared()
     private val postAdapter = PostAdapter()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = LibraryFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = LibraryFragmentBinding.bind(view)
 
         binding.postRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = postAdapter
         }
 
-        val dummyPosts =
-            listOf(
-                Post(username = "UserA", description = "Sample post A"),
-                Post(username = "UserB", description = "Sample post B"),
-            )
+        val dummyPosts = listOf(
+            Post(username = "UserA", description = "Sample post A"),
+            Post(username = "UserB", description = "Sample post B")
+        )
 
         postAdapter.submitList(dummyPosts)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

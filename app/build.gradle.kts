@@ -46,6 +46,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.13.0-alpha12")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.6")
 
     // UI
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
