@@ -8,15 +8,16 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
         app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_marginHorizontal="8dp"
+            app:layout_scrollEffect="compress"
             android:background="?android:attr/windowBackground"
-            app:layout_scrollFlags="scroll|enterAlways|snap"/>
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Fragment Container -->
