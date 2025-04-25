@@ -55,7 +55,7 @@ class MediaPagerAdapter(
             .data(url)
             .target(
                 onSuccess = { result ->
-                    val bitmap = (result as SuccessResult).toBitmap()
+                    val bitmap = result.toBitmap()
                     photoView.setImage(ImageSource.bitmap(bitmap))
 
                     val imageWidth = bitmap.width
