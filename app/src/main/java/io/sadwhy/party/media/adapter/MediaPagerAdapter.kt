@@ -53,7 +53,6 @@ class MediaPagerAdapter(
         // load (from memory/disk cache if available)
         val req = ImageRequest.Builder(photoView.context)
           .data(imageUrls[position])
-          .allowHardware(false)
           .target(
             onSuccess = { result ->
               val bitmap = result.toBitmap()
