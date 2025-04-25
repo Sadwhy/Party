@@ -38,19 +38,19 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
                     "https://coomer.su/data/36/e0/36e09ed160da32adb5b246d71ecf9051e278a59d5d38ec1ba956fcc24de52f37.jpg?f=444487320121389056.png",
                 )
 
-            private fun ViewPager2.updateHeight(newHeight: Int) {
+            fun ViewPager2.updateHeight(newHeight: Int) {
                 post {
                     layoutParams = layoutParams.apply { height = newHeight }
                 }
             }
-            
+
             val mediaPagerAdapter = MediaPagerAdapter(imageUrls) { newHeight ->
                 mediaPager.updateHeight(newHeight)
             }
-            
+
             mediaPager.apply {
                 adapter = mediaPagerAdapter
-            
+
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         mediaPagerAdapter.getHeightForPosition(position)?.let { height ->
