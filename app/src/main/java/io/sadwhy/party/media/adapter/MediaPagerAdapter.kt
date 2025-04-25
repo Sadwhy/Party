@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
+import coil3.disk.DiskCache
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.size.Size
@@ -34,6 +35,7 @@ class MediaPagerAdapter(
 
     override fun onViewRecycled(holder: ImageViewHolder) {
         super.onViewRecycled(holder)
+        // Cancel any ongoing requests for this view
         imageLoader.cancel(holder.binding.postImage)
         holder.binding.postImage.recycle()
     }
@@ -61,6 +63,7 @@ class MediaPagerAdapter(
             .data(imageUrl)
             .diskCachePolicy(CachePolicy.ENABLED)
             .size(Size.ORIGINAL)
+            .target(photoView)  // Use proper target binding
             .listener(
                 onSuccess = { _, result ->
                     handleImageSuccess(photoView, holder, result.diskCacheKey)
@@ -75,17 +78,17 @@ class MediaPagerAdapter(
     }
 
     private fun handleImageSuccess(
-        photoView: SubsamplingScaleImageView,
+        photoView: SubsamamplingScaleImageView,
         holder: ImageViewHolder,
         diskCacheKey: String?
     ) {
         if (diskCacheKey == null) return
 
-        imageLoader.components.diskCache?.get(diskCacheKey)?.use { snapshot ->
-            val filePath = snapshot.data.absolutePath
+        // Access disk cache correctly in Coil 3
+        imageLoader.diskCache?.get(diskCacheKey)?.use { snapshot: DiskCache.Snapshot ->
+            val filePath = snapshot.data.toFile().absolutePath
             
             photoView.post {
-                // Check if view is still bound to the same position
                 if (holder.bindingAdapterPosition == RecyclerView.NO_POSITION) return@post
                 
                 photoView.setImage(ImageSource.uri(filePath))
@@ -96,7 +99,7 @@ class MediaPagerAdapter(
 
     private fun calculateAndStoreHeight(
         holder: ImageViewHolder,
-        photoView: SubsamplingScaleImageView
+        photoView: SubsamamplingScaleImageView
     ) {
         photoView.doOnLayout {
             val position = holder.bindingAdapterPosition.takeIf { it != RecyclerView.NO_POSITION }
