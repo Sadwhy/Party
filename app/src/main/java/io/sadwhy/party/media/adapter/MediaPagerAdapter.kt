@@ -1,14 +1,14 @@
 package io.sadwhy.party.media.adapter
 
-import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
-import coil3.toBitmap
-import com.davemorrissey.labs.subscaleview.ImageSource
+import coil3.request.SuccessResult
+import com.github.panpf.zoomimage.ZoomImageView
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
@@ -42,23 +42,25 @@ class MediaPagerAdapter(
     override fun getItemCount(): Int = imageUrls.size
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val photoView = holder.binding.postImage
+        val photoView: ZoomImageView = holder.binding.postImage
         val imageUrl = imageUrls[position]
 
         val request = ImageRequest.Builder(photoView.context)
             .data(imageUrl)
             .target { drawable ->
-                val bitmap = drawable.toBitmap()
-                photoView.setImage(ImageSource.cachedBitmap(bitmap))
+                photoView.setImageDrawable(drawable)
 
-                photoView.doOnLayout {
-                    val adapterPosition = holder.bindingAdapterPosition
-                    if (adapterPosition != RecyclerView.NO_POSITION &&
-                        heightCache[adapterPosition] == null
-                    ) {
-                        val finalHeight = calculateHeight(bitmap, photoView.width)
-                        heightCache[adapterPosition] = finalHeight
-                        onImageHeightReady(finalHeight)
+                val bitmap = (drawable as? BitmapDrawable)?.bitmap
+                if (bitmap != null) {
+                    photoView.doOnLayout {
+                        val adapterPosition = holder.bindingAdapterPosition
+                        if (adapterPosition != RecyclerView.NO_POSITION &&
+                            heightCache[adapterPosition] == null
+                        ) {
+                            val finalHeight = calculateHeight(bitmap, photoView.width)
+                            heightCache[adapterPosition] = finalHeight
+                            onImageHeightReady(finalHeight)
+                        }
                     }
                 }
             }
@@ -67,7 +69,7 @@ class MediaPagerAdapter(
         imageLoader.enqueue(request)
     }
 
-    private fun calculateHeight(bitmap: Bitmap, viewWidth: Int): Int {
+    private fun calculateHeight(bitmap: android.graphics.Bitmap, viewWidth: Int): Int {
         val ratio = bitmap.height.toFloat() / bitmap.width
         val clampedRatio = min(ratio, 16f / 9f)
         return (viewWidth * clampedRatio).toInt()
