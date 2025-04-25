@@ -9,7 +9,6 @@ import io.sadwhy.party.databinding.LibraryFragmentBinding
 import io.sadwhy.party.media.adapter.PostAdapter
 import io.sadwhy.party.media.model.Post
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
-import io.sadwhy.party.utils.function.setupPostList
 
 class LibraryFragment : Fragment(R.layout.library_fragment) {
     private var binding: LibraryFragmentBinding by autoCleared()
@@ -19,15 +18,16 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = LibraryFragmentBinding.bind(view)
 
-        // Set up RecyclerView using extension function
-        binding.postRecyclerView.setupPostList(
-            context = requireContext(),
-            postAdapter = postAdapter,
-            posts = listOf(
-                Post(username = "UserA", description = "Sample post A"),  
-                Post(username = "UserB", description = "Sample post B")
-            )
+        binding.postRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = postAdapter
+        }
+
+        val dummyPosts = listOf(
+            Post(username = "UserA", description = "Sample post A"),
+            Post(username = "UserB", description = "Sample post B")
         )
 
+        postAdapter.submitList(dummyPosts)
     }
 }

@@ -1,12 +1,10 @@
 package io.sadwhy.party.media.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
-import coil3.request.SuccessResult
 import coil3.toBitmap
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
@@ -15,69 +13,66 @@ import kotlin.math.min
 
 class MediaPagerAdapter(
     private val imageUrls: List<String>,
-    private val onImageHeightReady: (Int, Int) -> Unit,
+    private val onImageHeightReady: (Int) -> Unit
 ) : RecyclerView.Adapter<MediaPagerAdapter.ImageViewHolder>() {
+
     
     private val heightCache = mutableMapOf<Int, Int>()
-    
-    inner class ImageViewHolder(
-        val binding: ItemPostPhotoBinding,
-    ) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): ImageViewHolder {
-        val binding = ItemPostPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    // Expose the cache
+    fun getHeightForPosition(position: Int): Int? =
+        heightCache[position]
+
+    inner class ImageViewHolder(val binding: ItemPostPhotoBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+        val binding = ItemPostPhotoBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ImageViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: ImageViewHolder,
-        position: Int,
-    ) {
+    override fun getItemCount(): Int = imageUrls.size
+
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val photoView = holder.binding.postImage
         val context = photoView.context
-        
-        // use cached height if found
-        heightCache[position]?.let { height ->
-            onImageHeightReady(height, position)
+        val loader = ImageLoader(context)
+
+        heightCache[position]?.let { cachedH ->
+            onImageHeightReady(cachedH)
         }
-        
-        loadImage(context, imageUrls[position], photoView, position)
-    }
-    
-    private fun loadImage(context: Context, url: String, photoView: SubsamplingScaleImageView, position: Int) {
-        val imageLoader = ImageLoader(context)
-        
-        val request = ImageRequest
-            .Builder(context)
-            .data(url)
+
+        val request = ImageRequest.Builder(context)
+            .data(imageUrls[position])
             .target(
-                onSuccess = { result ->
-                    val bitmap = result.toBitmap()
+                onSuccess = { drawable ->
+                    val bitmap = drawable.toBitmap()
                     photoView.setImage(ImageSource.bitmap(bitmap))
 
-                    val imageWidth = bitmap.width
-                    val imageHeight = bitmap.height
-                    val ratio = imageHeight.toFloat() / imageWidth
-                    val maxRatio = 9f / 16f
-                    val viewWidth = photoView.width.takeIf { it > 0 } ?: photoView.measuredWidth
+                    // compute aspect ratio and clamp
+                    val ratio = bitmap.height.toFloat() / bitmap.width
+                    val maxRatio = 16f / 9f
+                    val clamped = min(ratio, maxRatio)
 
-                    if (viewWidth > 0) {
-                        val clampedRatio = min(ratio, maxRatio)
-                        val finalHeight = (viewWidth * clampedRatio).toInt()
-                        
-                        // Cache the calculated height
-                        heightCache[position] = finalHeight
-                        
-                        onImageHeightReady(finalHeight, position)
+                    // photoView.width might be zero first layout pass; use measuredWidth fallback
+                    val viewW = photoView.width.takeIf { it > 0 }
+                        ?: photoView.measuredWidth
+                    if (viewW > 0) {
+                        val finalH = (viewW * clamped).toInt()
+
+                        // only call back & cache the very first time
+                        if (heightCache[position] == null) {
+                            heightCache[position] = finalH
+                            onImageHeightReady(finalH)
+                        }
                     }
-                },
-            ).build()
+                }
+            )
+            .build()
 
-        imageLoader.enqueue(request)
+        loader.enqueue(request)
     }
-
-    override fun getItemCount(): Int = imageUrls.size
 }
