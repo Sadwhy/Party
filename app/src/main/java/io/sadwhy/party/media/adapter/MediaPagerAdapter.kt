@@ -1,25 +1,21 @@
 package io.sadwhy.party.media.adapter
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
-import coil3.disk.DiskCache
-import coil3.request.CachePolicy
-import coil3.request.Disposable
 import coil3.request.ImageRequest
-import coil3.size.Size
-import coil3.imageLoader
-import io.sadwhy.party.databinding.ItemPostPhotoBinding
+import coil3.request.Disposable
+import coil3.toBitmap
 import com.davemorrissey.labs.subscaleview.ImageSource
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-import okio.Path.toFile
+import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
 class MediaPagerAdapter(
     private val imageUrls: List<String>,
-    private val onImageHeightReady: (Int) -> Unit
+    private val onImageHeightReady: (Int) -> Unit,
 ) : RecyclerView.Adapter<MediaPagerAdapter.ImageViewHolder>() {
 
     private val heightCache = mutableMapOf<Int, Int>()
@@ -34,23 +30,16 @@ class MediaPagerAdapter(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        imageLoader = recyclerView.context.imageLoader
-    }
-
-    override fun onViewRecycled(holder: ImageViewHolder) {
-        super.onViewRecycled(holder)
-        holder.requestDisposable?.dispose()
-        holder.binding.postImage.recycle()
+        imageLoader = ImageLoader(recyclerView.context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        return ImageViewHolder(
-            ItemPostPhotoBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+        val binding = ItemPostPhotoBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+        return ImageViewHolder(binding)
     }
 
     override fun getItemCount(): Int = imageUrls.size
@@ -59,64 +48,43 @@ class MediaPagerAdapter(
         val photoView = holder.binding.postImage
         val imageUrl = imageUrls[position]
 
-        // Cancel any previous request and clear the view
-        holder.requestDisposable?.dispose()
-        photoView.recycle()
-
-        val request = ImageRequest.Builder(holder.itemView.context)
+        val request = ImageRequest.Builder(photoView.context)
             .data(imageUrl)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .size(Size.ORIGINAL)
-            .listener(
-                onSuccess = { _, result ->
-                    result.diskCacheKey?.let { key ->
-                        handleImageSuccess(photoView, holder, key)
+            .target { drawable ->
+                val bitmap = drawable.toBitmap()
+                photoView.setImage(ImageSource.bitmap(bitmap))
+                photoView.doOnLayout {
+                    val pos = holder.bindingAdapterPosition
+                    if (pos != RecyclerView.NO_POSITION && heightCache[pos] == null) {
+                        val finalH = calculateHeight(bitmap, photoView.width)
+                        heightCache[pos] = finalH
+                        onImageHeightReady(finalH)
                     }
-                },
-                onError = { _, _ ->
-                    // TODO
                 }
-            )
+            }
             .build()
 
         holder.requestDisposable = imageLoader.enqueue(request)
     }
 
-    private fun handleImageSuccess(
-        photoView: SubsamplingScaleImageView,
-        holder: ImageViewHolder,
-        diskCacheKey: String
-    ) {
-        imageLoader.diskCache?.openSnapshot(diskCacheKey)?.use { snapshot ->
-            val filePath = snapshot.data.toFile().absolutePath
-
-            photoView.post {
-                if (holder.bindingAdapterPosition == RecyclerView.NO_POSITION) return@post
-
-                photoView.setImage(ImageSource.uri(filePath))
-                calculateAndStoreHeight(holder, photoView)
-            }
-        }
+    override fun onViewDetachedFromWindow(holder: ImageViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.binding.postImage.recycle()
+        holder.requestDisposable?.dispose()
     }
 
-    private fun calculateAndStoreHeight(
-        holder: ImageViewHolder,
-        photoView: SubsamplingScaleImageView
-    ) {
-        photoView.doOnLayout {
-            val position = holder.bindingAdapterPosition.takeIf { it != RecyclerView.NO_POSITION }
-                ?: return@doOnLayout
+    override fun onViewAttachedToWindow(holder: ImageViewHolder) {
+        super.onViewAttachedToWindow(holder)
+    }
 
-            if (!heightCache.containsKey(position)) {
-                val width = photoView.sWidth
-                val height = photoView.sHeight
-                if (width > 0 && height > 0) {
-                    val ratio = min(height.toFloat() / width, 16f / 9f)
-                    val finalHeight = (photoView.width * ratio).toInt()
-                    heightCache[position] = finalHeight
-                    onImageHeightReady(finalHeight)
-                }
-            }
-        }
+    override fun onViewRecycled(holder: ImageViewHolder) {
+        super.onViewRecycled(holder)
+        holder.binding.postImage.recycle()
+    }
+
+    private fun calculateHeight(bitmap: Bitmap, viewWidth: Int): Int {
+        val ratio = bitmap.height.toFloat() / bitmap.width
+        val clampedRatio = min(ratio, 16f / 9f)
+        return (viewWidth * clampedRatio).toInt()
     }
 }
