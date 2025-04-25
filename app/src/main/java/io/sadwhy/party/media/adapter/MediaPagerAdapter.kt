@@ -16,21 +16,14 @@ class MediaPagerAdapter(
     private val onImageHeightReady: (Int) -> Unit
 ) : RecyclerView.Adapter<MediaPagerAdapter.ImageViewHolder>() {
 
-    
     private val heightCache = mutableMapOf<Int, Int>()
 
-    // Expose the cache
-    fun getHeightForPosition(position: Int): Int? =
-        heightCache[position]
+    fun getHeightForPosition(position: Int): Int? = heightCache[position]
 
     inner class ImageViewHolder(val binding: ItemPostPhotoBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val binding = ItemPostPhotoBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val binding = ItemPostPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ImageViewHolder(binding)
     }
 
@@ -41,10 +34,6 @@ class MediaPagerAdapter(
         val context = photoView.context
         val loader = ImageLoader(context)
 
-        heightCache[position]?.let { cachedH ->
-            onImageHeightReady(cachedH)
-        }
-
         val request = ImageRequest.Builder(context)
             .data(imageUrls[position])
             .target(
@@ -52,22 +41,14 @@ class MediaPagerAdapter(
                     val bitmap = drawable.toBitmap()
                     photoView.setImage(ImageSource.bitmap(bitmap))
 
-                    // compute aspect ratio and clamp
                     val ratio = bitmap.height.toFloat() / bitmap.width
-                    val maxRatio = 16f / 9f
-                    val clamped = min(ratio, maxRatio)
+                    val clampedRatio = min(ratio, 16f / 9f)
+                    val viewWidth = photoView.width.takeIf { it > 0 } ?: photoView.measuredWidth
 
-                    // photoView.width might be zero first layout pass; use measuredWidth fallback
-                    val viewW = photoView.width.takeIf { it > 0 }
-                        ?: photoView.measuredWidth
-                    if (viewW > 0) {
-                        val finalH = (viewW * clamped).toInt()
-
-                        // only call back & cache the very first time
-                        if (heightCache[position] == null) {
-                            heightCache[position] = finalH
-                            onImageHeightReady(finalH)
-                        }
+                    if (viewWidth > 0 && heightCache[position] == null) {
+                        val finalHeight = (viewWidth * clampedRatio).toInt()
+                        heightCache[position] = finalHeight
+                        onImageHeightReady(finalHeight)
                     }
                 }
             )
