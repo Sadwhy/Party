@@ -10,7 +10,10 @@ import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 class HomeFragment : Fragment(R.layout.home_fragment) {
     private var binding: HomeFragmentBinding by autoCleared()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         // TODO: binding usable
     }

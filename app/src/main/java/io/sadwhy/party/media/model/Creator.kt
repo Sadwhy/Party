@@ -9,5 +9,5 @@ data class Creator(
     val service: String,
     val indexed: Long,
     val updated: Long,
-    val favorited: Int
+    val favorited: Int,
 )

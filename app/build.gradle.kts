@@ -49,13 +49,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("androidx.fragment:fragment-ktx:1.8.6")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
-    //implementation("androidx.preference:preference-ktx:1.2.1")
+    // implementation("androidx.preference:preference-ktx:1.2.1")
 
     // UI
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    
+
     // Image loader
     implementation("io.coil-kt.coil3:coil:3.1.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")

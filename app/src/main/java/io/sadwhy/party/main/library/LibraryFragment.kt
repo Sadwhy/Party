@@ -14,7 +14,10 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
     private var binding: LibraryFragmentBinding by autoCleared()
     private val postAdapter = PostAdapter()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = LibraryFragmentBinding.bind(view)
 
@@ -23,10 +26,11 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
             adapter = postAdapter
         }
 
-        val dummyPosts = listOf(
-            Post(username = "UserA", description = "Sample post A"),
-            Post(username = "UserB", description = "Sample post B")
-        )
+        val dummyPosts =
+            listOf(
+                Post(username = "UserA", description = "Sample post A"),
+                Post(username = "UserB", description = "Sample post B"),
+            )
 
         postAdapter.submitList(dummyPosts)
     }
