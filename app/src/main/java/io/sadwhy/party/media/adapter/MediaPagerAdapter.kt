@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
-import coil.imageLoader
-import coil.request.ImageRequest
-import coil.size.Size
-import coil.diskcache.CachePolicy
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.size.Size
+import coil3.diskcache.CachePolicy
 import com.davemorrissey.labs.subscaleview.ImageSource
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
