@@ -45,15 +45,15 @@ class MediaPagerAdapter(
     override fun getItemCount(): Int = imageUrls.size
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val url = imageUrls[position]
+        //val url = imageUrls[position]
         
-        loadImage(url, holder)
+        //loadImage(url, holder)
     }
 
     override fun onViewDetachedFromWindow(holder: ImageViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        holder.binding.postImage.recycle()
         holder.requestDisposable?.dispose()
+        holder.binding.postImage.recycle()
     }
 
     override fun onViewAttachedToWindow(holder: ImageViewHolder) {
