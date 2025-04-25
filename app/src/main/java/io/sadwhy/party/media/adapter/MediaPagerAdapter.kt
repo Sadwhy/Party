@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.disk.DiskCache
 import coil3.request.CachePolicy
+import coil3.request.Disposable
 import coil3.request.ImageRequest
 import coil3.size.Size
 import coil3.imageLoader
+import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-import io.sadwhy.party.databinding.ItemPostPhotoBinding
+import okio.Path.Companion.toFile
 import kotlin.math.min
 
 class MediaPagerAdapter(
@@ -26,7 +28,9 @@ class MediaPagerAdapter(
     fun getHeightForPosition(position: Int): Int? = heightCache[position]
 
     inner class ImageViewHolder(val binding: ItemPostPhotoBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+        var requestDisposable: Disposable? = null
+    }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -35,8 +39,7 @@ class MediaPagerAdapter(
 
     override fun onViewRecycled(holder: ImageViewHolder) {
         super.onViewRecycled(holder)
-        // Cancel any ongoing requests for this view
-        imageLoader.cancel(holder.binding.postImage)
+        holder.requestDisposable?.dispose()
         holder.binding.postImage.recycle()
     }
 
@@ -56,41 +59,40 @@ class MediaPagerAdapter(
         val photoView = holder.binding.postImage
         val imageUrl = imageUrls[position]
 
-        // Clear previous image
+        // Cancel any previous request and clear the view
+        holder.requestDisposable?.dispose()
         photoView.recycle()
 
         val request = ImageRequest.Builder(holder.itemView.context)
             .data(imageUrl)
             .diskCachePolicy(CachePolicy.ENABLED)
             .size(Size.ORIGINAL)
-            .target(photoView)  // Use proper target binding
             .listener(
                 onSuccess = { _, result ->
-                    handleImageSuccess(photoView, holder, result.diskCacheKey)
+                    result.diskCacheKey?.let { key ->
+                        handleImageSuccess(photoView, holder, key)
+                    }
                 },
-                onError = { _, throwable ->
-                    // Handle error state
+                onError = { _, _ ->
+                    // TODO
                 }
             )
             .build()
 
-        imageLoader.enqueue(request)
+        holder.requestDisposable = imageLoader.enqueue(request)
     }
 
     private fun handleImageSuccess(
-        photoView: SubsamamplingScaleImageView,
+        photoView: SubsamplingScaleImageView,
         holder: ImageViewHolder,
-        diskCacheKey: String?
+        diskCacheKey: String
     ) {
-        if (diskCacheKey == null) return
-
-        // Access disk cache correctly in Coil 3
-        imageLoader.diskCache?.get(diskCacheKey)?.use { snapshot: DiskCache.Snapshot ->
+        imageLoader.diskCache?.openSnapshot(diskCacheKey)?.use { snapshot ->
             val filePath = snapshot.data.toFile().absolutePath
-            
+
             photoView.post {
                 if (holder.bindingAdapterPosition == RecyclerView.NO_POSITION) return@post
-                
+
                 photoView.setImage(ImageSource.uri(filePath))
                 calculateAndStoreHeight(holder, photoView)
             }
@@ -99,7 +101,7 @@ class MediaPagerAdapter(
 
     private fun calculateAndStoreHeight(
         holder: ImageViewHolder,
-        photoView: SubsamamplingScaleImageView
+        photoView: SubsamplingScaleImageView
     ) {
         photoView.doOnLayout {
             val position = holder.bindingAdapterPosition.takeIf { it != RecyclerView.NO_POSITION }
