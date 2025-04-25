@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.toBitmap
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
@@ -17,7 +18,6 @@ class MediaPagerAdapter(
     private val onImageHeightReady: (Int, Int) -> Unit,
 ) : RecyclerView.Adapter<MediaPagerAdapter.ImageViewHolder>() {
     
-    // height cache
     private val heightCache = mutableMapOf<Int, Int>()
     
     inner class ImageViewHolder(
@@ -61,7 +61,7 @@ class MediaPagerAdapter(
                     val imageWidth = bitmap.width
                     val imageHeight = bitmap.height
                     val ratio = imageHeight.toFloat() / imageWidth
-                    val maxRatio = 16f / 9f
+                    val maxRatio = 9f / 16f
                     val viewWidth = photoView.width.takeIf { it > 0 } ?: photoView.measuredWidth
 
                     if (viewWidth > 0) {

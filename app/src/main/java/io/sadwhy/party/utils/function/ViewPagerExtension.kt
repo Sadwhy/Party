@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import io.sadwhy.party.media.adapter.MediaPagerAdapter
-import io.sadwhy.party.model.Post
+import io.sadwhy.party.media.model.Post
 
 // Extension function to set up a post RecyclerView
 fun RecyclerView.setupPostList(
@@ -38,10 +38,9 @@ fun ViewPager2.setupMediaPager(
         }
     }
     
-    // Set the adapter
     adapter = mediaPagerAdapter
     
-    // Add page change callback to handle height changes when scrolling in either direction
+    // page change callback
     registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
