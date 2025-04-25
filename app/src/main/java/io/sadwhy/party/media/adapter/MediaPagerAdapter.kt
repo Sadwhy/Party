@@ -7,10 +7,13 @@ import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
+import coil3.request.Disposable
+import coil3.imageLoader
+import coil3.request.ImageResult
+import coil3.request.target
 import coil3.toBitmap
 import com.davemorrissey.labs.subscaleview.ImageSource
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
-import kotlin.math.min
 
 class MediaPagerAdapter(
     private val imageUrls: List<String>,
@@ -32,7 +35,8 @@ class MediaPagerAdapter(
 
     override fun onViewRecycled(holder: ImageViewHolder) {
         super.onViewRecycled(holder)
-        holder.binding.postImage.recycle()
+        // Cancel any ongoing image load requests for this view
+        imageLoader.clear(holder.binding.postImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -53,10 +57,8 @@ class MediaPagerAdapter(
         val request = ImageRequest.Builder(photoView.context)
             .data(imageUrl)
             .target { drawable ->
-                val original = drawable.toBitmap()
-                val bitmap = original.copy(Bitmap.Config.ARGB_8888, false)
-                original.recycle()
-
+                val bitmap = drawable.toBitmap()
+                // Directly set the bitmap to SubsamplingScaleImageView
                 photoView.setImage(ImageSource.bitmap(bitmap))
 
                 photoView.doOnLayout {
