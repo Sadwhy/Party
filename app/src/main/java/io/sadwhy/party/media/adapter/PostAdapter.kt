@@ -36,12 +36,12 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
                     "https://coomer.su/data/36/e0/36e09ed160da32adb5b246d71ecf9051e278a59d5d38ec1ba956fcc24de52f37.jpg?f=444487320121389056.png",
                 )
 
-            holder.binding.mediaPager.adapter =
+            mediaPager.adapter =
                 MediaPagerAdapter(imageUrls) { height ->
-                    holder.binding.mediaPager.post {
-                        val layoutParams = holder.binding.mediaPager.layoutParams
+                    mediaPager.post {
+                        val layoutParams = mediaPager.layoutParams
                         layoutParams.height = height
-                        holder.binding.mediaPager.layoutParams = layoutParams
+                        mediaPager.layoutParams = layoutParams
                     }
                 }
 
