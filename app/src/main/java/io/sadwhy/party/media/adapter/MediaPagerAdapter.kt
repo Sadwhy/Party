@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.toBitmap
-import com.davemorrissey.labs.subscaleview.ImageSource.cachedBitmap
+import com.davemorrissey.labs.subscaleview.ImageSource
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
