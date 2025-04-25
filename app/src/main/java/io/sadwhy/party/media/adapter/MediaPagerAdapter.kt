@@ -80,7 +80,7 @@ class MediaPagerAdapter(
         viewWidth: Int,
     ): Int {
         val ratio = bitmap.height.toFloat() / bitmap.width
-        val clampedRatio = min(ratio, 9f / 16f)
+        val clampedRatio = min(ratio, 16f / 9f)
         return (viewWidth * clampedRatio).toInt()
     }
 }

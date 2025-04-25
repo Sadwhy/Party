@@ -2,6 +2,9 @@ package io.sadwhy.party.media.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.animation.ValueAnimator
+import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -40,9 +43,21 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
 
             fun ViewPager2.updateHeight(newHeight: Int) {
                 post {
-                    layoutParams = layoutParams.apply { height = newHeight }
+                    val startHeight = height
+                    ValueAnimator.ofInt(startHeight, newHeight).apply {
+                        duration = 100
+                        interpolator = OvershootInterpolator(1.1f)
+                        addUpdateListener { anim ->
+                            val value = anim.animatedValue as Int
+                            layoutParams = layoutParams.apply {
+                                height = value
+                            }
+                        requestLayout()
+                        }
+                    }.start()
                 }
             }
+
 
             val mediaPagerAdapter =
                 MediaPagerAdapter(imageUrls) { newHeight ->
