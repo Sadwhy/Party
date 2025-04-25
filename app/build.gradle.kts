@@ -51,7 +51,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
     // implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.squareup.okio:okio:3.10.2")
-    implementation("com.squareup.okio:okio-path:3.10.2")
 
     // UI
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
