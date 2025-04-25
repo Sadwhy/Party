@@ -10,6 +10,7 @@ import coil3.request.ImageRequest
 import coil3.size.Size
 import coil3.imageLoader
 import com.davemorrissey.labs.subscaleview.ImageSource
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
@@ -33,16 +34,18 @@ class MediaPagerAdapter(
 
     override fun onViewRecycled(holder: ImageViewHolder) {
         super.onViewRecycled(holder)
+        imageLoader.cancel(holder.binding.postImage)
         holder.binding.postImage.recycle()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val binding = ItemPostPhotoBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+        return ImageViewHolder(
+            ItemPostPhotoBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
-        return ImageViewHolder(binding)
     }
 
     override fun getItemCount(): Int = imageUrls.size
@@ -51,33 +54,64 @@ class MediaPagerAdapter(
         val photoView = holder.binding.postImage
         val imageUrl = imageUrls[position]
 
-        val request = ImageRequest.Builder(photoView.context)
+        // Clear previous image
+        photoView.recycle()
+
+        val request = ImageRequest.Builder(holder.itemView.context)
             .data(imageUrl)
             .diskCachePolicy(CachePolicy.ENABLED)
-            .networkCachePolicy(CachePolicy.ENABLED)
             .size(Size.ORIGINAL)
+            .listener(
+                onSuccess = { _, result ->
+                    handleImageSuccess(photoView, holder, result.diskCacheKey)
+                },
+                onError = { _, throwable ->
+                    // Handle error state
+                }
+            )
             .build()
 
         imageLoader.enqueue(request)
+    }
 
-        // Once the image is cached, retrieve it and set the image
-        imageLoader.components.diskCache
-            ?.get(request.diskCacheKey ?: imageUrl)
-            ?.use { snapshot ->
-                val filePath = snapshot.data.absolutePath
+    private fun handleImageSuccess(
+        photoView: SubsamplingScaleImageView,
+        holder: ImageViewHolder,
+        diskCacheKey: String?
+    ) {
+        if (diskCacheKey == null) return
+
+        imageLoader.components.diskCache?.get(diskCacheKey)?.use { snapshot ->
+            val filePath = snapshot.data.absolutePath
+            
+            photoView.post {
+                // Check if view is still bound to the same position
+                if (holder.bindingAdapterPosition == RecyclerView.NO_POSITION) return@post
+                
                 photoView.setImage(ImageSource.uri(filePath))
+                calculateAndStoreHeight(holder, photoView)
+            }
+        }
+    }
 
-                photoView.doOnLayout {
-                    val adapterPosition = holder.bindingAdapterPosition
-                    if (adapterPosition != RecyclerView.NO_POSITION && heightCache[adapterPosition] == null) {
-                        val width = photoView.sWidth
-                        val height = photoView.sHeight
-                        val ratio = min(height.toFloat() / width, 16f / 9f)
-                        val finalHeight = (photoView.width * ratio).toInt()
-                        heightCache[adapterPosition] = finalHeight
-                        onImageHeightReady(finalHeight)
-                    }
+    private fun calculateAndStoreHeight(
+        holder: ImageViewHolder,
+        photoView: SubsamplingScaleImageView
+    ) {
+        photoView.doOnLayout {
+            val position = holder.bindingAdapterPosition.takeIf { it != RecyclerView.NO_POSITION }
+                ?: return@doOnLayout
+
+            if (!heightCache.containsKey(position)) {
+                val width = photoView.sWidth
+                val height = photoView.sHeight
+                if (width > 0 && height > 0) {
+                    val ratio = min(height.toFloat() / width, 16f / 9f)
+                    val finalHeight = (photoView.width * ratio).toInt()
+                    heightCache[position] = finalHeight
+                    onImageHeightReady(finalHeight)
                 }
             }
+        }
     }
 }
