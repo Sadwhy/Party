@@ -14,7 +14,7 @@ import coil3.imageLoader
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-import okio.Path.Companion.toFile
+import okio.Path.toFile
 import kotlin.math.min
 
 class MediaPagerAdapter(
