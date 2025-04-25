@@ -1,14 +1,14 @@
 package io.sadwhy.party.media.adapter
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
-import coil3.imageLoader
+import coil3.ImageLoader
+import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.size.Size
-import coil3.diskcache.CachePolicy
+import coil3.imageLoader
 import com.davemorrissey.labs.subscaleview.ImageSource
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
@@ -19,7 +19,7 @@ class MediaPagerAdapter(
 ) : RecyclerView.Adapter<MediaPagerAdapter.ImageViewHolder>() {
 
     private val heightCache = mutableMapOf<Int, Int>()
-    private lateinit var imageLoader: coil.ImageLoader
+    private lateinit var imageLoader: ImageLoader
 
     fun getHeightForPosition(position: Int): Int? = heightCache[position]
 
@@ -53,18 +53,18 @@ class MediaPagerAdapter(
 
         val request = ImageRequest.Builder(photoView.context)
             .data(imageUrl)
-            .diskCachePolicy(coil.diskcache.CachePolicy.ENABLED)
-            .networkCachePolicy(coil.diskcache.CachePolicy.ENABLED)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .networkCachePolicy(CachePolicy.ENABLED)
             .size(Size.ORIGINAL)
             .build()
 
         imageLoader.enqueue(request)
 
         // Once the image is cached, retrieve it and set the image
-        imageLoader.diskCache
+        imageLoader.components.diskCache
             ?.get(request.diskCacheKey ?: imageUrl)
             ?.use { snapshot ->
-                val filePath = snapshot.data.toFile().absolutePath
+                val filePath = snapshot.data.absolutePath
                 photoView.setImage(ImageSource.uri(filePath))
 
                 photoView.doOnLayout {
