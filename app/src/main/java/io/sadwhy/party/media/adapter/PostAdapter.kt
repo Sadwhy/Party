@@ -44,20 +44,23 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
                 }
             }
 
-            val mediaPagerAdapter = MediaPagerAdapter(imageUrls) { newHeight ->
-                mediaPager.updateHeight(newHeight)
-            }
+            val mediaPagerAdapter =
+                MediaPagerAdapter(imageUrls) { newHeight ->
+                    mediaPager.updateHeight(newHeight)
+                }
 
             mediaPager.apply {
                 adapter = mediaPagerAdapter
 
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        mediaPagerAdapter.getHeightForPosition(position)?.let { height ->
-                            updateHeight(height)
+                registerOnPageChangeCallback(
+                    object : ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            mediaPagerAdapter.getHeightForPosition(position)?.let { height ->
+                                updateHeight(height)
+                            }
                         }
-                    }
-                })
+                    },
+                )
             }
 
             textDescription.text = post.description
