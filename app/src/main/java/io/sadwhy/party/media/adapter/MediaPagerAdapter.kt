@@ -1,83 +1,82 @@
 package io.sadwhy.party.media.adapter
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
-import coil3.ImageLoader
-import coil3.request.Disposable
-import coil3.request.ImageRequest
-import coil3.toBitmap
+import coil.imageLoader
+import coil.request.ImageRequest
+import coil.size.Size
 import com.davemorrissey.labs.subscaleview.ImageSource
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
 class MediaPagerAdapter(
     private val imageUrls: List<String>,
-    private val onImageHeightReady: (Int) -> Unit,
+    private val onImageHeightReady: (Int) -> Unit
 ) : RecyclerView.Adapter<MediaPagerAdapter.ImageViewHolder>() {
 
     private val heightCache = mutableMapOf<Int, Int>()
-    private lateinit var imageLoader: ImageLoader
+    private lateinit var imageLoader: coil.ImageLoader
 
     fun getHeightForPosition(position: Int): Int? = heightCache[position]
 
     inner class ImageViewHolder(val binding: ItemPostPhotoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-      var request: Disposable? = null
-    }
+        RecyclerView.ViewHolder(binding.root)
 
-    override fun onAttachedToRecyclerView(rv: RecyclerView) {
-        super.onAttachedToRecyclerView(rv)
-        imageLoader = ImageLoader(rv.context) // single shared loader
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = 
-      ImageViewHolder(
-        ItemPostPhotoBinding.inflate(
-          LayoutInflater.from(parent.context),
-          parent,
-          false
-        )
-      )
-
-    override fun getItemCount() = imageUrls.size
-
-    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val photoView = holder.binding.postImage
-
-        // cancel any old request & clear SSIV
-        holder.request?.dispose()
-        photoView.reset()
-
-        // load (from memory/disk cache if available)
-        val req = ImageRequest.Builder(photoView.context)
-          .data(imageUrls[position])
-          .target(
-            onSuccess = { result ->
-              val bitmap = result.toBitmap()
-              photoView.setImage(ImageSource.bitmap(bitmap))
-
-              photoView.doOnLayout {
-                val pos = holder.bindingAdapterPosition
-                if (pos != RecyclerView.NO_POSITION && heightCache[pos] == null) {
-                  val ratio = bitmap.height.toFloat() / bitmap.width
-                  val clamped = min(ratio, 16f/9f)
-                  val h = (photoView.width * clamped).toInt()
-                  heightCache[pos] = h
-                  onImageHeightReady(h)
-                }
-              }
-            }
-          )
-          .build()
-
-        holder.request = imageLoader.enqueue(req)
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        imageLoader = recyclerView.context.imageLoader
     }
 
     override fun onViewRecycled(holder: ImageViewHolder) {
         super.onViewRecycled(holder)
-        holder.request?.dispose()
         holder.binding.postImage.recycle()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+        val binding = ItemPostPhotoBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ImageViewHolder(binding)
+    }
+
+    override fun getItemCount(): Int = imageUrls.size
+
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+        val photoView = holder.binding.postImage
+        val imageUrl = imageUrls[position]
+
+        val request = ImageRequest.Builder(photoView.context)
+            .data(imageUrl)
+            .diskCachePolicy(coil.diskcache.CachePolicy.ENABLED)
+            .networkCachePolicy(coil.diskcache.CachePolicy.ENABLED)
+            .size(Size.ORIGINAL)
+            .build()
+
+        imageLoader.enqueue(request)
+
+        // Once the image is cached, retrieve it and set the image
+        imageLoader.diskCache
+            ?.get(request.diskCacheKey ?: imageUrl)
+            ?.use { snapshot ->
+                val filePath = snapshot.data.toFile().absolutePath
+                photoView.setImage(ImageSource.uri(filePath))
+
+                photoView.doOnLayout {
+                    val adapterPosition = holder.bindingAdapterPosition
+                    if (adapterPosition != RecyclerView.NO_POSITION && heightCache[adapterPosition] == null) {
+                        val width = photoView.sWidth
+                        val height = photoView.sHeight
+                        val ratio = min(height.toFloat() / width, 16f / 9f)
+                        val finalHeight = (photoView.width * ratio).toInt()
+                        heightCache[adapterPosition] = finalHeight
+                        onImageHeightReady(finalHeight)
+                    }
+                }
+            }
     }
 }
