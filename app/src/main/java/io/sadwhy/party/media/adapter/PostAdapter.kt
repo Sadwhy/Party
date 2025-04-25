@@ -1,7 +1,6 @@
 package io.sadwhy.party.media.adapter
 
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.animation.ValueAnimator
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
