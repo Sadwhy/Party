@@ -7,9 +7,8 @@ import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
-import coil3.request.Disposable
 import coil3.toBitmap
-import com.davemorrissey.labs.subscaleview.ImageSource
+import com.davemorrissey.labs.subscaleview.ImageSource.cachedBitmap
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
@@ -24,9 +23,7 @@ class MediaPagerAdapter(
     fun getHeightForPosition(position: Int): Int? = heightCache[position]
 
     inner class ImageViewHolder(val binding: ItemPostPhotoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        var requestDisposable: Disposable? = null
-    }
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -45,51 +42,29 @@ class MediaPagerAdapter(
     override fun getItemCount(): Int = imageUrls.size
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        //val url = imageUrls[position]
-        
-        //loadImage(url, holder)
-    }
-
-    override fun onViewDetachedFromWindow(holder: ImageViewHolder) {
-        super.onViewDetachedFromWindow(holder)
-        holder.requestDisposable?.dispose()
-        holder.binding.postImage.recycle()
-    }
-
-    override fun onViewAttachedToWindow(holder: ImageViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        val pos = holder.bindingAdapterPosition
-        val url = imageUrls[pos]
-        loadImage(url, holder)
-    }
-
-    override fun onViewRecycled(holder: ImageViewHolder) {
-        super.onViewRecycled(holder)
-        holder.binding.postImage.recycle()
-    }
-
-    private fun loadImage(
-        imageUrl: String,
-        holder: ImageViewHolder
-    ) {
         val photoView = holder.binding.postImage
+        val imageUrl = imageUrls[position]
+
         val request = ImageRequest.Builder(photoView.context)
             .data(imageUrl)
             .target { drawable ->
                 val bitmap = drawable.toBitmap()
-                photoView.setImage(ImageSource.bitmap(bitmap))
+                photoView.setImage(ImageSource.cachedBitmap(bitmap))
+
                 photoView.doOnLayout {
-                    val pos = holder.bindingAdapterPosition
-                    if (pos != RecyclerView.NO_POSITION && heightCache[pos] == null) {
-                        val finalH = calculateHeight(bitmap, photoView.width)
-                        heightCache[pos] = finalH
-                        onImageHeightReady(finalH)
+                    val adapterPosition = holder.bindingAdapterPosition
+                    if (adapterPosition != RecyclerView.NO_POSITION &&
+                        heightCache[adapterPosition] == null
+                    ) {
+                        val finalHeight = calculateHeight(bitmap, photoView.width)
+                        heightCache[adapterPosition] = finalHeight
+                        onImageHeightReady(finalHeight)
                     }
                 }
             }
             .build()
 
-        holder.requestDisposable = imageLoader.enqueue(request)
+        imageLoader.enqueue(request)
     }
 
     private fun calculateHeight(bitmap: Bitmap, viewWidth: Int): Int {
