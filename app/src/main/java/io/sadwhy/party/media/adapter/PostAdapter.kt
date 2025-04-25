@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.sadwhy.party.databinding.ItemPostBinding
 import io.sadwhy.party.media.model.Post
+import io.sadwhy.party.utils.function.setupMediaPager
 
 class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallback()) {
     inner class PostViewHolder(
@@ -36,14 +37,10 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
                     "https://coomer.su/data/36/e0/36e09ed160da32adb5b246d71ecf9051e278a59d5d38ec1ba956fcc24de52f37.jpg?f=444487320121389056.png",
                 )
 
-            mediaPager.adapter =
-                MediaPagerAdapter(imageUrls) { height ->
-                    mediaPager.post {
-                        val layoutParams = mediaPager.layoutParams
-                        layoutParams.height = height
-                        mediaPager.layoutParams = layoutParams
-                    }
-                }
+            mediaPager.setupMediaPager(
+                imageUrls = imageUrls,
+                bindingProvider = { root as ViewGroup }
+            )
 
             textDescription.text = post.description
 
