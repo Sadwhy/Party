@@ -57,7 +57,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
     // Image loader
-    implementation("com.github.panpf.zoomimage:zoomimage-coil:1.1.2")
+    implementation("io.github.panpf.zoomimage:zoomimage-view-coil3:1.1.2")
     implementation("io.coil-kt.coil3:coil:3.1.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
     //implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")

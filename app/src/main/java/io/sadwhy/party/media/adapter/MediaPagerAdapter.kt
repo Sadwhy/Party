@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
-import com.github.panpf.zoomimage.ZoomImageView
+import io.github.panpf.zoomimage.ZoomImageView
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
 
