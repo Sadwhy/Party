@@ -30,6 +30,11 @@ class MediaPagerAdapter(
         imageLoader = ImageLoader(recyclerView.context)
     }
 
+    override fun onViewRecycled(holder: ImageViewHolder) {
+        super.onViewRecycled(holder)
+        holder.binding.postImage.recycle()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val binding = ItemPostPhotoBinding.inflate(
             LayoutInflater.from(parent.context),
