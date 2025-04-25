@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import io.sadwhy.party.databinding.ItemPostBinding
 import io.sadwhy.party.media.model.Post
 
@@ -37,19 +39,16 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
                 )
 
             val mediaPagerAdapter = MediaPagerAdapter(imageUrls) { newHeight ->
-                // whenever the adapter finds a new height, apply it:
                 mediaPager.post {
                     mediaPager.layoutParams = mediaPager.layoutParams.apply {
                         height = newHeight
                     }
                 }
             }
-            
-            // 2) Wire it up
-            holder.binding.mediaPager.apply {
+
+            mediaPager.apply {
                 adapter = mediaPagerAdapter
 
-                // 3) Listen for page changes to re-apply cached heights
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         mediaPagerAdapter.getHeightForPosition(position)?.let { h ->
