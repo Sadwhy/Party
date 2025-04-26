@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.toBitmap
+import coil3.SingletonImageLoader
 import com.davemorrissey.labs.subscaleview.ImageSource
 import io.sadwhy.party.databinding.ItemPostPhotoBinding
 import kotlin.math.min
@@ -27,7 +28,7 @@ class MediaPagerAdapter(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        imageLoader = ImageLoader(recyclerView.context)
+        imageLoader = SingletonImageLoader.get(recyclerView.context)
     }
 
     override fun onCreateViewHolder(

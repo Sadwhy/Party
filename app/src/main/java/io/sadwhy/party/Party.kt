@@ -7,9 +7,11 @@ import coil3.SingletonImageLoader
 import coil3.disk.DiskCache
 import coil3.disk.directory
 import coil3.memory.MemoryCache
+import coil3.network.okHttpClient
 import coil3.request.allowHardware
 import coil3.request.crossfade
 import com.google.android.material.color.DynamicColors
+import io.sadwhy.party.network.OkHttp
 
 class Party :
     Application(),
@@ -22,6 +24,7 @@ class Party :
     override fun newImageLoader(context: PlatformContext): ImageLoader =
         ImageLoader
             .Builder(context)
+            .okHttpClient { OkHttp.client }
             .memoryCache {
                 MemoryCache
                     .Builder()
