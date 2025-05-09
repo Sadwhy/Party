@@ -1,9 +1,8 @@
 package io.sadwhy.party.ui.main.library
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.sadwhy.party.utils
+import io.sadwhy.party.utils.log
 import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.data.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow

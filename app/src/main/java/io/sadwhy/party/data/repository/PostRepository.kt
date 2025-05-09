@@ -1,6 +1,6 @@
 package io.sadwhy.party.data.repository
 
-import io.sadwhy.party.utils
+import io.sadwhy.party.utils.log
 import io.sadwhy.party.data.api.PostService
 import io.sadwhy.party.data.model.Recent
 import io.sadwhy.party.data.model.Post

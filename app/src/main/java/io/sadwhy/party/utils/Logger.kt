@@ -8,7 +8,7 @@ import java.util.Locale
 
 fun log(message: String, fileName: String = "log.txt") {
     try {
-        val context = MyApplication.appContext
+        val context = Party.appContext
         val logFile = File(context.filesDir, fileName)
         val timestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
         FileWriter(logFile, true).use { writer ->
