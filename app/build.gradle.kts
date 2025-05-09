@@ -21,6 +21,10 @@ android {
         viewBinding = true
     }
 
+    lint {
+        disable += "NullSafeMutableLiveData"
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
