@@ -23,8 +23,4 @@ object RetrofitClient {
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
     }
-
-    val apiService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
-    }
 }
