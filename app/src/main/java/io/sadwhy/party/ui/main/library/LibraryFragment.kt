@@ -1,4 +1,4 @@
-package io.sadwhy.party.main.library
+package io.sadwhy.party.ui.main.library
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.sadwhy.party.R
 import io.sadwhy.party.databinding.LibraryFragmentBinding
 import io.sadwhy.party.media.adapter.PostAdapter
-import io.sadwhy.party.media.model.Post
+import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 
 class LibraryFragment : Fragment(R.layout.library_fragment) {
@@ -28,8 +28,8 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
 
         val dummyPosts =
             listOf(
-                Post(username = "UserA", description = "Sample post A"),
-                Post(username = "UserB", description = "Sample post B"),
+                Post(user = "UserA", content = "Sample post A"),
+                Post(user = "UserB", content = "Sample post B"),
             )
 
         postAdapter.submitList(dummyPosts)

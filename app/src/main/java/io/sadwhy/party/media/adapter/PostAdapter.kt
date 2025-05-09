@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import io.sadwhy.party.databinding.ItemPostBinding
-import io.sadwhy.party.media.model.Post
+import io.sadwhy.party.data.model.Post
 
 class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallback()) {
     inner class PostViewHolder(
@@ -77,7 +77,7 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
                 )
             }
 
-            textDescription.text = post.description
+            textDescription.text = post.content
 
             // Set up click listeners if needed
             buttonPfp.setOnClickListener {
@@ -109,7 +109,7 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiffCallba
             oldItem: Post,
             newItem: Post,
         ): Boolean {
-            return oldItem.username == newItem.username // or unique ID
+            return oldItem.user == newItem.user // or unique ID
         }
 
         override fun areContentsTheSame(

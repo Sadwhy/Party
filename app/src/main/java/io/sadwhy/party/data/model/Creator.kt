@@ -1,4 +1,4 @@
-package io.sadwhy.party.media.model
+package io.sadwhy.party.data.model
 
 import kotlinx.serialization.Serializable
 
