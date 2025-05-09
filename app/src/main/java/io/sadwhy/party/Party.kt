@@ -1,6 +1,7 @@
 package io.sadwhy.party
 
 import android.app.Application
+import android.content.Context
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
@@ -17,8 +18,14 @@ class Party :
     Application(),
     SingletonImageLoader.Factory {
 
+    companion object {
+        lateinit var appContext: Context
+            private set
+    }
+
     override fun onCreate() {
         super.onCreate()
+        appContext = applicationContext
         DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
