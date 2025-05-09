@@ -21,10 +21,6 @@ android {
         viewBinding = true
     }
 
-    lint {
-        disable += "NullSafeMutableLiveData"
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -59,7 +55,7 @@ dependencies {
 
     // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
 
     // Network
     implementation("com.squareup.okhttp3:okhttp:4.12.0")

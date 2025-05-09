@@ -3,14 +3,18 @@ package io.sadwhy.party.ui.main.library
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.sadwhy.party.R
 import io.sadwhy.party.databinding.LibraryFragmentBinding
 import io.sadwhy.party.media.adapter.PostAdapter
-import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class LibraryFragment : Fragment(R.layout.library_fragment) {
     private var binding: LibraryFragmentBinding by autoCleared()
@@ -25,7 +29,6 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = LibraryFragmentBinding.bind(view)
 
-        // Initialize adapter with lambda functions
         postAdapter = PostAdapter(
             onProfileClick = { post ->
                 Toast.makeText(requireContext(), "Profile: ${post.user}", Toast.LENGTH_SHORT).show()
@@ -51,8 +54,13 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
 
         viewModel.fetchPosts()
 
-        viewModel.posts.observe(viewLifecycleOwner) { posts ->
-            postAdapter.submitList(posts)
+        // Collect StateFlow in a lifecycle-aware way
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.posts.collectLatest { posts ->
+                    postAdapter.submitList(posts)
+                }
+            }
         }
     }
 }

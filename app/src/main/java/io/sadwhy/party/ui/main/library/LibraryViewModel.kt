@@ -2,31 +2,30 @@ package io.sadwhy.party.ui.main.library
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import io.sadwhy.party.network.RetrofitClient
-import io.sadwhy.party.data.repository.PostRepository
 import io.sadwhy.party.data.model.Post
-import io.sadwhy.party.data.model.Recent
+import io.sadwhy.party.data.repository.PostRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LibraryViewModel : ViewModel() {
     private val postRepository = PostRepository()
 
-    private val _posts = MutableLiveData<List<Post>>(emptyList())
-    val posts: LiveData<List<Post>> = _posts
+    private val _posts = MutableStateFlow<List<Post>>(emptyList())
+    val posts: StateFlow<List<Post>> = _posts.asStateFlow()
 
     fun fetchPosts() {
         viewModelScope.launch {
             try {
                 val response = postRepository.getRecentPosts()
-                if (response.isSuccessful) {
-                    _posts.value = response.body()?.posts ?: emptyList()
+                _posts.value = if (response.isSuccessful) {
+                    response.body()?.posts ?: emptyList()
                 } else {
-                    _posts.value = emptyList() // or handle error
+                    emptyList()
                 }
             } catch (e: Exception) {
-                _posts.value = emptyList() // handle network failure
+                _posts.value = emptyList()
             }
         }
     }
