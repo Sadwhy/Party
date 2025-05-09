@@ -4,6 +4,13 @@ import android.webkit.MimeTypeMap
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class Recent(
+    val count: Long,
+    val true_count: Long,
+    val posts: List<Post>? = null,
+)
+
+@Serializable
 data class Post(
     val id: String? = null,
     val user: String? = null,
@@ -17,18 +24,17 @@ data class Post(
     val edited: String? = null,
     val file: Attachment? = null,
     val attachments: List<Attachment>? = null,
-    val username: String? = null,
-    val description: String? = null,
+    val substring: String? = null,
 )
 
 @Serializable
 data class Attachment(
-    val name: String? = null,
-    val path: String? = null,
+    val name: String,
+    val path: String,
 ) {
     val mediaType: MediaType
         get() {
-            val extension = path?.let { MimeTypeMap.getFileExtensionFromUrl(it)?.lowercase() }
+            val extension = MimeTypeMap.getFileExtensionFromUrl(path)?.lowercase()
             val mime = extension?.let {
                 MimeTypeMap.getSingleton().getMimeTypeFromExtension(it)
             }

@@ -76,6 +76,8 @@ class PostAdapter(
 
             textDescription.text = post.content
 
+            buttonUsername.text = post.user
+
             buttonPfp.setOnClickListener { onProfileClick(post) }
 
             buttonMore.setOnClickListener { onMoreOptionsClick(post) }
