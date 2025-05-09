@@ -7,10 +7,10 @@ import io.sadwhy.party.data.model.Recent
 import io.sadwhy.party.data.model.Post
 
 interface PostService {
-    @GET("/v1/posts")
+    @GET("v1/posts")
     suspend fun getRecentPosts(): Response<Recent>
 
-    @GET("/v1/{service}/user/{creator_id}/post/{post_id}")
+    @GET("v1/{service}/user/{creator_id}/post/{post_id}")
     suspend fun getPost(
         @Path("service") service: String,
         @Path("creator_id") creatorId: String,
