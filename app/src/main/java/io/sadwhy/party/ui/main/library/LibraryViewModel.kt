@@ -16,19 +16,43 @@ class LibraryViewModel : ViewModel() {
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
     val posts: StateFlow<List<Post>> = _posts.asStateFlow()
 
+    // Add loading state to track network request status
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    // Add error state to handle exceptions
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error.asStateFlow()
+
     fun fetchPosts() {
         viewModelScope.launch {
             try {
+                _isLoading.value = true
+                _error.value = null
+                
+                // The suspend function will properly wait here
                 val response = postRepository.getRecentPosts()
-                _posts.value = if (response.isSuccessful) {
-                    log("Got post in Viewmodel")
-                    response.body()?.posts ?: emptyList()
+                
+                if (response.isSuccessful) {
+                    log("Got posts in ViewModel: ${response.body()?.posts?.size ?: 0} posts")
+                    _posts.value = response.body()?.posts ?: emptyList()
                 } else {
-                    emptyList()
+                    log("Error fetching posts: ${response.code()} - ${response.message()}")
+                    _error.value = "Failed to load posts: ${response.message()}"
+                    // Keep the current posts (don't set to empty)
                 }
             } catch (e: Exception) {
-                _posts.value = emptyList()
+                log("Exception fetching posts: ${e.message}")
+                _error.value = "Error: ${e.message}"
+                // Keep the current posts (don't set to empty)
+            } finally {
+                _isLoading.value = false
             }
         }
+    }
+    
+    // Call this method in onViewCreated or when the screen becomes visible
+    init {
+        fetchPosts()
     }
 }
