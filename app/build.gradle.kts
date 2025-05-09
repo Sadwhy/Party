@@ -22,7 +22,7 @@ android {
     }
 
     lint {
-        disable "NullSafeMutableLiveData"
+        disable += "NullSafeMutableLiveData"
     }
 
     buildTypes {
