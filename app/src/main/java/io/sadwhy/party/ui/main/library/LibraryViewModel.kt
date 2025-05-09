@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class LibraryViewModel : ViewModel() {
     private val postRepository = PostRepository()
 
-    private val _posts = MutableLiveData<List<Post>>()
+    private val _posts = MutableLiveData<List<Post>>(emptyList())
     val posts: LiveData<List<Post>> = _posts
 
     fun fetchPosts() {
