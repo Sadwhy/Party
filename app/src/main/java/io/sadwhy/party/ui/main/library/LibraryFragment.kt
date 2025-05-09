@@ -13,6 +13,7 @@ import io.sadwhy.party.R
 import io.sadwhy.party.databinding.LibraryFragmentBinding
 import io.sadwhy.party.media.adapter.PostAdapter
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
+import io.sadwhy.party.utils.log
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -29,6 +30,14 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = LibraryFragmentBinding.bind(view)
 
+        setupRecyclerView()
+        observeViewModel()
+        
+        // Explicitly fetch posts when the fragment is created
+        viewModel.fetchPosts()
+    }
+    
+    private fun setupRecyclerView() {
         postAdapter = PostAdapter(
             onProfileClick = { post ->
                 Toast.makeText(requireContext(), "Profile: ${post.user}", Toast.LENGTH_SHORT).show()
@@ -51,17 +60,55 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = postAdapter
         }
-
-        viewModel.fetchPosts()
-
-        // Collect StateFlow in a lifecycle-aware way
+    }
+    
+    private fun observeViewModel() {
+        // Observe loading state
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.posts.collectLatest { posts ->
-                    Toast.makeText(requireContext(), "Got post in Frag", Toast.LENGTH_SHORT).show()
-                    postAdapter.submitList(posts)
+                viewModel.isLoading.collectLatest { isLoading ->
+                    binding.progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
+                    log("Loading state: $isLoading")
                 }
             }
         }
+        
+        // Observe posts
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.posts.collectLatest { posts ->
+                    log("Posts received in fragment: ${posts.size}")
+                    Toast.makeText(requireContext(), "Posts received: ${posts.size}", Toast.LENGTH_SHORT).show()
+                    postAdapter.submitList(posts)
+                    
+                    // Make the recycler view visible if we have posts
+                    if (posts.isNotEmpty()) {
+                        binding.postRecyclerView.visibility = View.VISIBLE
+                        binding.emptyStateView?.visibility = View.GONE
+                    } else {
+                        binding.postRecyclerView.visibility = View.VISIBLE // Still show even if empty
+                        binding.emptyStateView?.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+        
+        // Observe errors
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.error.collectLatest { errorMsg ->
+                    errorMsg?.let {
+                        Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+                        log("Error observed: $it")
+                    }
+                }
+            }
+        }
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Refresh data when returning to the fragment
+        viewModel.fetchPosts()
     }
 }
