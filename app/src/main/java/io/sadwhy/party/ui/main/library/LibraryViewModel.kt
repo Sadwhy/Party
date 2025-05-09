@@ -1,5 +1,6 @@
 package io.sadwhy.party.ui.main.library
 
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.sadwhy.party.data.model.Post
@@ -20,6 +21,7 @@ class LibraryViewModel : ViewModel() {
             try {
                 val response = postRepository.getRecentPosts()
                 _posts.value = if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), "Got post in Viewmodel", Toast.LENGTH_SHORT).show()
                     response.body()?.posts ?: emptyList()
                 } else {
                     emptyList()

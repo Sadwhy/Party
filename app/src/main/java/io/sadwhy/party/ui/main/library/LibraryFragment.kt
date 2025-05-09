@@ -58,6 +58,7 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.posts.collectLatest { posts ->
+                    Toast.makeText(requireContext(), "Got post in Frag", Toast.LENGTH_SHORT).show()
                     postAdapter.submitList(posts)
                 }
             }
