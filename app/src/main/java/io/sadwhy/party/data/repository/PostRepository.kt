@@ -1,6 +1,6 @@
 package io.sadwhy.party.data.repository
 
-import io.sadwhy.party.utils.log
+import android.util.Log
 import io.sadwhy.party.data.api.PostService
 import io.sadwhy.party.data.model.Recent
 import io.sadwhy.party.data.model.Post
@@ -11,7 +11,7 @@ class PostRepository {
     private val postService = RetrofitClient.retrofit.create(PostService::class.java)
 
     suspend fun getRecentPosts(): Response<Recent> {
-        log("Got post in repo")
+        Log.d("PostRepo", "Got post in repo")
         return postService.getRecentPosts()
     }
 

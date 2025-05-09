@@ -2,7 +2,7 @@ package io.sadwhy.party.ui.main.library
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.sadwhy.party.utils.log
+import android.util.Log
 import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.data.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,15 +34,15 @@ class LibraryViewModel : ViewModel() {
                 val response = postRepository.getRecentPosts()
                 
                 if (response.isSuccessful) {
-                    log("Got posts in ViewModel: ${response.body()?.posts?.size ?: 0} posts")
+                    Log.d("LibraryViewModel", "Got posts in ViewModel: ${response.body()?.posts?.size ?: 0} posts")
                     _posts.value = response.body()?.posts ?: emptyList()
                 } else {
-                    log("Error fetching posts: ${response.code()} - ${response.message()}")
+                    Log.d("LibraryViewModel", "Error fetching posts: ${response.code()} - ${response.message()}")
                     _error.value = "Failed to load posts: ${response.message()}"
                     // Keep the current posts (don't set to empty)
                 }
             } catch (e: Exception) {
-                log("Exception fetching posts: ${e.message}")
+                Log.d("LibraryViewModel", "Exception fetching posts: ${e.message}")
                 _error.value = "Error: ${e.message}"
                 // Keep the current posts (don't set to empty)
             } finally {
