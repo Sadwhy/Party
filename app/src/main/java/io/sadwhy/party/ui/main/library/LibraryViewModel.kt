@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.sadwhy.party.api.repository.PostRepository
 import io.sadwhy.party.network.RetrofitClient
+import io.sadwhy.party.data.repository.PostRepository
 import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.data.model.Recent
 import kotlinx.coroutines.launch

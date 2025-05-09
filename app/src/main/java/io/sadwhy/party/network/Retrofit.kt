@@ -16,7 +16,7 @@ object RetrofitClient {
 
     private val contentType = "application/json; charset=UTF-8".toMediaType()
 
-    private val retrofit: Retrofit by lazy {
+    val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(OkHttp.client)
