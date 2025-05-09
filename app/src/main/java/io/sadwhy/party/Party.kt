@@ -26,25 +26,7 @@ class Party :
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
-        setupLogging()
         DynamicColors.applyToActivitiesIfAvailable(this)
-    }
-
-    private fun setupLogging() {
-        try {
-            // Create or truncate main log file to avoid it growing too large
-            val logFile = File(appContext.filesDir, "app_log.txt")
-            if (logFile.exists() && logFile.length() > 5 * 1024 * 1024) { // 5MB limit
-                logFile.delete()
-                logFile.createNewFile()
-            }
-            
-            if (!logFile.exists()) {
-                logFile.createNewFile()
-            }
-        } catch (e: Exception) {
-            Log.e("PartyApp", "Failed to initialize logging system", e)
-        }
     }
 
     override fun newImageLoader(context: PlatformContext): ImageLoader =
