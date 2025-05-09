@@ -3,8 +3,8 @@ package io.sadwhy.party.data.api
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
-import io.sadwhy.party.data.Recent
-import io.sadwhy.party.data.Post
+import io.sadwhy.party.data.model.Recent
+import io.sadwhy.party.data.model.Post
 
 interface PostService {
     @GET("/v1/posts")
