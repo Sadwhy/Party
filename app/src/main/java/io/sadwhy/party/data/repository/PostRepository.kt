@@ -1,6 +1,6 @@
 package io.sadwhy.party.data.repository
 
-import android.widget.Toast
+import io.sadwhy.party.utils
 import io.sadwhy.party.data.api.PostService
 import io.sadwhy.party.data.model.Recent
 import io.sadwhy.party.data.model.Post
@@ -11,7 +11,7 @@ class PostRepository {
     private val postService = RetrofitClient.retrofit.create(PostService::class.java)
 
     suspend fun getRecentPosts(): Response<Recent> {
-        Toast.makeText(requireContext(), "Got post in repo", Toast.LENGTH_SHORT).show()
+        log("Got post in repo")
         return postService.getRecentPosts()
     }
 
