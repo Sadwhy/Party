@@ -3,6 +3,7 @@ package io.sadwhy.party.ui.main.library
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.sadwhy.party.R
@@ -13,6 +14,7 @@ import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 
 class LibraryFragment : Fragment(R.layout.library_fragment) {
     private var binding: LibraryFragmentBinding by autoCleared()
+    private val viewModel: LibraryViewModel by viewModels()
 
     private lateinit var postAdapter: PostAdapter
 
@@ -47,12 +49,10 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
             adapter = postAdapter
         }
 
-        // Hardcoded dummy posts for testing
-        val dummyPosts = listOf(
-            Post(user = "UserA", content = "Sample post A"),
-            Post(user = "UserB", content = "Sample post B"),
-        )
+        viewModel.fetchPosts()
 
-        postAdapter.submitList(dummyPosts)
+        viewModel.posts.observe(viewLifecycleOwner) { posts ->
+            postAdapter.submitList(posts)
+        }
     }
 }

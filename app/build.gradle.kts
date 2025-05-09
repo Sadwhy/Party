@@ -48,7 +48,14 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0-alpha12")
     implementation("androidx.fragment:fragment-ktx:1.8.6")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
-    // implementation("androidx.preference:preference-ktx:1.2.1")
+
+    // Kotlin Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Lifecycle components
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.0")
 
     // Network
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
