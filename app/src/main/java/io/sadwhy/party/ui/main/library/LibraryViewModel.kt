@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class LibraryViewModel : ViewModel() {
     private val postRepository = PostRepository()
 
-    val posts: MutableStateFlow<Recent?>(null)
+    val posts: MutableStateFlow<Recent?> = MutableStateFlow(null)
 
     fun fetchPosts() {
         viewModelScope.launch {
