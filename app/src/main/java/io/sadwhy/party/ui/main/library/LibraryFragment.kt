@@ -52,14 +52,11 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
             adapter = postAdapter
         }
 
-        viewModel.fetchPosts()
-
-        // Collect StateFlow in a lifecycle-aware way
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.posts.collectLatest { posts ->
-                    Toast.makeText(requireContext(), "Got post in Frag", Toast.LENGTH_SHORT).show()
-                    postAdapter.submitList(posts)
+                viewModel.posts.collectLatest { recent ->
+                    val postList = recent?.posts.orEmpty()
+                    postAdapter.submitList(postList)
                 }
             }
         }

@@ -3,7 +3,7 @@ package io.sadwhy.party.ui.main.library
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import android.util.Log
-import io.sadwhy.party.data.model.Post
+import io.sadwhy.party.data.model.Recent
 import io.sadwhy.party.data.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,45 +13,19 @@ import kotlinx.coroutines.launch
 class LibraryViewModel : ViewModel() {
     private val postRepository = PostRepository()
 
-    private val _posts = MutableStateFlow<List<Post>>(emptyList())
-    val posts: StateFlow<List<Post>> = _posts.asStateFlow()
-
-    // Add loading state to track network request status
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    // Add error state to handle exceptions
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
+    val posts: MutableStateFlow<Recent?>(null)
 
     fun fetchPosts() {
         viewModelScope.launch {
-            try {
-                _isLoading.value = true
-                _error.value = null
-                
-                // The suspend function will properly wait here
-                val response = postRepository.getRecentPosts()
-                
-                if (response.isSuccessful) {
-                    Log.d("LibraryViewModel", "Got posts in ViewModel: ${response.body()?.posts?.size ?: 0} posts")
-                    _posts.value = response.body()?.posts ?: emptyList()
-                } else {
-                    Log.d("LibraryViewModel", "Error fetching posts: ${response.code()} - ${response.message()}")
-                    _error.value = "Failed to load posts: ${response.message()}"
-                    // Keep the current posts (don't set to empty)
-                }
-            } catch (e: Exception) {
-                Log.d("LibraryViewModel", "Exception fetching posts: ${e.message}")
-                _error.value = "Error: ${e.message}"
-                // Keep the current posts (don't set to empty)
-            } finally {
-                _isLoading.value = false
+            posts.value = null
+            val response = postRepository.getRecentPosts()
+            if (response.isSuccessful) {
+                val recent = response.body()
+                posts.value = recent
             }
         }
     }
-    
-    // Call this method in onViewCreated or when the screen becomes visible
+
     init {
         fetchPosts()
     }

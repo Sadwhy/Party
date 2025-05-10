@@ -11,7 +11,6 @@ class PostRepository {
     private val postService = RetrofitClient.retrofit.create(PostService::class.java)
 
     suspend fun getRecentPosts(): Response<Recent> {
-        Log.d("PostRepo", "Got post in repo")
         return postService.getRecentPosts()
     }
 
