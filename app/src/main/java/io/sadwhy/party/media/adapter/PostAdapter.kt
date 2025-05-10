@@ -74,7 +74,7 @@ class PostAdapter(
                 })
             }
 
-            textDescription.text = post.content
+            textDescription.text = "${post.title}\n\n${post.substring}"
 
             buttonUsername.text = post.user
 
