@@ -31,6 +31,6 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = CreatorFragmentBinding.bind(view)
 
-        binding.creatorId.test = post.user
+        binding.creatorId.text = post.user
     }
 }

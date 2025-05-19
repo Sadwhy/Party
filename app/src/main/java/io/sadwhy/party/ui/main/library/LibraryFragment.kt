@@ -33,7 +33,6 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
 
         postAdapter = PostAdapter(
             onProfileClick = { post ->
-                dismiss()
                 requireActivity().openFragment<CreatorFragment>(
                     null,
                     CreatorFragment.getBundle(post)
