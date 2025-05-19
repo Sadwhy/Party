@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.sadwhy.party.R
 import io.sadwhy.party.databinding.LibraryFragmentBinding
 import io.sadwhy.party.media.adapter.PostAdapter
+import io.sadwhy.party.ui.common.FragmentUtils.openFragment
+import io.sadwhy.party.ui.main.creator.CreatorFragment
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,7 +33,11 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
 
         postAdapter = PostAdapter(
             onProfileClick = { post ->
-                Toast.makeText(requireContext(), "Profile: ${post.user}", Toast.LENGTH_SHORT).show()
+                dismiss()
+                requireActivity().openFragment<CreatorFragment>(
+                    null,
+                    CreatorFragment.getBundle(post)
+                )
             },
             onMoreOptionsClick = { post ->
                 Toast.makeText(requireContext(), "More options for: ${post.user}", Toast.LENGTH_SHORT).show()
