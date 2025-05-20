@@ -31,7 +31,6 @@
                 android:src="@drawable/ic_account_circle"
                 android:scaleType="centerCrop"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                app:tint="?attr/colorSurfaceInverse"
                 android:contentDescription="Profile pic"
                 android:layout_marginEnd="8dp" />
 
@@ -74,8 +73,12 @@
             android:layout_height="wrap_content"
             android:text="@string/lorem_ipsum"
             android:textSize="14sp"
-            android:inputType="textMultiLine"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:breakStrategy="simple"
+            android:hyphenationFrequency="none"
+            android:ellipsize="none"
+            android:scrollHorizontally="false"
+            android:singleLine="false" />
 
         <!-- Masked holder for pager-->
         <FrameLayout
