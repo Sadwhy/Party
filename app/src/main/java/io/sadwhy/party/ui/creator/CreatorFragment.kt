@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import coil3.load
 import io.sadwhy.party.R
 import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.databinding.CreatorFragmentBinding
@@ -32,5 +33,9 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         binding = CreatorFragmentBinding.bind(view)
 
         binding.username.text = post.user
+        
+        binding.profileImage.load("https://img.kemono.su/icons/${post.service}/${post.user}")
+        
+        binding.bannerImage.load("https://img.kemono.su/banners/${post.service}/${post.user}")
     }
 }
