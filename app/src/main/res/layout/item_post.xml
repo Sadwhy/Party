@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:text="@string/lorem_ipsum"
             android:textSize="14sp"
+            android:inputType="textMultiLine"
             android:layout_marginBottom="8dp" />
 
         <!-- Masked holder for pager-->
