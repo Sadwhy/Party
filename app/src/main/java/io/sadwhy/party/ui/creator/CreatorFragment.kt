@@ -1,4 +1,4 @@
-package io.sadwhy.party.ui.main.creator
+package io.sadwhy.party.ui.creator
 
 import android.os.Bundle
 import android.view.View
@@ -31,6 +31,6 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = CreatorFragmentBinding.bind(view)
 
-        binding.creatorId.text = post.user
+        binding.username.text = post.user
     }
 }

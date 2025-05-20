@@ -102,3 +102,7 @@ site
 
 # Mac OS
 .DS_Store
+
+# Api shit
+kemono.kt
+kemonodto.kt

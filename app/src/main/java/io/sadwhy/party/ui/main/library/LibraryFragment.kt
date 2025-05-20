@@ -13,7 +13,7 @@ import io.sadwhy.party.R
 import io.sadwhy.party.databinding.LibraryFragmentBinding
 import io.sadwhy.party.media.adapter.PostAdapter
 import io.sadwhy.party.ui.common.FragmentUtils.openFragment
-import io.sadwhy.party.ui.main.creator.CreatorFragment
+import io.sadwhy.party.ui.creator.CreatorFragment
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

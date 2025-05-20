@@ -1,4 +1,4 @@
-package io.sadwhy.party.ui.main.creator
+package io.sadwhy.party.ui.creator
 
 import androidx.lifecycle.ViewModel
 
