@@ -15,7 +15,7 @@ object FragmentUtils {
         parentFragmentManager.commit {
             add<T>(id, args = bundle)
             hide(this@openFragment)
-            addToBackStack(null)
+            //addToBackStack(null)
         }
     }
 
