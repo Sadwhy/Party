@@ -67,18 +67,13 @@
         </LinearLayout>
 
         <!-- Description -->
-        <TextView
+        <com.webtoonscorp.android.readmore.ReadMoreTextView
             android:id="@+id/textDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lorem_ipsum"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp"
-            android:breakStrategy="simple"
-            android:hyphenationFrequency="none"
-            android:ellipsize="none"
-            android:scrollHorizontally="false"
-            android:singleLine="false" />
+            app:readMoreMaxLines="3"
+            app:readMoreText="Read More"
+            app:readLessText="Read Less" />
 
         <!-- Masked holder for pager-->
         <FrameLayout

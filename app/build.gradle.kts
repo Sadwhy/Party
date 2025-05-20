@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+    implementation("com.webtoonscorp.android:readmore-view:1.4.0")
 
     // Image loader
     implementation("io.coil-kt.coil3:coil:3.1.0")
