@@ -88,9 +88,6 @@
             android:id="@+id/tablayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/teal_700"
-            app:tabSelectedTextColor="@color/teal_700"
-            app:tabTextColor="@android:color/darker_gray"
             app:layout_constraintTop_toBottomOf="@id/profileHeader"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

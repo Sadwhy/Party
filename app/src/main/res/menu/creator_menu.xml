@@ -3,13 +3,13 @@
 
     <item
         android:id="@+id/action_favorite"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@drawable/ic_heart_filled"
         android:title="Favorite"
         android:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings"
+        android:icon="@drawable/ic_settings_outline"
         android:title="Settings"
         android:showAsAction="never" />
 
