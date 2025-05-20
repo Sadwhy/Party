@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import coil3.load
-import io.sadwhy.party.R
 import io.sadwhy.party.databinding.ItemPostBinding
 import io.sadwhy.party.data.model.Post
 
@@ -80,9 +79,7 @@ class PostAdapter(
 
             buttonUsername.text = post.user
 
-            buttonPfp.load("https://img.kemono.su/icons/${post.service}/${post.user}") {
-                placeholder(R.drawable.ic_account_circle)
-            }
+            buttonPfp.load("https://img.kemono.su/icons/${post.service}/${post.user}")
             
             buttonPfp.setOnClickListener { onProfileClick(post) }
 
