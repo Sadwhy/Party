@@ -9,18 +9,17 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="true"
-            app:contentScrim="?attr/colorPrimary">
-
+            app:contentScrim="#88000000">
             <ImageView
                 android:id="@+id/bannerImage"
                 android:layout_width="match_parent"
@@ -52,8 +51,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_height="wrap_content">
 
             <!-- Profile Header -->
             <LinearLayout
@@ -101,6 +99,10 @@
                 android:layout_height="wrap_content"
                 app:tabMode="fixed"
                 app:tabGravity="fill" />
+
+        	<android.view.View
+        		android:layout_width="match_parent"
+        		android:layout_height="5000dp"/>
 
             <!-- Fragments -->
             <androidx.fragment.app.FragmentContainerView
