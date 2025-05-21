@@ -37,9 +37,9 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         binding.collapsingToolbar.title = post.user
         
         listOf("Posts", "Media", "About").forEach {
-            binding.tabLayout.addTab(tabLayout.newTab().setText(it))
+            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it))
         }
-        
+
         binding.profileImage.load("https://img.kemono.su/icons/${post.service}/${post.user}")
         
         binding.bannerImage.load("https://img.kemono.su/banners/${post.service}/${post.user}")
