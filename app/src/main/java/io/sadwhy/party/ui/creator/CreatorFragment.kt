@@ -34,6 +34,8 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
 
         binding.username.text = post.user
         
+        binding.collapsingToolbar.title = post.user
+        
         binding.profileImage.load("https://img.kemono.su/icons/${post.service}/${post.user}")
         
         binding.bannerImage.load("https://img.kemono.su/banners/${post.service}/${post.user}")
