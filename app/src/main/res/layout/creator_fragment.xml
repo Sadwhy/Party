@@ -19,6 +19,7 @@
             android:layout_height="300dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="#88000000"
+            app:titleEnabled="false"
             android:fitsSystemWindows="true">
 
             <!-- Banner Image -->

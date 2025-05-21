@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil3.load
+import com.google.android.material.appbar.AppBarLayout
 import io.sadwhy.party.R
 import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.databinding.CreatorFragmentBinding
@@ -13,6 +14,7 @@ import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
 
 class CreatorFragment : Fragment(R.layout.creator_fragment) {
+
     companion object {
         fun getBundle(post: Post) = Bundle().apply {
             putSerialized("post", post)
@@ -25,23 +27,38 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
     private var binding: CreatorFragmentBinding by autoCleared()
     private val viewModel: CreatorViewModel by viewModels()
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = CreatorFragmentBinding.bind(view)
 
-        binding.username.text = post.user
-        
-        binding.collapsingToolbar.title = post.user
-        
-        listOf("Posts", "Media", "About").forEach {
-            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(it))
-        }
+        with(binding) {
+            username.text = post.user
+            collapsingToolbar.title = post.user
+            profileImage.load("https://img.kemono.su/icons/${post.service}/${post.user}")
+            bannerImage.load("https://img.kemono.su/banners/${post.service}/${post.user}")
 
-        binding.profileImage.load("https://img.kemono.su/icons/${post.service}/${post.user}")
-        
-        binding.bannerImage.load("https://img.kemono.su/banners/${post.service}/${post.user}")
+            listOf("Posts", "Media", "About").forEach {
+                tabLayout.addTab(tabLayout.newTab().setText(it))
+            }
+
+            appbarlayout.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+                var isTitleVisible = false
+                var scrollRange = -1
+
+                override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+                    if (scrollRange == -1) {
+                        scrollRange = appBarLayout.totalScrollRange
+                    }
+
+                    if (scrollRange + verticalOffset == 0 && !isTitleVisible) {
+                        collapsingToolbar.isTitleEnabled = true
+                        isTitleVisible = true
+                    } else if (isTitleVisible && scrollRange + verticalOffset =! 0) {
+                        collapsingToolbar.isTitleEnabled = false
+                        isTitleVisible = false
+                    }
+                }
+            })
+        }
     }
 }
