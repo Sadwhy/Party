@@ -116,8 +116,7 @@
             <!-- Big View to test scrolling -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="3000dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="3000dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
