@@ -53,12 +53,13 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
                     if (scrollRange + verticalOffset == 0 && !isTitleVisible) {
                         collapsingToolbar.isTitleEnabled = true
                         isTitleVisible = true
-                    } else if (isTitleVisible && scrollRange + verticalOffset =! 0) {
+                    } else {
                         collapsingToolbar.isTitleEnabled = false
                         isTitleVisible = false
                     }
                 }
             })
+
         }
     }
 }
