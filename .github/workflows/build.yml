@@ -53,10 +53,11 @@ jobs:
       run: |
         COMMES=$(git log -1 --pretty=format:%s)
         SHA=$(git rev-parse --short HEAD)
+        mv app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/${SHA}.apk
     
         curl -s -X POST "https://api.telegram.org/bot${BOT_ID}/sendDocument" \
           -F chat_id="${CHANNEL_ID}" \
-          -F document="@app/build/outputs/apk/release/app-release-unsigned-signed.apk" \
+          -F document="@app/build/${SHA}.apk" \
           -F caption="${COMMES} - ${SHA}"
 
     - name: Delete Old Pre-Releases
