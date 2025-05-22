@@ -4,14 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.launchWhenStarted
 import coil3.load
 import com.google.android.material.appbar.AppBarLayout
 import io.sadwhy.party.R
 import io.sadwhy.party.data.model.Post
+import io.sadwhy.party.data.model.Creator
 import io.sadwhy.party.databinding.CreatorFragmentBinding
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
+import kotlinx.coroutines.flow.collect
 
 class CreatorFragment : Fragment(R.layout.creator_fragment) {
 
@@ -31,9 +36,16 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = CreatorFragmentBinding.bind(view)
 
+        viewModel.getCreator(post.service, post.user)
+
         with(binding) {
-            username.text = post.user
-            collapsingToolbar.title = post.user
+            lifecycleScope.launchWhenStarted {
+                viewModel.creator.collect { data ->
+                    username.text = data.name
+                    collapsingToolbar.title = data.name
+                }
+            }
+
             profileImage.load("https://img.kemono.su/icons/${post.service}/${post.user}")
             bannerImage.load("https://img.kemono.su/banners/${post.service}/${post.user}")
 
