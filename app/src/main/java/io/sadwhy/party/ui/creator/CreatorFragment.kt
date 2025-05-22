@@ -15,6 +15,7 @@ import io.sadwhy.party.databinding.CreatorFragmentBinding
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
+import io.sadwhy.party.utils.AnimationUtils.showTitleOnCollapse
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -56,24 +57,7 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
                 tabLayout.addTab(tabLayout.newTab().setText(it))
             }
 
-            appbarlayout.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
-                var isTitleVisible = false
-                var scrollRange = -1
-
-                override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
-                    if (scrollRange == -1) {
-                        scrollRange = appBarLayout.totalScrollRange
-                    }
-
-                    if (scrollRange + verticalOffset == 0 && !isTitleVisible) {
-                        collapsingToolbar.isTitleEnabled = true
-                        isTitleVisible = true
-                    } else {
-                        collapsingToolbar.isTitleEnabled = false
-                        isTitleVisible = false
-                    }
-                }
-            })
+            showTitleOnCollapse(appbarlayout, collapsingToolbar)
         }
     }
 }
