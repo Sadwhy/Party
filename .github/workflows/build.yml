@@ -15,10 +15,15 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set environment variable
+    - name: Set environment variables
       run: |
-       echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-       echo "COMMES=$(git log -1 --pretty=format:%s)" >> $GITHUB_ENV
+        echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        echo "COMMES=$(git log -1 --pretty=format:%s)" >> $GITHUB_ENV
+        if [[ $(git log -1 --pretty=format:%s) == *release* ]]; then
+          echo "BUILD_TYPE=Release" >> $GITHUB_ENV
+        else
+          echo "BUILD_TYPE=Debug" >> $GITHUB_ENV
+        fi
 
     - name: Setup JDK 17
       uses: actions/setup-java@v4
@@ -31,12 +36,12 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew assembleDebug
+      run: ./gradlew assemble${BUILD_TYPE}
 
     - name: Sign APK
       uses: r0adkll/sign-android-release@v1
       with:
-        releaseDirectory: app/build/outputs/apk/debug
+        releaseDirectory: app/build/outputs/apk/${BUILD_TYPE,,}  # lowercase
         signingKeyBase64: ${{ secrets.KEYSTORE_FILE }}
         alias: ${{ secrets.KEY_ALIAS }}
         keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -45,15 +50,14 @@ jobs:
         BUILD_TOOLS_VERSION: "34.0.0"
 
     - name: Move app
-      run: mv app/build/outputs/apk/debug/app-debug-signed.apk app/build/$SHA.apk
-
-    # mv app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/${SHA}.apk
+      run: |
+        mv app/build/outputs/apk/${BUILD_TYPE,,}/app-${BUILD_TYPE,,}-signed.apk app/build/$SHA.apk
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
       with:
-          name: Party
-          path: "app/build/$SHA.apk"
+        name: Party
+        path: "app/build/$SHA.apk"
 
     - name: Upload APK to Telegram
       shell: bash
