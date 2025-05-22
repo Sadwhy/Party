@@ -16,7 +16,7 @@ import io.sadwhy.party.databinding.CreatorFragmentBinding
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 class CreatorFragment : Fragment(R.layout.creator_fragment) {
 
@@ -36,13 +36,14 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = CreatorFragmentBinding.bind(view)
 
-        viewModel.getCreator(post.service, post.user)
+        viewModel.fetchCreator(post.service, post.user)
 
         with(binding) {
             lifecycleScope.launchWhenStarted {
-                viewModel.creator.collect { data ->
-                    username.text = data.name
-                    collapsingToolbar.title = data.name
+                viewModel.creator.collectLatest { creator ->
+                    val name = creator?.name ?: post.user
+                    username.text = name
+                    collapsingToolbar.title = name
                 }
             }
 

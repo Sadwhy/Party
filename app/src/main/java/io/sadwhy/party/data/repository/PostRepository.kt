@@ -8,13 +8,13 @@ import io.sadwhy.party.network.RetrofitClient
 import retrofit2.Response
 
 class PostRepository {
-    private val service = RetrofitClient.retrofit.create(PostService::class.java)
+    private val postService = RetrofitClient.retrofit.create(PostService::class.java)
 
     suspend fun getRecentPosts(): Response<Recent> {
-        return service.getRecentPosts()
+        return postService.getRecentPosts()
     }
 
     suspend fun getPost(service: String, creatorId: String, postId: String): Response<Post> {
-        return service.getPost(service, creatorId, postId)
+        return postService.getPost(service, creatorId, postId)
     }
 }
