@@ -6,12 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.launchWhenStarted
+import androidx.lifecycle.repeatOnLifecycle
 import coil3.load
 import com.google.android.material.appbar.AppBarLayout
 import io.sadwhy.party.R
 import io.sadwhy.party.data.model.Post
-import io.sadwhy.party.data.model.Creator
 import io.sadwhy.party.databinding.CreatorFragmentBinding
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
@@ -40,11 +39,13 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         viewModel.fetchCreator(post.service, post.user)
 
         with(binding) {
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.creator.collectLatest { creator ->
-                    val name = creator?.name ?: post.user
-                    username.text = name
-                    collapsingToolbar.title = name
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.creator.collectLatest { creator ->
+                        val name = creator?.name ?: post.user
+                        username.text = name
+                        collapsingToolbar.title = name
+                    }
                 }
             }
 
@@ -73,7 +74,6 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
                     }
                 }
             })
-
         }
     }
 }
