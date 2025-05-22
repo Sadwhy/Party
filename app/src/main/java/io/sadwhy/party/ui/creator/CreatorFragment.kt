@@ -15,7 +15,7 @@ import io.sadwhy.party.databinding.CreatorFragmentBinding
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
-import io.sadwhy.party.utils.AnimationUtils.showTitleOnCollapse
+import io.sadwhy.party.ui.utils.AnimationUtils.showTitleOnCollapse
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
