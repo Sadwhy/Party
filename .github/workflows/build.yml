@@ -40,10 +40,14 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assemble${BUILD_TYPE}
 
+    - name: Move app
+      run: |
+        mv app/build/outputs/apk/${BUILD_TYPE,,}/app-${BUILD_PATH,,}.apk app/build/$SHA.apk
+
     - name: Sign APK
       uses: r0adkll/sign-android-release@v1
       with:
-        releaseDirectory: app/build/outputs/apk
+        releaseDirectory: app/build
         signingKeyBase64: ${{ secrets.KEYSTORE_FILE }}
         alias: ${{ secrets.KEY_ALIAS }}
         keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -51,15 +55,11 @@ jobs:
       env:
         BUILD_TOOLS_VERSION: "34.0.0"
 
-    - name: Move app
-      run: |
-        mv app/build/outputs/apk/${BUILD_TYPE,,}/app-${BUILD_PATH,,}-signed.apk app/build/$SHA.apk
-
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
       with:
         name: Party
-        path: "app/build/$SHA.apk"
+        path: "app/build/$SHA-signed.apk"
 
     - name: Upload APK to Telegram
       shell: bash
@@ -69,7 +69,7 @@ jobs:
       run: |
         curl -s -X POST "https://api.telegram.org/bot${BOT_ID}/sendDocument" \
           -F chat_id="${CHANNEL_ID}" \
-          -F document="@app/build/$SHA.apk" \
+          -F document="@app/build/$SHA-signed.apk" \
           -F caption="$COMMES - $SHA"
 
     - name: Delete Old Pre-Releases
