@@ -21,6 +21,7 @@ jobs:
         echo "COMMES=$(git log -1 --pretty=format:%s)" >> $GITHUB_ENV
         if [[ $(git log -1 --pretty=format:%s) == *release* ]]; then
           echo "BUILD_TYPE=Release" >> $GITHUB_ENV
+          echo "BUILD_PATH=release-unsigned" >> $GITHUB_ENV
         else
           echo "BUILD_TYPE=Debug" >> $GITHUB_ENV
         fi
@@ -41,7 +42,7 @@ jobs:
     - name: Sign APK
       uses: r0adkll/sign-android-release@v1
       with:
-        releaseDirectory: app/build/outputs/apk/${BUILD_TYPE,,}  # lowercase
+        releaseDirectory: app/build/outputs/apk
         signingKeyBase64: ${{ secrets.KEYSTORE_FILE }}
         alias: ${{ secrets.KEY_ALIAS }}
         keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -51,7 +52,7 @@ jobs:
 
     - name: Move app
       run: |
-        mv app/build/outputs/apk/${BUILD_TYPE,,}/app-${BUILD_TYPE,,}-signed.apk app/build/$SHA.apk
+        mv app/build/outputs/apk/${BUILD_TYPE,,}/app-${BUILD_PATH,,}-signed.apk app/build/$SHA.apk
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
