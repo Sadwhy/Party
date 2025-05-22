@@ -12,9 +12,9 @@ data class Recent(
 
 @Serializable
 data class Post(
-    val id: String? = null,
-    val user: String? = null,
-    val service: String? = null,
+    val id: String,
+    val user: String,
+    val service: String,
     val title: String? = null,
     val content: String? = null,
     val embed: String? = null, // Need to look into this

@@ -17,6 +17,7 @@ import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class CreatorFragment : Fragment(R.layout.creator_fragment) {
 
@@ -39,7 +40,7 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         viewModel.fetchCreator(post.service, post.user)
 
         with(binding) {
-            lifecycleScope.launchWhenStarted {
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.creator.collectLatest { creator ->
                     val name = creator?.name ?: post.user
                     username.text = name
