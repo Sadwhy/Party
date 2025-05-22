@@ -24,6 +24,7 @@ jobs:
           echo "BUILD_PATH=release-unsigned" >> $GITHUB_ENV
         else
           echo "BUILD_TYPE=Debug" >> $GITHUB_ENV
+          echo "BUILD_PATH=debug" >> $GITHUB_ENV
         fi
 
     - name: Setup JDK 17
