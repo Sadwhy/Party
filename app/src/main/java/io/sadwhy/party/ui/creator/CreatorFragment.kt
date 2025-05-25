@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import coil3.load
 import com.google.android.material.appbar.AppBarLayout
 import io.sadwhy.party.R
@@ -16,8 +13,7 @@ import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
 import io.sadwhy.party.ui.utils.AnimationUtils.showTitleOnCollapse
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import io.sadwhy.party.ui.utils.observeStateFlow
 
 class CreatorFragment : Fragment(R.layout.creator_fragment) {
 
@@ -40,14 +36,10 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         viewModel.fetchCreator(post.service, post.user)
 
         with(binding) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.creator.collectLatest { creator ->
-                        val name = creator?.name ?: post.user
-                        username.text = name
-                        collapsingToolbar.title = name
-                    }
-                }
+            observeStateFlow(viewModel.creator) { creator ->
+                val name = creator?.name ?: post.user
+                username.text = name
+                collapsingToolbar.title = name
             }
 
             profileImage.load("https://img.kemono.su/icons/${post.service}/${post.user}")
