@@ -66,37 +66,47 @@ android {
 
 dependencies {
     // Core Android
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.fragment.ktx)
-    implementation(libs.constraintlayout)
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
 
-    // Compose
-    implementation(platform(libs.platforms.compose.bom))
-    implementation(libs.bundles.compose)
-    debugImplementation(libs.compose.ui.tooling)
+    // Compose BOM
+    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.activity:activity-compose:1.9.2")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     // Serialization
-    implementation(libs.serialization.json)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
     // Coroutines
-    implementation(libs.bundles.coroutines)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
     // Lifecycle
-    implementation(libs.bundles.lifecycle)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
 
     // Navigation
-    implementation(libs.bundles.navigation)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.0")
+    implementation("androidx.navigation:navigation-compose:2.9.0")
 
     // Networking
-    implementation(libs.okhttp)
-    implementation(libs.bundles.retrofit)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
 
     // Image Loading
-    implementation(libs.bundles.coil)
+    implementation("io.coil-kt:coil:3.2.0")
+    implementation("io.coil-kt:coil-compose:3.2.0")
 
     // Custom Views
-    implementation(libs.readmore.view)
-    implementation(libs.subsampling.view)
+    implementation("com.webtoonscorp.android:readmore-view:1.4.0")
+    implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
 }

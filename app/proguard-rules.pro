@@ -25,21 +25,6 @@
     public static *** throwUninitializedPropertyAccessException(...);
 }
 
-# Compose
--keep class androidx.compose.** { *; }
--dontwarn androidx.compose.**
-
-# Serialization
--keepattributes *Annotation*, InnerClasses
--dontnote kotlinx.serialization.SerializationKt
--keep,includedescriptorclasses class io.sadwhy.party.**$$serializer { *; }
--keepclassmembers class io.sadwhy.party.** {
-    *** Companion;
-}
--keepclasseswithmembers class io.sadwhy.party.** {
-    kotlinx.serialization.KSerializer serializer(...);
-}
-
 -keep class * extends android.app.Activity
 -keep class * implements androidx.viewbinding.ViewBinding {
     <init>();
