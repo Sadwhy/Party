@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("plugin.serialization")
+    kotlin("plugin.compose")
 }
 
 android {
@@ -28,6 +29,14 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
+    }
+
+    compileOptions {
+        kotlinOptions {
+            freeCompilerArgs += listOf(
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+            )
+        }
     }
 
     lint {
