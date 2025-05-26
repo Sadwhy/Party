@@ -75,11 +75,11 @@ android {
 
 dependencies {
     // Core Android
-    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.core:core-ktx:1.16.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.fragment:fragment-ktx:1.8.5")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("com.google.android.material:material:1.13.0-alpha12")
+    implementation("androidx.fragment:fragment-ktx:1.8.7")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
     // Compose BOM
     implementation(platform("androidx.compose:compose-bom:2024.10.00"))
@@ -90,7 +90,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
@@ -108,11 +108,12 @@ dependencies {
 
     // Networking
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
+    implementation(platform("com.squareup.retrofit2:retrofit-bom:3.0.0"))
+    implementation("com.squareup.retrofit2:retrofit")
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization")
 
     // Image Loading
-    implementation(platform("io.coil-kt.coil3:coil-bom:3.1.0"))
+    implementation(platform("io.coil-kt.coil3:coil-bom:3.2.0"))
     implementation("io.coil-kt.coil3:coil")
     implementation("io.coil-kt.coil3:coil-network-okhttp")
     implementation("io.coil-kt.coil3:coil-compose")
