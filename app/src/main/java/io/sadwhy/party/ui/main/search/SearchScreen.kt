@@ -1,4 +1,4 @@
-package io.sadwhy.party.ui.main.home
+package io.sadwhy.party.ui.main.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
