@@ -19,6 +19,11 @@ android {
     buildFeatures {
         buildConfig = true
         viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 
     lint {
@@ -37,60 +42,47 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "19"
     }
 }
 
 dependencies {
-    // Core AndroidX Libraries
-    implementation("androidx.core:core-ktx:1.16.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.13.0-alpha12")
-    implementation("androidx.fragment:fragment-ktx:1.8.7")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.fragment.ktx)
+    implementation(libs.constraintlayout)
 
-    // Compose BOM
-    implementation(platform("androidx.compose:compose-bom:2025.05.01"))
+    implementation(platform(libs.platforms.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material3)
+    implementation(libs.activity.compose)
 
-    // Core Compose libraries
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.material3:material3")
+    implementation(libs.serialization.json)
 
-    // Activity integration
-    implementation("androidx.activity:activity-compose:1.8.1")
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
-    // Kotlin Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
 
-    // Kotlin Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
 
-    // Lifecycle Components
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
+    implementation(libs.okhttp)
+    implementation(platform(libs.platforms.retrofit.bom))
+    implementation(libs.retrofit)
+    implementation(libs.converter.serialization)
 
-    // Navigation Components
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.0")
+    implementation(platform(libs.platforms.coil.bom))
+    implementation(libs.coil)
+    implementation(libs.coil.okhttp)
 
-    // Networking Libraries
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
-    implementation(platform("com.squareup.retrofit2:retrofit-bom:3.0.0"))
-    implementation("com.squareup.retrofit2:retrofit")
-    implementation("com.squareup.retrofit2:converter-kotlinx-serialization")
-
-    // Coil (BOM)
-    implementation(platform("io.coil-kt.coil3:coil-bom:3.2.0"))
-    implementation("io.coil-kt.coil3:coil")
-    implementation("io.coil-kt.coil3:coil-network-okhttp")
-
-    // UI Utilities
-    implementation("com.webtoonscorp.android:readmore-view:1.4.0")
-    implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
+    implementation(libs.readmore.view)
+    implementation(libs.subsampling.view)
 }
