@@ -211,7 +211,7 @@ fun CreatorScreen(
                     Tab(
                         text = { Text(title) },
                         selected = selectedTabIndex == index,
-                        onClick = { selectedTabIndex = it }
+                        onClick = { selectedTabIndex = index }
                     )
                 }
             }
