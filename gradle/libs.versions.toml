@@ -2,59 +2,68 @@
 kotlin = "2.0.21"
 agp = "8.7.3"
 compose-bom = "2024.10.00"
-compose-ui = "1.6.7"
-compose-material3 = "1.2.1"
-activity-compose = "1.8.1"
-serialization = "1.8.1"
+compose-compiler = "1.5.15"
+activity-compose = "1.9.2"
+serialization = "1.7.3"
 coroutines = "1.10.2"
 lifecycle = "2.9.0"
 navigation = "2.9.0"
-okhttp = "5.0.0-alpha.14"
-retrofit-bom = "3.0.0"
-coil-bom = "3.2.0"
+okhttp = "4.12.0"
+retrofit = "3.0.0"
+coil = "3.2.0"
 readmore = "1.4.0"
 subsampling = "3.10.0"
 
 [libraries]
-core-ktx = { module = "androidx.core:core-ktx", version = "1.16.0" }
+# Core Android
+core-ktx = { module = "androidx.core:core-ktx", version = "1.15.0" }
 appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
-material = { module = "com.google.android.material:material", version = "1.13.0-alpha12" }
-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version = "1.8.7" }
-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.1" }
+material = { module = "com.google.android.material:material", version = "1.12.0" }
+fragment-ktx = { module = "androidx.fragment:fragment-ktx", version = "1.8.5" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.0" }
 
-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
-
+# Compose
+platforms-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+# Serialization
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
+# Coroutines
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
+# Lifecycle
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
+# Navigation
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 
+# Networking
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
-retrofit-bom = { module = "com.squareup.retrofit2:retrofit-bom", version.ref = "retrofit-bom" }
-retrofit = { module = "com.squareup.retrofit2:retrofit" }
-retrofit-kotlinx = { module = "com.squareup.retrofit2:converter-kotlinx-serialization" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+converter-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
 
-coil-bom = { module = "io.coil-kt.coil3:coil-bom", version.ref = "coil-bom" }
-coil = { module = "io.coil-kt.coil3:coil" }
-coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp" }
+# Image Loading
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
+# Custom Views
 readmore-view = { module = "com.webtoonscorp.android:readmore-view", version.ref = "readmore" }
 subsampling-view = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version.ref = "subsampling" }
 
 [bundles]
-compose = ["compose-ui", "compose-material3", "activity-compose"]
+compose = ["compose-ui", "compose-ui-tooling-preview", "compose-material3", "activity-compose"]
 coroutines = ["coroutines-core", "coroutines-android"]
-lifecycle = ["lifecycle-viewmodel-ktx", "lifecycle-runtime-ktx"]
-navigation = ["navigation-fragment-ktx", "navigation-ui-ktx"]
-coil = ["coil", "coil-okhttp"]
-retrofit = ["retrofit", "retrofit-kotlinx"]
+lifecycle = ["lifecycle-viewmodel-ktx", "lifecycle-runtime-ktx", "lifecycle-viewmodel-compose"]
+navigation = ["navigation-fragment-ktx", "navigation-ui-ktx", "navigation-compose"]
+coil = ["coil", "coil-compose"]
+retrofit = ["retrofit", "converter-serialization"]
