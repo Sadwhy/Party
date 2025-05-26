@@ -12,16 +12,28 @@ import kotlinx.coroutines.launch
 class CreatorViewModel : ViewModel() {
     private val api = CreatorRepository()
 
-    val creator: MutableStateFlow<Creator?> = MutableStateFlow(null)
+    private val _creator = MutableStateFlow<Creator?>(null)
+    val creator: StateFlow<Creator?> = _creator.asStateFlow()
+
+    private var currentService: String? = null
+    private var currentId: String? = null
 
     fun fetchCreator(service: String, id: String) {
+        if (service == currentService && id == currentId && _creator.value != null) {
+            return
+        }
+
+        currentService = service
+        currentId = id
+
         viewModelScope.launch {
-            creator.value = null
+            _creator.value = null // optionally clear previous
             val response = api.getCreator(service, id)
             if (response.isSuccessful) {
-                creator.value = response.body()
+                _creator.value = response.body()
+            } else {
+                _creator.value = null // or handle error state
             }
         }
     }
-
 }

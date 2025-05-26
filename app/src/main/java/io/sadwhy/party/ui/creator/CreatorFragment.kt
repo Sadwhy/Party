@@ -2,18 +2,16 @@ package io.sadwhy.party.ui.creator
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import coil3.load
-import com.google.android.material.appbar.AppBarLayout
 import io.sadwhy.party.R
 import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.databinding.CreatorFragmentBinding
+import io.sadwhy.party.ui.theme.AppTheme
 import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
-import io.sadwhy.party.ui.utils.AnimationUtils.showTitleOnCollapse
-import io.sadwhy.party.ui.utils.observeStateFlow
 
 class CreatorFragment : Fragment(R.layout.creator_fragment) {
 
@@ -33,23 +31,15 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = CreatorFragmentBinding.bind(view)
 
-        viewModel.fetchCreator(post.service, post.user)
+        binding.creatorCompose.setViewCompositionStrategy(
+            ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+        )
 
-        with(binding) {
-            observeStateFlow(viewModel.creator) { creator ->
-                val name = creator?.name ?: post.user
-                username.text = name
-                collapsingToolbar.title = name
+        binding.creatorCompose.setContent {
+            AppTheme {
+                CreatorScreen(post, viewModel)
             }
-
-            profileImage.load("https://img.kemono.su/icons/${post.service}/${post.user}")
-            bannerImage.load("https://img.kemono.su/banners/${post.service}/${post.user}")
-
-            listOf("Posts", "Media", "About").forEach {
-                tabLayout.addTab(tabLayout.newTab().setText(it))
-            }
-
-            showTitleOnCollapse(appbarlayout, collapsingToolbar)
         }
+
     }
 }
