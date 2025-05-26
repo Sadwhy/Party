@@ -21,12 +21,12 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,6 +47,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import io.sadwhy.party.data.model.Post
@@ -71,55 +72,62 @@ fun CreatorScreen(
         viewModel.fetchCreator(post.service, post.user)
     }
 
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberLazyListState()
     
-    // Calculate collapse progress for animations
+    // Calculate collapse progress based on banner height
     val density = LocalDensity.current
-    val collapseRange = with(density) { 200.dp.toPx() } // Banner height
+    val bannerHeight = with(density) { 200.dp.toPx() }
+    val profileSectionHeight = with(density) { 100.dp.toPx() }
+    val totalCollapseRange = bannerHeight + profileSectionHeight
+    
     val scrollOffset = remember {
         derivedStateOf {
-            min(listState.firstVisibleItemScrollOffset.toFloat(), collapseRange)
+            if (listState.firstVisibleItemIndex == 0) {
+                listState.firstVisibleItemScrollOffset.toFloat()
+            } else {
+                totalCollapseRange
+            }
         }
     }
+    
     val collapseProgress = remember {
         derivedStateOf {
-            (scrollOffset.value / collapseRange).coerceIn(0f, 1f)
+            min(scrollOffset.value / totalCollapseRange, 1f)
         }
     }
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            CollapsibleTopBar(
-                title = name,
-                onBackClick = onBackClick,
-                collapseProgress = collapseProgress.value,
-                scrollBehavior = scrollBehavior
-            )
-        }
-    ) { innerPadding ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Main content
         LazyColumn(
             state = listState,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier = Modifier.fillMaxSize()
         ) {
-            // Banner and Profile Header
-            item(key = "header") {
-                CreatorHeader(
-                    post = post,
-                    name = name,
-                    collapseProgress = collapseProgress.value
-                )
+            // Banner Image
+            item(key = "banner") {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                ) {
+                    AsyncImage(
+                        model = "https://img.kemono.su/banners/${post.service}/${post.user}",
+                        contentDescription = "Banner",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
             }
             
-            // Tab Row
-            item(key = "tabs") {
-                CreatorTabRow(
-                    tabs = tabs,
-                    selectedTabIndex = selectedTabIndex,
-                    onTabSelected = { selectedTabIndex = it }
+            // Profile Section
+            item(key = "profile") {
+                ProfileSection(
+                    post = post,
+                    name = name,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(16.dp)
                 )
             }
             
@@ -128,97 +136,86 @@ fun CreatorScreen(
                 CreatorTabContent(selectedTabIndex = selectedTabIndex)
             }
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun CollapsibleTopBar(
-    title: String,
-    onBackClick: () -> Unit,
-    collapseProgress: Float,
-    scrollBehavior: androidx.compose.material3.TopAppBarScrollBehavior
-) {
-    LargeTopAppBar(
-        title = { 
-            Text(
-                text = title,
-                modifier = Modifier.graphicsLayer {
-                    alpha = 1f - collapseProgress
-                }
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    Icons.Default.ArrowBack, 
-                    contentDescription = "Back",
-                    tint = Color.White
-                )
-            }
-        },
-        actions = {
-            IconButton(onClick = { /* Handle menu */ }) {
-                Icon(
-                    Icons.Default.MoreVert,
-                    contentDescription = "More options",
-                    tint = Color.White
-                )
-            }
-        },
-        scrollBehavior = scrollBehavior,
-        colors = TopAppBarDefaults.largeTopAppBarColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
-        )
-    )
-}
-
-@Composable
-private fun CreatorHeader(
-    post: Post,
-    name: String,
-    collapseProgress: Float
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-    ) {
-        // Banner Image with parallax effect
-        AsyncImage(
-            model = "https://img.kemono.su/banners/${post.service}/${post.user}",
-            contentDescription = "Banner",
+        
+        // Sticky App Bar and Tabs
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .graphicsLayer {
-                    translationY = collapseProgress * 100f
-                    alpha = 1f - (collapseProgress * 0.5f)
-                },
-            contentScale = ContentScale.Crop
-        )
-        
-        // Dark overlay for text readability
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(Color.Black.copy(alpha = 0.3f))
-        )
-        
-        // Profile section at bottom
-        ProfileSection(
-            post = post,
-            name = name,
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(16.dp)
-                .graphicsLayer {
-                    translationY = collapseProgress * -50f
-                    alpha = 1f - collapseProgress
+                .zIndex(1f)
+        ) {
+            // App Bar with banner background when collapsed
+            Box {
+                // Background banner when collapsed
+                if (collapseProgress.value > 0f) {
+                    AsyncImage(
+                        model = "https://img.kemono.su/banners/${post.service}/${post.user}",
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(64.dp)
+                            .graphicsLayer {
+                                alpha = collapseProgress.value
+                            },
+                        contentScale = ContentScale.Crop
+                    )
+                    
+                    // Dark overlay for readability
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(64.dp)
+                            .background(Color.Black.copy(alpha = 0.4f * collapseProgress.value))
+                    )
                 }
-        )
+                
+                TopAppBar(
+                    title = { 
+                        Text(
+                            text = name,
+                            color = if (collapseProgress.value > 0.5f) Color.White else MaterialTheme.colorScheme.onSurface
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onBackClick) {
+                            Icon(
+                                Icons.Default.ArrowBack, 
+                                contentDescription = "Back",
+                                tint = if (collapseProgress.value > 0.5f) Color.White else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { /* Handle menu */ }) {
+                            Icon(
+                                Icons.Default.MoreVert,
+                                contentDescription = "More options",
+                                tint = if (collapseProgress.value > 0.5f) Color.White else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent
+                    ),
+                    scrollBehavior = scrollBehavior
+                )
+            }
+            
+            // Sticky Tab Row
+            TabRow(
+                selectedTabIndex = selectedTabIndex,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
+            ) {
+                tabs.forEachIndexed { index, title ->
+                    Tab(
+                        text = { Text(title) },
+                        selected = selectedTabIndex == index,
+                        onClick = { selectedTabIndex = it }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -230,7 +227,7 @@ private fun ProfileSection(
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.Bottom,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
         AsyncImage(
@@ -239,45 +236,17 @@ private fun ProfileSection(
             modifier = Modifier
                 .size(64.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surface),
+                .background(MaterialTheme.colorScheme.surfaceVariant),
             contentScale = ContentScale.Crop
         )
         
         Spacer(modifier = Modifier.width(16.dp))
         
-        Column {
-            Text(
-                text = name,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.White
-            )
-            Text(
-                text = "Favorites: -1",
-                fontSize = 14.sp,
-                color = Color.White.copy(alpha = 0.8f)
-            )
-        }
-    }
-}
-
-@Composable
-private fun CreatorTabRow(
-    tabs: List<String>,
-    selectedTabIndex: Int,
-    onTabSelected: (Int) -> Unit
-) {
-    TabRow(
-        selectedTabIndex = selectedTabIndex,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        tabs.forEachIndexed { index, title ->
-            Tab(
-                text = { Text(title) },
-                selected = selectedTabIndex == index,
-                onClick = { onTabSelected(index) }
-            )
-        }
+        Text(
+            text = "Favorites: -1",
+            fontSize = 14.sp,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+        )
     }
 }
 
@@ -295,6 +264,7 @@ private fun PostsContent() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp)
     ) {
         Text("Posts Content", style = MaterialTheme.typography.headlineSmall)
@@ -321,6 +291,7 @@ private fun MediaContent() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp)
     ) {
         Text("Media Content", style = MaterialTheme.typography.headlineSmall)
@@ -335,8 +306,6 @@ private fun MediaContent() {
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-        
-        Spacer(modifier = Modifier.height(1000.dp))
     }
 }
 
@@ -345,6 +314,7 @@ private fun AboutContent() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
             .padding(16.dp)
     ) {
         Text("About Content", style = MaterialTheme.typography.headlineSmall)
@@ -354,7 +324,5 @@ private fun AboutContent() {
             text = "This is the about section with creator information and details.",
             style = MaterialTheme.typography.bodyMedium
         )
-        
-        Spacer(modifier = Modifier.height(1000.dp))
     }
 }
