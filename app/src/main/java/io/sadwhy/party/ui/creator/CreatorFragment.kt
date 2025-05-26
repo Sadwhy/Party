@@ -37,7 +37,11 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
 
         binding.creatorCompose.setContent {
             AppTheme {
-                CreatorScreen(post, viewModel)
+                CreatorScreen(
+                    post,
+                    onBackClick = {},
+                    viewModel
+                )
             }
         }
 
