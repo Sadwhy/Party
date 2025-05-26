@@ -115,7 +115,8 @@ dependencies {
     implementation(platform("io.coil-kt.coil3:coil-bom:3.1.0"))
     implementation("io.coil-kt.coil3:coil")
     implementation("io.coil-kt.coil3:coil-network-okhttp")
-    implementation("io.coil-kt:coil-compose")
+    implementation("io.coil-kt.coil3:coil-compose")
+    implementation("io.coil-kt.coil3:coil-gif")
 
     // Custom Views
     implementation("com.webtoonscorp.android:readmore-view:1.4.0")
