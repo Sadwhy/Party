@@ -112,8 +112,10 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
 
     // Image Loading
-    implementation("io.coil-kt:coil:3.2.0")
-    implementation("io.coil-kt:coil-compose:3.2.0")
+    implementation(platform("io.coil-kt.coil3:coil-bom:3.1.0"))
+    implementation("io.coil-kt.coil3:coil")
+    implementation("io.coil-kt.coil3:coil-network-okhttp")
+    implementation("io.coil-kt:coil-compose")
 
     // Custom Views
     implementation("com.webtoonscorp.android:readmore-view:1.4.0")
