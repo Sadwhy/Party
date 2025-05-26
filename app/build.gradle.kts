@@ -54,6 +54,16 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.8.7")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
+    // Compose BOM
+    implementation(platform("androidx.compose:compose-bom:2025.05.01"))
+
+    // Core Compose libraries
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material3:material3")
+
+    // Activity integration
+    implementation("androidx.activity:activity-compose:1.8.1")
+
     // Kotlin Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
 
