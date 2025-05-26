@@ -1,35 +1,34 @@
 [versions]
 kotlin = "2.0.21"
-compose_bom = "2024.10.00"
-compose_compiler = "1.5.14"
-androidx_core = "1.16.0"
-appcompat = "1.7.0"
-material = "1.13.0-alpha12"
-fragment_ktx = "1.8.7"
-constraintlayout = "2.2.1"
-activity_compose = "1.8.1"
+agp = "8.7.3"
+compose-bom = "2024.10.00"
+compose-ui = "1.6.7"
+compose-material3 = "1.2.1"
+activity-compose = "1.8.1"
 serialization = "1.8.1"
 coroutines = "1.10.2"
 lifecycle = "2.9.0"
 navigation = "2.9.0"
 okhttp = "5.0.0-alpha.14"
-retrofit_bom = "3.0.0"
-coil_bom = "3.2.0"
-readmore_view = "1.4.0"
+retrofit-bom = "3.0.0"
+coil-bom = "3.2.0"
+readmore = "1.4.0"
 subsampling = "3.10.0"
 
 [libraries]
-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx_core" }
-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-material = { module = "com.google.android.material:material", version.ref = "material" }
-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment_ktx" }
-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+core-ktx = { module = "androidx.core:core-ktx", version = "1.16.0" }
+appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
+material = { module = "com.google.android.material:material", version = "1.13.0-alpha12" }
+fragment-ktx = { module = "androidx.fragment:fragment-ktx", version = "1.8.7" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.1" }
 
-compose-ui = { module = "androidx.compose.ui:ui" }
-compose-material3 = { module = "androidx.compose.material3:material3" }
-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity_compose" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 
-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
@@ -41,13 +40,15 @@ navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-kt
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+retrofit-bom = { module = "com.squareup.retrofit2:retrofit-bom", version.ref = "retrofit-bom" }
 retrofit = { module = "com.squareup.retrofit2:retrofit" }
-converter-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization" }
+retrofit-kotlinx = { module = "com.squareup.retrofit2:converter-kotlinx-serialization" }
 
+coil-bom = { module = "io.coil-kt.coil3:coil-bom", version.ref = "coil-bom" }
 coil = { module = "io.coil-kt.coil3:coil" }
 coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp" }
 
-readmore-view = { module = "com.webtoonscorp.android:readmore-view", version.ref = "readmore_view" }
+readmore-view = { module = "com.webtoonscorp.android:readmore-view", version.ref = "readmore" }
 subsampling-view = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version.ref = "subsampling" }
 
 [bundles]
@@ -55,10 +56,5 @@ compose = ["compose-ui", "compose-material3", "activity-compose"]
 coroutines = ["coroutines-core", "coroutines-android"]
 lifecycle = ["lifecycle-viewmodel-ktx", "lifecycle-runtime-ktx"]
 navigation = ["navigation-fragment-ktx", "navigation-ui-ktx"]
-retrofit = ["retrofit", "converter-serialization"]
 coil = ["coil", "coil-okhttp"]
-
-[platforms]
-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose_bom" }
-retrofit-bom = { module = "com.squareup.retrofit2:retrofit-bom", version.ref = "retrofit_bom" }
-coil-bom = { module = "io.coil-kt.coil3:coil-bom", version.ref = "coil_bom" }
+retrofit = ["retrofit", "retrofit-kotlinx"]
