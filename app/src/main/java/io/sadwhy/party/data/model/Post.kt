@@ -17,7 +17,7 @@ data class Post(
     val service: String,
     val title: String? = null,
     val content: String? = null,
-    val embed: String? = null, // Need to look into this
+    val embed: JsonElement? = null, // Need to look into this
     val shared_file: Boolean? = null,
     val added: String? = null,
     val published: String? = null,
