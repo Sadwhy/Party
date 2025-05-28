@@ -30,12 +30,11 @@ fun PostItem(post: Post?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
     ) {
         post?.let { safePost ->
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -52,7 +51,7 @@ fun PostItem(post: Post?) {
                             model = "https://img.kemono.su/icons/${safePost.service}/${safePost.user}",
                             contentDescription = "Profile Image",
                             modifier = Modifier
-                                .size(64.dp)
+                                .size(32.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.surface),
                             contentScale = ContentScale.Crop
