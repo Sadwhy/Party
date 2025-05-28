@@ -5,15 +5,13 @@ import android.view.View
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import io.sadwhy.party.R
+import androidx.compose.ui.platform.ComposeView
 import io.sadwhy.party.data.model.Post
-import io.sadwhy.party.databinding.CreatorFragmentBinding
 import io.sadwhy.party.ui.theme.AppTheme
-import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 import io.sadwhy.party.utils.Serializer.getSerialized
 import io.sadwhy.party.utils.Serializer.putSerialized
 
-class CreatorFragment : Fragment(R.layout.creator_fragment) {
+class CreatorFragment : Fragment() {
 
     companion object {
         fun getBundle(post: Post) = Bundle().apply {
@@ -24,18 +22,22 @@ class CreatorFragment : Fragment(R.layout.creator_fragment) {
     private val args by lazy { requireArguments() }
     private val post by lazy { args.getSerialized<Post>("post")!! }
 
-    private var binding: CreatorFragmentBinding by autoCleared()
+    private lateinit var composeView: ComposeView
     private val viewModel: CreatorViewModel by viewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).also {
+            composeView = it
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = CreatorFragmentBinding.bind(view)
 
-        binding.creatorCompose.setViewCompositionStrategy(
-            ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-        )
-
-        binding.creatorCompose.setContent {
+        composeView.setContent {
             AppTheme {
                 CreatorScreen(
                     post,
