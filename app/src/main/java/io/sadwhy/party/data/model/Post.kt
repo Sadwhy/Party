@@ -2,6 +2,7 @@ package io.sadwhy.party.data.model
 
 import android.webkit.MimeTypeMap
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class Recent(
