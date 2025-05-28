@@ -24,10 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.sadwhy.party.ui.media.PostItem
 
-
 @Composable
 fun SearchScreen(title: String, text: String) {
-    val vm: SearchViewModel by viewModel()
+    val vm = viewModel<SearchViewModel>()
     val post by vm.post.collectAsState()
     var showPost by remember { mutableStateOf(false) }
 
