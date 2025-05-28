@@ -19,13 +19,6 @@ object FragmentUtils {
         }
     }
 
-    inline fun <reified T : Fragment> FragmentActivity.openFragment(
-        view: View? = null, bundle: Bundle? = null, cont: Int = R.id.nav_host_fragment
-    ) {
-        val oldFragment = supportFragmentManager.findFragmentById(cont)!!
-        oldFragment.openFragment<T>(view, bundle)
-    }
-
     inline fun <reified F : Fragment> Fragment.addIfNull(
         id: Int, tag: String, args: Bundle? = null
     ) {
