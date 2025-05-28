@@ -52,11 +52,7 @@ data class Attachment(
 
 @Serializable
 data class PostResponse(
-    val post: Post,
-    val attachments: List<Attachment> = emptyList(),
-    val previews: List<Preview> = emptyList(),
-    val videos: List<Video> = emptyList(),
-    val props: Props? = null
+    val post: Post
 )
 
 @Serializable

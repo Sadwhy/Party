@@ -3,7 +3,7 @@ package io.sadwhy.party.data.repository
 import android.util.Log
 import io.sadwhy.party.data.api.PostService
 import io.sadwhy.party.data.model.Recent
-import io.sadwhy.party.data.model.Post
+import io.sadwhy.party.data.model.PostResponse
 import io.sadwhy.party.network.RetrofitClient
 import retrofit2.Response
 
