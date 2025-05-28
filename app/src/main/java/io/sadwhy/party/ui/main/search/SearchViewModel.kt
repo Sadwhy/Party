@@ -29,7 +29,7 @@ class SearchViewModel : ViewModel() {
             val response = api.getPost(service, user, id)
             if (response.isSuccessful) {
                 val res = response.body()
-                _post.value = res.post
+                _post.value = res?.post
             } else {
                 _post.value = null
             }
