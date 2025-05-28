@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "io.sadwhy.party"
     compileSdk = 35
+    ndkVersion = "28.1.13356709"
 
     defaultConfig {
         applicationId = "io.sadwhy.party"

@@ -34,6 +34,20 @@ jobs:
         java-version: 17
         cache: gradle
 
+    - name: Install Android SDK components
+      run: |
+        yes | sdkmanager --licenses
+        sdkmanager "platform-tools" \
+                   "build-tools;34.0.0" \
+                   "platforms;android-35" \
+                   "ndk;28.1.13356709" \
+                   "cmake;3.22.1"
+
+    - name: Set NDK environment variable
+      run: |
+        echo "ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/28.1.13356709" >> $GITHUB_ENV
+        echo "NDK_HOME=$ANDROID_SDK_ROOT/ndk/28.1.13356709" >> $GITHUB_ENV
+
     - name: Make gradlew executable
       run: chmod +x ./gradlew
 
