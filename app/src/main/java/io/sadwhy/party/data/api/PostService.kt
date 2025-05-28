@@ -4,7 +4,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import io.sadwhy.party.data.model.Recent
-import io.sadwhy.party.data.model.Post
+import io.sadwhy.party.data.model.PostResponse
 
 interface PostService {
     @GET("v1/posts")
@@ -15,5 +15,5 @@ interface PostService {
         @Path("service") service: String,
         @Path("creator_id") creatorId: String,
         @Path("post_id") postId: String
-    ): Response<Post>
+    ): Response<PostResponse>
 }

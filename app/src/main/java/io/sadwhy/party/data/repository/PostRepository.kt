@@ -14,7 +14,7 @@ class PostRepository {
         return postService.getRecentPosts()
     }
 
-    suspend fun getPost(service: String, creatorId: String, postId: String): Response<Post> {
+    suspend fun getPost(service: String, creatorId: String, postId: String): Response<PostResponse> {
         return postService.getPost(service, creatorId, postId)
     }
 }

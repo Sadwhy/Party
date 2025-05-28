@@ -28,7 +28,8 @@ class SearchViewModel : ViewModel() {
             _post.value = null
             val response = api.getPost(service, user, id)
             if (response.isSuccessful) {
-                _post.value = response.body()
+                val res = response.body()
+                _post.value = res.post
             } else {
                 _post.value = null
             }
