@@ -1,29 +1,34 @@
 package io.sadwhy.party.ui.main.home
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.compose.ui.platform.ViewCompositionStrategy
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.compose.ui.platform.ComposeView
-import io.sadwhy.party.R
-import io.sadwhy.party.databinding.HomeFragmentBinding
 import io.sadwhy.party.ui.theme.AppTheme
-import io.sadwhy.party.utils.AutoClearedValue.Companion.autoCleared
 
-class HomeFragment : Fragment(R.layout.home_fragment) {
-    private var binding: HomeFragmentBinding by autoCleared()
-    
+class HomeFragment : Fragment() {
+
+    private lateinit var composeView: ComposeView
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).also {
+            composeView = it
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = HomeFragmentBinding.bind(view)
-    
-        binding.homeCompose.setViewCompositionStrategy(
-            ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-        )
-        binding.homeCompose.setContent {
+
+        composeView.setContent {
             AppTheme {
                 HomeScreen()
             }
         }
+
     }
 }
