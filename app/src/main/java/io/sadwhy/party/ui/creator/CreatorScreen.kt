@@ -29,8 +29,6 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -47,9 +45,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import io.sadwhy.party.data.model.Post
+import io.sadwhy.party.data.model.Creator
 import kotlin.math.max
 import kotlin.math.min
 
@@ -57,19 +55,13 @@ import kotlin.math.min
 @Composable
 fun CreatorScreen(
     post: Post,
-    onBackClick: () -> Unit = {},
-    viewModel: CreatorViewModel = viewModel()
+    creator: Creator,
+    onBackClick: () -> Unit = {}
 ) {
-    val creator by viewModel.creator.collectAsState()
     val name = remember(creator, post) { creator?.name ?: post.user }
     
     val tabs = remember { listOf("Posts", "Media", "About") }
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-
-    // Only fetch creator once when post changes
-    LaunchedEffect(post.service, post.user) {
-        viewModel.fetchCreator(post.service, post.user)
-    }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val listState = rememberLazyListState()

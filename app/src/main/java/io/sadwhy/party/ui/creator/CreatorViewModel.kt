@@ -27,12 +27,12 @@ class CreatorViewModel : ViewModel() {
         currentId = id
 
         viewModelScope.launch {
-            _creator.value = null // optionally clear previous
+            _creator.value = null
             val response = api.getCreator(service, id)
             if (response.isSuccessful) {
                 _creator.value = response.body()
             } else {
-                _creator.value = null // or handle error state
+                _creator.value = null
             }
         }
     }

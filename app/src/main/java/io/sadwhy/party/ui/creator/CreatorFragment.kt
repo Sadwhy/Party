@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.ui.theme.AppTheme
@@ -39,12 +39,15 @@ class CreatorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.fetchCreator(post.service, post.user)
+        val creator by viewModel.creator.collectAsState()
+
         composeView.setContent {
             AppTheme {
                 CreatorScreen(
                     post,
-                    onBackClick = {},
-                    viewModel
+                    creator,
+                    onBackClick = {}
                 )
             }
         }
