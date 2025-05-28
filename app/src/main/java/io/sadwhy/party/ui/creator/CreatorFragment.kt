@@ -40,9 +40,9 @@ class CreatorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.fetchCreator(post.service, post.user)
-        val creator by viewModel.creator.collectAsState()
 
         composeView.setContent {
+            val creator by viewModel.creator.collectAsState()
             AppTheme {
                 CreatorScreen(
                     post,
