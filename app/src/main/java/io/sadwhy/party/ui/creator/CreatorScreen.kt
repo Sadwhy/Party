@@ -55,7 +55,7 @@ import kotlin.math.min
 @Composable
 fun CreatorScreen(
     post: Post,
-    creator: Creator,
+    creator: Creator?,
     onBackClick: () -> Unit = {}
 ) {
     val name = remember(creator, post) { creator?.name ?: post.user }
