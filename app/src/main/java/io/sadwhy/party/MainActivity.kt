@@ -111,7 +111,7 @@ fun MainScreen() {
                     HomeScreen()
                 }
                 composable("search") {
-                    SearchScreen()
+                    SearchScreen("Search", "Compose Search Screen")
                 }
                 composable("library") {
                     AndroidView(
