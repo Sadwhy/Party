@@ -33,10 +33,10 @@ class LibraryFragment : Fragment(R.layout.library_fragment) {
 
         postAdapter = PostAdapter(
             onProfileClick = { post ->
-                requireActivity().openFragment<CreatorFragment>(
-                    null,
-                    CreatorFragment.getBundle(post)
-                )
+                //requireActivity().openFragment<CreatorFragment>(
+                //    null,
+                //    CreatorFragment.getBundle(post)
+                //)
             },
             onMoreOptionsClick = { post ->
                 Toast.makeText(requireContext(), "More options for: ${post.user}", Toast.LENGTH_SHORT).show()

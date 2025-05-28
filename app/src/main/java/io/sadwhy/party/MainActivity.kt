@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -68,7 +68,7 @@ fun MainScreen() {
     val bottomNavItems = listOf(
         BottomNavItem("home", "Home", Icons.Default.Home),
         BottomNavItem("search", "Search", Icons.Default.Search),
-        BottomNavItem("library", "Library", Icons.Default.Bookmark)
+        BottomNavItem("library", "Library", Icons.Default.LibraryBooks)
     )
     
     Surface(
