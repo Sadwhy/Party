@@ -31,6 +31,8 @@ fun SearchScreen(title: String, text: String) {
     val vm = viewModel<SearchViewModel>()
     val post by vm.post.collectAsState()
     var showPost by remember { mutableStateOf(false) }
+    
+    val scrollState = rememberScrollState()
 
     Scaffold(
         topBar = {
@@ -48,7 +50,7 @@ fun SearchScreen(title: String, text: String) {
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .verticalScroll(ScrollState)
+                .verticalScroll(scrollState)
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
