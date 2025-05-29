@@ -52,7 +52,7 @@ fun PostItem(nullablePost: Post?) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         AsyncImage(
-                            model = "https://img.kemono.su/icons/${safePost.service}/${safePost.user}",
+                            model = "https://img.kemono.su/icons/${post.service}/${post.user}",
                             contentDescription = "Profile Image",
                             modifier = Modifier
                                 .size(48.dp)
