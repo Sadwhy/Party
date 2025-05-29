@@ -8,10 +8,9 @@ import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import io.sadwhy.party.data.model.Attachment
-import me.saket.telephoto.zoomable.ZoomableImage
 import me.saket.telephoto.zoomable.rememberZoomableImageState
+import me.saket.telephoto.zoomable.zoomable
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import okhttp3.HttpUrl
 
 @Composable
 fun ZoomableAttachmentImage(
@@ -43,16 +42,18 @@ fun ZoomableAttachmentImage(
 
     val placeholderPainter: Painter = rememberAsyncImagePainter(placeholderUrl)
 
-    ZoomableImage(
-        state = rememberZoomableImageState(),
-        onDoubleTap = { onDoubleClick() }
-    ) {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.FillWidth,
-            placeholder = placeholderPainter
-        )
-    }
+    val zoomState = rememberZoomableImageState()
+
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxWidth()
+            .zoomable(
+                zoomState = zoomState,
+                onDoubleTap = { onDoubleClick() }
+            ),
+        contentScale = ContentScale.FillWidth,
+        placeholder = placeholderPainter
+    )
 }

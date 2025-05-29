@@ -69,7 +69,11 @@ fun SearchScreen(title: String, text: String) {
 
             if (showPost) {
                 Spacer(modifier = Modifier.height(24.dp))
-                PostItem(post)
+                PostItem(
+                    nullablePost = post,
+                    domain = "kemono",
+                    onImageDoubleClick = {}
+                )
             }
         }
     }

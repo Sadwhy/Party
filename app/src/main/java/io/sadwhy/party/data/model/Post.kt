@@ -23,22 +23,27 @@ data class Post(
     val added: String? = null,
     val published: String? = null,
     val edited: String? = null,
-    val file: Attachment? = null,
+    val file: File? = null,
     val attachments: List<Attachment>? = null,
     val substring: String? = null,
 )
 
 @Serializable
+data class File(
+    val name: String? = null,
+    val path: String? = null
+)
+
+@Serializable
+data class Attachment(@Serializable
 data class Attachment(
     val name: String? = null,
-    val path: String = null,
+    val path: String
 ) {
     val mediaType: MediaType?
         get() {
             val extension = MimeTypeMap.getFileExtensionFromUrl(path).lowercase()
-            val mime = extension?.let {
-                MimeTypeMap.getSingleton().getMimeTypeFromExtension(it)
-            }
+            val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
 
             return when {
                 mime == null -> MediaType.FILE
