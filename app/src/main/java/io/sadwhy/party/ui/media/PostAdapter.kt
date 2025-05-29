@@ -75,6 +75,21 @@ fun PostItem(post: Post?) {
                         )
                     }
                 }
+                Text(
+                    text = post.title,
+                    style = MaterialTheme.typography.titleMedium
+                    )
+                if (post.substring != "") {
+                    Text(
+                        text = post.subtring,
+                        style MaterialTheme.typography.bodySmall
+                        )
+                } if else (post.content != "") {
+                    Text(
+                        text = post.content,
+                        style = MaterialTheme.typography.bodySmall
+                        )
+                }
             }
         } ?: run {
             // Show spinner when post is null
