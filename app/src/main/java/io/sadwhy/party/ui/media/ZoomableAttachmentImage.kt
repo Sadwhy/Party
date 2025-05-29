@@ -19,6 +19,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.target.Target
 import me.saket.telephoto.zoomable.coil3.ZoomableAsyncImage
+import coil3.compose.AsyncImage
 import io.sadwhy.party.data.model.Attachment
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
@@ -140,6 +141,28 @@ fun ZoomableAttachmentImage(
                 .padding(2.dp)
         ) {
             if (currentUrl.isNotEmpty()) {
+                // Try regular AsyncImage first to test if it's a ZoomableAsyncImage issue
+                AsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(currentUrl)
+                        .apply {
+                            if (shouldCrossfade) {
+                                crossfade(true)
+                            }
+                        }
+                        .build(),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth(),
+                    contentScale = ContentScale.FillWidth,
+                    onSuccess = {
+                        Text("Regular AsyncImage loaded successfully!")
+                    },
+                    onError = { error ->
+                        imageLoadError = "AsyncImage error: ${error.result.throwable?.message}"
+                    }
+                )
+                
+                /* Commented out ZoomableAsyncImage for testing
                 ZoomableAsyncImage(
                     model = ImageRequest.Builder(context)
                         .data(currentUrl)
@@ -156,6 +179,7 @@ fun ZoomableAttachmentImage(
                         { _: androidx.compose.ui.geometry.Offset -> callback() }
                     }
                 )
+                */
             } else {
                 Text(
                     text = "No URL generated",

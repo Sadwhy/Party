@@ -44,30 +44,11 @@ fun PostItem(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "DEBUG: Post ID: ${post.id}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
                 PostHeader(post)
                 PostText(post)
                 PostAttachments(post, domain, onImageLongClick)
             }
-        } ?: run {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "DEBUG: Post is null",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error
-                )
-                LoadingPlaceholder()
-            }
-        }
+        } ?: LoadingPlaceholder()
     }
 }
 
@@ -133,53 +114,16 @@ private fun PostAttachments(
     domain: String,
     onImageLongClick: () -> Unit
 ) {
-    Column {
-        Text(
-            text = "DEBUG: Attachments = ${post.attachments}",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.secondary
-        )
-        Text(
-            text = "DEBUG: Attachments size = ${post.attachments?.size}",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.secondary
-        )
-        
-        post.attachments?.let { attachments ->
-            if (attachments.isEmpty()) {
-                Text(
-                    text = "DEBUG: Attachments list is empty",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error
+    post.attachments?.let { attachments ->
+        // Changed from LazyColumn to regular Column
+        Column {
+            attachments.forEach { attachment ->
+                ZoomableAttachmentImage(
+                    domain = domain,
+                    a = attachment,
+                    onLongClick = onImageLongClick
                 )
-            } else {
-                Text(
-                    text = "DEBUG: Found ${attachments.size} attachments",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                
-                Column {
-                    attachments.forEachIndexed { index, attachment ->
-                        Text(
-                            text = "DEBUG: Attachment $index: ${attachment.name}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.tertiary
-                        )
-                        ZoomableAttachmentImage(
-                            domain = domain,
-                            a = attachment,
-                            onLongClick = onImageLongClick
-                        )
-                    }
-                }
             }
-        } ?: run {
-            Text(
-                text = "DEBUG: Attachments is null",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error
-            )
         }
     }
 }
