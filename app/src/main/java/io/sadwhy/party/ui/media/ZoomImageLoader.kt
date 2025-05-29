@@ -3,13 +3,10 @@ package io.sadwhy.party.ui.media
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import io.sadwhy.party.data.model.Attachment
-import me.saket.telephoto.zoomable.rememberZoomableImageState
-import me.saket.telephoto.zoomable.zoomable
+import me.saket.telephoto.zoomable.coil3.ZoomableAsyncImage
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 @Composable
@@ -40,20 +37,13 @@ fun ZoomableAttachmentImage(
             .toString()
     }
 
-    val placeholderPainter: Painter = rememberAsyncImagePainter(placeholderUrl)
-
-    val zoomState = rememberZoomableImageState()
-
-    AsyncImage(
+    ZoomableAsyncImage(
         model = imageUrl,
         contentDescription = null,
-        modifier = Modifier
-            .fillMaxWidth()
-            .zoomable(
-                zoomState = zoomState,
-                onDoubleTap = { onDoubleClick() }
-            ),
+        modifier = Modifier.fillMaxWidth(),
         contentScale = ContentScale.FillWidth,
-        placeholder = placeholderPainter
+        placeholder = rememberAsyncImagePainter(placeholderUrl),
+        onTap = {},
+        onDoubleTap = { onDoubleClick() }
     )
 }
