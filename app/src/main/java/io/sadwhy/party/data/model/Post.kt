@@ -31,13 +31,11 @@ data class Post(
 @Serializable
 data class Attachment(
     val name: String? = null,
-    val path: String? = null,
+    val path: String = null,
 ) {
     val mediaType: MediaType?
         get() {
-            if (path.isNullOrBlank()) return null
-
-            val extension = MimeTypeMap.getFileExtensionFromUrl(path)?.lowercase()
+            val extension = MimeTypeMap.getFileExtensionFromUrl(path).lowercase()
             val mime = extension?.let {
                 MimeTypeMap.getSingleton().getMimeTypeFromExtension(it)
             }

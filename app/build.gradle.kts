@@ -121,7 +121,8 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-compose")
     implementation("io.coil-kt.coil3:coil-gif")
 
-    // Custom Views
+    // Custom UI
+    implementation("me.saket.telephoto:zoomable-image-coil3:0.16.0")
     implementation("com.webtoonscorp.android:readmore-view:1.4.0")
     implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
 }
