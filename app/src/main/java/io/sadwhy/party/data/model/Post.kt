@@ -31,14 +31,13 @@ data class Post(
 @Serializable
 data class File(
     val name: String? = null,
-    val path: String? = null
+    val path: String? = null,
 )
 
 @Serializable
-data class Attachment(@Serializable
 data class Attachment(
     val name: String? = null,
-    val path: String
+    val path: String,
 ) {
     val mediaType: MediaType?
         get() {
