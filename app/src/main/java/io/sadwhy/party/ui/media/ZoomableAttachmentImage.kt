@@ -154,12 +154,6 @@ fun ZoomableAttachmentImage(
                     contentDescription = null,
                     modifier = Modifier.fillMaxWidth(),
                     contentScale = ContentScale.FillWidth,
-                    onSuccess = {
-                        Text("Regular AsyncImage loaded successfully!")
-                    },
-                    onError = { error ->
-                        imageLoadError = "AsyncImage error: ${error.result.throwable?.message}"
-                    }
                 )
                 
                 /* Commented out ZoomableAsyncImage for testing
