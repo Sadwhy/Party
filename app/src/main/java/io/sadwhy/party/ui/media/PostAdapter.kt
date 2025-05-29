@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,8 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import io.sadwhy.party.R
 import io.sadwhy.party.data.model.Post
 
 @Composable
@@ -51,7 +55,7 @@ fun PostItem(post: Post?) {
                             model = "https://img.kemono.su/icons/${safePost.service}/${safePost.user}",
                             contentDescription = "Profile Image",
                             modifier = Modifier
-                                .size(32.dp)
+                                .size(48.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.surface),
                             contentScale = ContentScale.Crop
@@ -62,10 +66,14 @@ fun PostItem(post: Post?) {
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
-                    Text(
-                        text = "Right",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    IconButton(
+                        onClick = {}
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_round_dots_vertical)
+                            contentDescription = "More options button"
+                        )
+                    }
                 }
             }
         } ?: run {
