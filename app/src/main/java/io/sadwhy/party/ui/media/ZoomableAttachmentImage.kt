@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import coil3.request.ImageRequest
-import coil3.request.crossfade
 import io.sadwhy.party.data.model.Attachment
+import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 @Composable
@@ -26,69 +26,59 @@ fun ZoomableAttachmentImage(
     val context = LocalContext.current
 
     val fullImageUrl = remember(domain, a.path, a.name) {
-        val base = "https://$domain.su".toHttpUrlOrNull()
-        base?.newBuilder()
-            ?.addPathSegment("data${a.path}")
-            ?.apply {
-                if (!a.name.isNullOrEmpty()) {
-                    addQueryParameter("f", a.name)
-                }
-            }
-            ?.build()
-            ?.toString() ?: ""
+        buildFullImageUrl(domain, a)
     }
 
     val thumbnailUrl = remember(domain, a.path) {
-        val base = "https://img.$domain.su".toHttpUrlOrNull()
-        base?.newBuilder()
-            ?.addPathSegment("thumbnail")
-            ?.addPathSegment("data${a.path}")
-            ?.build()
-            ?.toString() ?: ""
+        buildThumbnailUrl(domain, a)
     }
 
-    Column {
-        Text("DEBUG IMAGE:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
-        Text("Domain: $domain", style = MaterialTheme.typography.labelSmall)
-        Text("Path: ${a.path}", style = MaterialTheme.typography.labelSmall)
-        Text("Name: ${a.name}", style = MaterialTheme.typography.labelSmall)
-        Text("Full URL: $fullImageUrl", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
-        Text("Thumbnail URL: $thumbnailUrl", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
-
-        if (fullImageUrl.isNotEmpty()) {
+    SubcomposeAsyncImage(
+        model = ImageRequest.Builder(context)
+            .data(fullImageUrl)
+            .build(),
+        contentDescription = null,
+        contentScale = ContentScale.FillWidth,
+        modifier = Modifier
+            .fillMaxWidth()
+            .pointerInput(onLongClick) {
+                if (onLongClick != null) {
+                    detectTapGestures(onLongPress = { onLongClick() })
+                }
+            },
+        loading = {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(context)
-                    .data(fullImageUrl)
-                    .crossfade(true)
+                    .data(thumbnailUrl)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .pointerInput(onLongClick) {
-                        if (onLongClick != null) {
-                            detectTapGestures(onLongPress = { onLongClick() })
-                        }
-                    },
-                loading = {
-                    // Show the thumbnail image while loading full image
-                    SubcomposeAsyncImage(
-                        model = ImageRequest.Builder(context)
-                            .data(thumbnailUrl)
-                            .build(),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            )
-        } else {
-            Text(
-                text = "No URL generated",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.fillMaxWidth()
             )
         }
-    }
+    )
+}
+
+private fun buildFullImageUrl(domain: String, attachment: Attachment): String {
+    return "https://$domain.su".toHttpUrlOrNull()
+        ?.newBuilder()
+        ?.addPathSegment("data${attachment.path}")
+        ?.apply {
+            attachment.name?.takeIf { it.isNotEmpty() }?.let {
+                addQueryParameter("f", it)
+            }
+        }
+        ?.build()
+        ?.toString()
+        .orEmpty()
+}
+
+private fun buildThumbnailUrl(domain: String, attachment: Attachment): String {
+    return "https://img.$domain.su".toHttpUrlOrNull()
+        ?.newBuilder()
+        ?.addPathSegment("thumbnail")
+        ?.addPathSegment("data${attachment.path}")
+        ?.build()
+        ?.toString()
+        .orEmpty()
 }
