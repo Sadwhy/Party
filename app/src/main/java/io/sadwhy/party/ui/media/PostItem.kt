@@ -81,8 +81,8 @@ fun PostItem(post: Post?) {
                     )
                 if (post.substring != "") {
                     Text(
-                        text = post.subtring,
-                        style MaterialTheme.typography.bodySmall
+                        text = post.substring,
+                        style = MaterialTheme.typography.bodySmall
                         )
                 } if else (post.content != "") {
                     Text(

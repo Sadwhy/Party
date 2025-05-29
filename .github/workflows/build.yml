@@ -1,4 +1,4 @@
-name: Build and upload to telegram
+name: compile and upload
 
 on:
   push:
@@ -34,20 +34,6 @@ jobs:
         java-version: 17
         cache: gradle
 
-    - name: Cache Android SDK
-      uses: actions/cache@v4
-      id: android-sdk-cache
-      with:
-        path: |
-          /usr/local/lib/android/sdk
-          ~/.android
-        key: android-sdk-${{ runner.os }}-api35-build34-ndk28-cmake322
-        restore-keys: |
-          android-sdk-${{ runner.os }}-api35-build34-ndk28-
-          android-sdk-${{ runner.os }}-api35-build34-
-          android-sdk-${{ runner.os }}-api35-
-          android-sdk-${{ runner.os }}-
-
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
@@ -57,11 +43,9 @@ jobs:
         cmake-version: 3.22.1
 
     - name: Accept Android SDK licenses
-      if: steps.android-sdk-cache.outputs.cache-hit != 'true'
       run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
     - name: Install additional Android SDK components
-      if: steps.android-sdk-cache.outputs.cache-hit != 'true'
       run: |
         $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" \
                    "build-tools;34.0.0" \
@@ -73,16 +57,6 @@ jobs:
       run: |
         echo "ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/28.1.13356709" >> $GITHUB_ENV
         echo "NDK_HOME=$ANDROID_SDK_ROOT/ndk/28.1.13356709" >> $GITHUB_ENV
-
-    - name: Cache Gradle dependencies
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          gradle-${{ runner.os }}-
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
