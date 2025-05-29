@@ -52,13 +52,13 @@ fun SearchScreen(title: String, text: String) {
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge
             )
-            Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
                     showPost = true
