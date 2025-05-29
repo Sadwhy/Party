@@ -7,13 +7,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil3.ImageLoader
 import coil3.request.ImageRequest
+import coil3.request.crossfade
 import coil3.target.Target
 import me.saket.telephoto.zoomable.coil3.ZoomableAsyncImage
 import io.sadwhy.party.data.model.Attachment
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 @Composable
-fun ZoomableAttachmentImageProgressive(
+fun ZoomableAttachmentImage(
     domain: String,
     a: Attachment,
     onLongClick: (() -> Unit)? = null
@@ -63,16 +64,22 @@ fun ZoomableAttachmentImageProgressive(
     }
 
     val currentUrl = if (showFullImage) fullImageUrl else thumbnailUrl
-    val crossfade = showFullImage && !fullImageLoaded
+    val shouldCrossfade = showFullImage && !fullImageLoaded
 
     ZoomableAsyncImage(
         model = ImageRequest.Builder(context)
             .data(currentUrl)
-            .crossfade(crossfade)
+            .apply {
+                if (shouldCrossfade) {
+                    crossfade(true)
+                }
+            }
             .build(),
         contentDescription = null,
         modifier = Modifier,
         contentScale = ContentScale.FillWidth,
-        onLongClick = onLongClick
+        onLongClick = onLongClick?.let { callback ->
+            { _: androidx.compose.ui.geometry.Offset -> callback() }
+        }
     )
 }
