@@ -72,7 +72,7 @@ fun SearchScreen(title: String, text: String) {
                 PostItem(
                     nullablePost = post,
                     domain = "kemono",
-                    onImageDoubleClick = {}
+                    onImageLongClick = {}
                 )
             }
         }

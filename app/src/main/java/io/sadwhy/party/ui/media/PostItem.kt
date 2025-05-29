@@ -35,7 +35,7 @@ import io.sadwhy.party.data.model.Post
 fun PostItem(
     nullablePost: Post?,
     domain: String,
-    onImageDoubleClick: () -> Unit
+    onImageLongClick: () -> Unit
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         nullablePost?.let { post ->
@@ -48,7 +48,7 @@ fun PostItem(
             ) {
                 PostHeader(post)
                 PostText(post)
-                PostAttachments(post, domain, onImageDoubleClick)
+                PostAttachments(post, domain, onImageLongClick)
             }
         } ?: LoadingPlaceholder()
     }
@@ -114,7 +114,7 @@ private fun PostText(post: Post) {
 private fun PostAttachments(
     post: Post,
     domain: String,
-    onImageDoubleClick: () -> Unit
+    onImageLongClick: () -> Unit
 ) {
     post.attachments?.let { attachments ->
         LazyColumn {
@@ -122,7 +122,7 @@ private fun PostAttachments(
                 ZoomableAttachmentImage(
                     domain = domain,
                     a = attachment,
-                    onDoubleClick = onImageDoubleClick
+                    onLongClick = onImageLongClick
                 )
             }
         }
