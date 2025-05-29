@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import coil3.request.ImageRequest
+import coil3.request.crossfade
 import io.sadwhy.party.data.model.Attachment
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
