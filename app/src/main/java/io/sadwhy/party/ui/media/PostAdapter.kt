@@ -70,7 +70,7 @@ fun PostItem(post: Post?) {
                         onClick = {}
                     ) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_round_dots_vertical)
+                            painter = painterResource(R.drawable.ic_round_dots_vertical),
                             contentDescription = "More options button"
                         )
                     }
