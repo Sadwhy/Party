@@ -1,10 +1,19 @@
 package io.sadwhy.party.ui.media
 
 import android.content.Context
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -36,7 +45,7 @@ fun ZoomableAttachmentImage(
     }
 
     val thumbnailUrl = remember(domain, a.path) {
-        val base = "https://img.$domain".toHttpUrlOrNull()
+        val base = "https://img.$domain.su".toHttpUrlOrNull()
         base?.newBuilder()
             ?.addPathSegment("thumbnail")
             ?.addPathSegment("data${a.path}")
@@ -46,6 +55,7 @@ fun ZoomableAttachmentImage(
 
     var showFullImage by remember { mutableStateOf(false) }
     var fullImageLoaded by remember { mutableStateOf(false) }
+    var imageLoadError by remember { mutableStateOf<String?>(null) }
 
     // Start loading full image in background
     LaunchedEffect(fullImageUrl) {
@@ -56,6 +66,10 @@ fun ZoomableAttachmentImage(
                     onSuccess = { 
                         fullImageLoaded = true
                         showFullImage = true 
+                        imageLoadError = null
+                    },
+                    onError = { error ->
+                        imageLoadError = "Full image load failed"
                     }
                 )
                 .build()
@@ -66,20 +80,90 @@ fun ZoomableAttachmentImage(
     val currentUrl = if (showFullImage) fullImageUrl else thumbnailUrl
     val shouldCrossfade = showFullImage && !fullImageLoaded
 
-    ZoomableAsyncImage(
-        model = ImageRequest.Builder(context)
-            .data(currentUrl)
-            .apply {
-                if (shouldCrossfade) {
-                    crossfade(true)
-                }
-            }
-            .build(),
-        contentDescription = null,
-        modifier = Modifier,
-        contentScale = ContentScale.FillWidth,
-        onLongClick = onLongClick?.let { callback ->
-            { _: androidx.compose.ui.geometry.Offset -> callback() }
+    Column {
+        // Debug information
+        Text(
+            text = "DEBUG IMAGE:",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            text = "Domain: $domain",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = "Path: ${a.path}",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = "Name: ${a.name}",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = "Full URL: $fullImageUrl",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Text(
+            text = "Thumbnail URL: $thumbnailUrl",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Text(
+            text = "Current URL: $currentUrl",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.tertiary
+        )
+        Text(
+            text = "Show Full: $showFullImage, Loaded: $fullImageLoaded",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.tertiary
+        )
+        
+        imageLoadError?.let { error ->
+            Text(
+                text = "ERROR: $error",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error
+            )
         }
-    )
+
+        // Image container with visible border for debugging
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .padding(2.dp)
+        ) {
+            if (currentUrl.isNotEmpty()) {
+                ZoomableAsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(currentUrl)
+                        .apply {
+                            if (shouldCrossfade) {
+                                crossfade(true)
+                            }
+                        }
+                        .build(),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth(),
+                    contentScale = ContentScale.FillWidth,
+                    onLongClick = onLongClick?.let { callback ->
+                        { _: androidx.compose.ui.geometry.Offset -> callback() }
+                    }
+                )
+            } else {
+                Text(
+                    text = "No URL generated",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
+    }
 }
