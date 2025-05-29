@@ -54,19 +54,12 @@ fun ZoomableAttachmentImage(
         Text("Full URL: $fullImageUrl", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
         Text("Thumbnail URL: $thumbnailUrl", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.secondary)
 
-        if (fullImageUrl.isNotEmpty() && thumbnailUrl.isNotEmpty()) {
+        if (fullImageUrl.isNotEmpty()) {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(fullImageUrl)
                     .crossfade(true)
                     .build(),
-                loading = {
-                    SubcomposeAsyncImageContent(
-                        model = ImageRequest.Builder(context)
-                            .data(thumbnailUrl)
-                            .build()
-                    )
-                },
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
@@ -75,7 +68,18 @@ fun ZoomableAttachmentImage(
                         if (onLongClick != null) {
                             detectTapGestures(onLongPress = { onLongClick() })
                         }
-                    }
+                    },
+                loading = {
+                    // Show the thumbnail image while loading full image
+                    SubcomposeAsyncImage(
+                        model = ImageRequest.Builder(context)
+                            .data(thumbnailUrl)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             )
         } else {
             Text(
