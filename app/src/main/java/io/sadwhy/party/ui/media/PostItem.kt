@@ -30,12 +30,12 @@ import io.sadwhy.party.R
 import io.sadwhy.party.data.model.Post
 
 @Composable
-fun PostItem(post: Post?) {
+fun PostItem(nullablePost: Post?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        post?.let { safePost ->
+        nullablePost?.let { post ->
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -62,7 +62,7 @@ fun PostItem(post: Post?) {
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(
-                            text = safePost.user,
+                            text = post.user,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -75,20 +75,22 @@ fun PostItem(post: Post?) {
                         )
                     }
                 }
-                Text(
-                    text = post.title,
-                    style = MaterialTheme.typography.titleMedium
+                if (!post.title.isNullOrEmpty()) {
+                    Text(
+                        text = post.title,
+                        style = MaterialTheme.typography.titleMedium
                     )
-                if (post.substring != "") {
+                }
+                if (!post.substring.isNullOrEmpty()) {
                     Text(
                         text = post.substring,
                         style = MaterialTheme.typography.bodySmall
-                        )
-                } if else (post.content != "") {
+                    )
+                } else if (!post.content.isNullOrEmpty()) {
                     Text(
                         text = post.content,
                         style = MaterialTheme.typography.bodySmall
-                        )
+                    )
                 }
             }
         } ?: run {
