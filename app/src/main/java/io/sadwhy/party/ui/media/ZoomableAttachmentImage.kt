@@ -14,6 +14,8 @@ import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import me.saket.telephoto.zoomable.rememberZoomablePeekOverlayState
+import me.saket.telephoto.zoomable.zoomablePeekOverlay
 import io.sadwhy.party.data.model.Attachment
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
@@ -43,6 +45,7 @@ fun ZoomableAttachmentImage(
         contentScale = ContentScale.FillWidth,
         modifier = Modifier
             .fillMaxWidth()
+            .zoomablePeekOverlay(rememberZoomablePeekOverlayState()),
             .pointerInput(onLongClick) {
                 if (onLongClick != null) {
                     detectTapGestures(onLongPress = { onLongClick() })
