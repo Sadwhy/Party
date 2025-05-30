@@ -53,8 +53,8 @@ fun PostItem(
                     .padding(16.dp)
                     .animateContentSize(
                         animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessLow
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                            stiffness = Spring.StiffnessHigh
                         )
                     ),
                 verticalArrangement = Arrangement.Center,
