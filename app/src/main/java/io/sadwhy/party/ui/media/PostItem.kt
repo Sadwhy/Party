@@ -7,10 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -27,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.sadwhy.party.R
 import io.sadwhy.party.data.model.Attachment
+import io.sadwhy.party.data.model.MediaType
 import io.sadwhy.party.data.model.Post
 
 @Composable
@@ -112,17 +117,44 @@ private fun PostText(post: Post) {
 private fun PostAttachments(
     post: Post,
     domain: String,
-    onImageLongClick: () -> Unit
+    onImageClick: () -> Unit
 ) {
     post.attachments?.let { attachments ->
-        // Changed from LazyColumn to regular Column
-        Column {
-            attachments.forEach { attachment ->
-                ZoomableAttachmentImage(
-                    domain = domain,
-                    a = attachment,
-                    onLongClick = onImageLongClick
-                )
+        val pagerState = rememberPagerState(pageCount = { attachments.size })
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .clip(RoundedCornerShape(12.dp))
+        ) {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize()
+            ) { page ->
+                val attachment = attachments[page]
+                when (attachment.mediaType) {
+                    MediaType.IMAGE -> {
+                        ZoomableAttachmentImage(
+                            domain = domain,
+                            a = attachment,
+                            onLongClick = onImageClick
+                        )
+                    }
+
+                    MediaType.VIDEO -> {
+                        Box(Modifier.fillMaxSize()) {
+                            // TODO
+                        }
+                    }
+
+                    MediaType.FILE -> {
+                        Box(Modifier.fillMaxSize()) {
+                        // TODO
+                        }
+                    }
+                }
             }
         }
     }

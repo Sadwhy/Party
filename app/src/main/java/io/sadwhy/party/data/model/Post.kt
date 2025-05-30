@@ -12,6 +12,11 @@ data class Recent(
 )
 
 @Serializable
+data class PostResponse(
+    val post: Post
+)
+
+@Serializable
 data class Post(
     val id: String,
     val user: String,
@@ -39,7 +44,7 @@ data class Attachment(
     val name: String? = null,
     val path: String,
 ) {
-    val mediaType: MediaType?
+    val mediaType: MediaType
         get() {
             val extension = MimeTypeMap.getFileExtensionFromUrl(path).lowercase()
             val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
@@ -52,11 +57,6 @@ data class Attachment(
             }
         }
 }
-
-@Serializable
-data class PostResponse(
-    val post: Post
-)
 
 @Serializable
 enum class MediaType {
