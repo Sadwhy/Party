@@ -26,7 +26,6 @@ fun ZoomableAttachmentImage(
     onLongClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
-    var imageLoaded by remember { mutableStateOf(false) }
 
     val fullImageUrl = remember(domain, a.path, a.name) {  
         buildFullImageUrl(domain, a)  
@@ -39,13 +38,7 @@ fun ZoomableAttachmentImage(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .then(
-                if (!imageLoaded) {
-                    Modifier.aspectRatio(16f / 9f)
-                } else {
-                    Modifier.wrapContentHeight()
-                }
-            )
+            .wrapContentHeight()
             .zoomablePeekOverlay(rememberZoomablePeekOverlayState())
     ) {
         SubcomposeAsyncImage(  
@@ -53,7 +46,7 @@ fun ZoomableAttachmentImage(
                 .data(fullImageUrl)  
                 .crossfade(false)  
                 .build(),  
-            contentDescription = null,  
+            contentDescription = "Image Attachment",  
             contentScale = ContentScale.FillWidth,  
             modifier = Modifier  
                 .fillMaxWidth()
@@ -62,17 +55,14 @@ fun ZoomableAttachmentImage(
                         detectTapGestures(onLongPress = { onLongClick() })  
                     }  
                 },
-            loading = {  
+            loading = {
                 SubcomposeAsyncImage(  
                     model = ImageRequest.Builder(context)  
                         .data(thumbnailUrl)  
                         .build(),  
-                    contentDescription = null,  
+                    contentDescription = "Image Attachment",  
                     contentScale = ContentScale.FillWidth,  
-                    modifier = Modifier.fillMaxWidth(),
-                    success = {
-                        imageLoaded = true
-                    }
+                    modifier = Modifier.fillMaxWidth()
                 )  
             }  
         )
