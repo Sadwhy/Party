@@ -35,12 +35,4 @@ class SearchViewModel : ViewModel() {
             }
         }
     }
-
-// https://kemono.su/fanbox/user/2564922/post/9527418
-
-
-    init {
-        fetchPost("fanbox", "2564922", "9527418")
-    }
-    
 }

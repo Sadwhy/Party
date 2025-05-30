@@ -2,6 +2,7 @@ package io.sadwhy.party.ui.main.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,12 +28,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.sadwhy.party.ui.media.PostItem
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(title: String, text: String) {
     val vm = viewModel<SearchViewModel>()
     val post by vm.post.collectAsState()
     var showPost by remember { mutableStateOf(false) }
-    
+
+    var service by remember { mutableStateOf("fanbox") }
+    var user by remember { mutableStateOf("2564922") }
+    var id by remember { mutableStateOf("9527418") }
+
     val scrollState = rememberScrollState()
 
     Scaffold(
@@ -59,9 +66,44 @@ fun SearchScreen(title: String, text: String) {
                 text = text,
                 style = MaterialTheme.typography.bodyLarge
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                TextField(
+                    value = service,
+                    onValueChange = { service = it },
+                    label = { Text("Service") }
+                )
+                TextField(
+                    value = user,
+                    onValueChange = { user = it },
+                    label = { Text("User") }
+                )
+                TextField(
+                    value = id,
+                    onValueChange = { id = it },
+                    label = { Text("ID") }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Button(
                 onClick = {
-                    showPost = true
+                    vm.fetchPost(service, user, id)
+                }
+            ) {
+                Text("Run Function")
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = {
+                    showPost = !showPost
                 }
             ) {
                 Text("Show Post")
