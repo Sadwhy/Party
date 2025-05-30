@@ -105,9 +105,9 @@ fun SearchScreen(title: String, text: String) {
 private fun runFun(url: String, vm: SearchViewModel) {
     val httpUrl: HttpUrl = url.toHttpUrl()
     
-    val service = httpUrl.pathSegments.getOrNull(0)
-    val user = httpUrl.pathSegments.getOrNull(2)
-    val id = httpUrl.pathSegments.getOrNull(4)
+    val service = httpUrl.pathSegments[0]
+    val user = httpUrl.pathSegments[2]
+    val id = httpUrl.pathSegments[4]
 
     vm.fetchPost(service, user, id)
 }
