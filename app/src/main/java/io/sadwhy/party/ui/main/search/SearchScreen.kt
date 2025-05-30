@@ -34,7 +34,6 @@ import io.sadwhy.party.ui.media.PostItem
 fun SearchScreen(title: String, text: String) {
     val vm = viewModel<SearchViewModel>()
     val post by vm.post.collectAsState()
-    var showPost by remember { mutableStateOf(false) }
 
     var service by remember { mutableStateOf("fanbox") }
     var user by remember { mutableStateOf("2564922") }
@@ -72,23 +71,25 @@ fun SearchScreen(title: String, text: String) {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 TextField(
                     value = service,
                     onValueChange = { service = it },
-                    label = { Text("Service") }
+                    label = { Text("Service") },
+                    modifier = Modifier.weight(1f)
                 )
                 TextField(
                     value = user,
                     onValueChange = { user = it },
-                    label = { Text("User") }
+                    label = { Text("User") },
+                    modifier = Modifier.weight(1f)
                 )
                 TextField(
                     value = id,
                     onValueChange = { id = it },
-                    label = { Text("ID") }
+                    label = { Text("ID") },
+                    modifier = Modifier.weight(1f)
                 )
             }
 
@@ -102,24 +103,13 @@ fun SearchScreen(title: String, text: String) {
                 Text("Run Function")
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
-                onClick = {
-                    showPost = !showPost
-                }
-            ) {
-                Text("Show Post")
-            }
-
-            if (showPost) {
-                Spacer(modifier = Modifier.height(24.dp))
-                PostItem(
-                    nullablePost = post,
-                    domain = "kemono",
-                    onImageLongClick = {}
-                )
-            }
+            PostItem(
+                nullablePost = post,
+                domain = "kemono",
+                onImageLongClick = {}
+            )
         }
     }
 }
