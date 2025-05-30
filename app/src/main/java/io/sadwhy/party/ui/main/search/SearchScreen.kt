@@ -28,16 +28,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.sadwhy.party.ui.media.PostItem
-
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
+    
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(title: String, text: String) {
     val vm = viewModel<SearchViewModel>()
     val post by vm.post.collectAsState()
 
-    var service by remember { mutableStateOf("fanbox") }
-    var user by remember { mutableStateOf("2564922") }
-    var id by remember { mutableStateOf("9527418") }
+    var url by remember { mutableStateOf("https://kemono.su/fanbox/user/2564922/post/9527418") }
 
     val scrollState = rememberScrollState()
 
@@ -74,21 +74,9 @@ fun SearchScreen(title: String, text: String) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 TextField(
-                    value = service,
-                    onValueChange = { service = it },
-                    label = { Text("Service") },
-                    modifier = Modifier.weight(1f)
-                )
-                TextField(
-                    value = user,
-                    onValueChange = { user = it },
-                    label = { Text("User") },
-                    modifier = Modifier.weight(1f)
-                )
-                TextField(
-                    value = id,
-                    onValueChange = { id = it },
-                    label = { Text("ID") },
+                    value = url,
+                    onValueChange = { url = it },
+                    label = { Text("Url") },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -97,7 +85,7 @@ fun SearchScreen(title: String, text: String) {
 
             Button(
                 onClick = {
-                    vm.fetchPost(service, user, id)
+                    runFun(url, vm)
                 }
             ) {
                 Text("Run Function")
@@ -112,4 +100,14 @@ fun SearchScreen(title: String, text: String) {
             )
         }
     }
+}
+
+private fun runFun(url: String, vm: SearchViewModel) {
+    val httpUrl: HttpUrl = url.toHttpUrl()
+    
+    val service = httpUrl.pathSegments.getOrNull(0)
+    val user = httpUrl.pathSegments.getOrNull(2)
+    val id = httpUrl.pathSegments.getOrNull(4)
+
+    vm.fetchPost(service, user, id)
 }
