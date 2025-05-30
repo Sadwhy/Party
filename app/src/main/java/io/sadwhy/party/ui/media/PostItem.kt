@@ -107,10 +107,7 @@ private fun PostText(post: Post) {
     }
 
     bodyText?.let {
-        Text(
-            text = it,
-            style = MaterialTheme.typography.bodySmall
-        )
+        ExpandableHtmlText(it)
     }
 }
 

@@ -37,7 +37,8 @@ fun SearchScreen(title: String, text: String) {
     val vm = viewModel<SearchViewModel>()
     val post by vm.post.collectAsState()
 
-    var url by remember { mutableStateOf("https://kemono.su/fanbox/user/2564922/post/9527418") }
+    val testUrl = "https://kemono.su/patreon/user/5349313/post/115030269"
+    var url by remember { mutableStateOf(testUrl) }
 
     val scrollState = rememberScrollState()
 
