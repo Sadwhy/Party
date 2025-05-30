@@ -1,6 +1,8 @@
 package io.sadwhy.party.ui.media
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,7 +51,12 @@ fun PostItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .animateContentSize(),
+                    .animateContentSize(
+                        animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -127,9 +134,8 @@ private fun PostAttachments(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .background(Color.Black)
                 .clip(RoundedCornerShape(12.dp))
-                .animateContentSize()
+                .background(Color.Black)
         ) {
             HorizontalPager(
                 state = pagerState,
