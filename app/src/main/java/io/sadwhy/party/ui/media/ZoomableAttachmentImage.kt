@@ -70,7 +70,7 @@ fun ZoomableAttachmentImage(
                     contentDescription = null,  
                     contentScale = ContentScale.FillWidth,  
                     modifier = Modifier.fillMaxWidth(),
-                    onSuccess = {
+                    success = {
                         imageLoaded = true
                     }
                 )  
