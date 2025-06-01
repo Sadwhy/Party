@@ -3,7 +3,7 @@ package io.sadwhy.party.ui.main.library
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import android.util.Log
-import io.sadwhy.party.data.model.Recent
+import io.sadwhy.party.data.model.PostRecent
 import io.sadwhy.party.data.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class LibraryViewModel : ViewModel() {
     private val postRepository = PostRepository()
 
-    val posts: MutableStateFlow<Recent?> = MutableStateFlow(null)
+    val posts: MutableStateFlow<PostRecent?> = MutableStateFlow(null)
 
     fun fetchPosts() {
         viewModelScope.launch {

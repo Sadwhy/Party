@@ -27,12 +27,12 @@ fun ZoomableAttachmentImage(
 ) {
     val context = LocalContext.current
 
-    val fullImageUrl = remember(domain, a.path, a.name) {  
-        buildFullImageUrl(domain, a)  
-    }  
+    val fullImageUrl = remember(domain, a.path, a.name) {
+        buildFullImageUrl(domain, a)
+    }
 
-    val thumbnailUrl = remember(domain, a.path) {  
-        buildThumbnailUrl(domain, a)  
+    val thumbnailUrl = remember(domain, a.path) {
+        buildThumbnailUrl(domain, a)
     }
 
     Box(
@@ -41,30 +41,30 @@ fun ZoomableAttachmentImage(
             .wrapContentHeight()
             .zoomablePeekOverlay(rememberZoomablePeekOverlayState())
     ) {
-        SubcomposeAsyncImage(  
-            model = ImageRequest.Builder(context)  
-                .data(fullImageUrl)  
-                .crossfade(false)  
-                .build(),  
-            contentDescription = "Image Attachment",  
-            contentScale = ContentScale.FillWidth,  
-            modifier = Modifier  
+        SubcomposeAsyncImage(
+            model = ImageRequest.Builder(context)
+                .data(fullImageUrl)
+                .crossfade(false)
+                .build(),
+            contentDescription = "Image Attachment",
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
                 .fillMaxWidth()
-                .pointerInput(Unit) {  
-                    if (onLongClick != null) {  
-                        detectTapGestures(onLongPress = { onLongClick() })  
-                    }  
+                .pointerInput(Unit) {
+                    if (onLongClick != null) {
+                        detectTapGestures(onLongPress = { onLongClick() })
+                    }
                 },
             loading = {
-                SubcomposeAsyncImage(  
-                    model = ImageRequest.Builder(context)  
-                        .data(thumbnailUrl)  
-                        .build(),  
-                    contentDescription = "Image Attachment",  
-                    contentScale = ContentScale.FillWidth,  
+                SubcomposeAsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(thumbnailUrl)
+                        .build(),
+                    contentDescription = "Image Attachment",
+                    contentScale = ContentScale.FillWidth,
                     modifier = Modifier.fillMaxWidth()
-                )  
-            }  
+                )
+            }
         )
     }
 }
