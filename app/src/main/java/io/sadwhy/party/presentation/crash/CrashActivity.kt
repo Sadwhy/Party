@@ -197,36 +197,41 @@ fun ActionButtonsSection(
 
 @Composable
 fun LogsDisplaySection(crashLog: String) {
-    Text(
-        text = "Logs",
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.onSurface
-    )
-
-    Card(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-        ),
-        shape = RoundedCornerShape(12.dp)
+            .fillMaxSize()
     ) {
-        SelectionContainer {
-            Text(
-                text = crashLog,
-                fontFamily = FontFamily.Monospace,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .horizontalScroll(rememberScrollState())
-                    .padding(16.dp),
-                lineHeight = 16.sp,
-                softWrap = false
-            )
+        Text(
+            text = "Logs",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+            ),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            SelectionContainer {
+                Text(
+                    text = crashLog,
+                    fontFamily = FontFamily.Monospace,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .horizontalScroll(rememberScrollState())
+                        .padding(16.dp),
+                    lineHeight = 16.sp,
+                    softWrap = false
+                )
+            }
         }
     }
 }
