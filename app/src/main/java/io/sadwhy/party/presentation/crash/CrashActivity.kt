@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.sadwhy.party.R
+import io.sadwhy.party.ui.theme.AppTheme
 import io.sadwhy.party.MainActivity
 
 class CrashActivity : ComponentActivity() {
@@ -45,17 +46,11 @@ class CrashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Fixed: Use the correct key "exception" instead of "crash_info"
         crashLog = intent.getStringExtra("exception") ?: "No crash information available"
 
         setContent {
-            MaterialTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    CrashScreen(crashLog)
-                }
+            AppTheme {
+                CrashScreen(crashLog)
             }
         }
     }
@@ -108,7 +103,7 @@ class CrashActivity : ComponentActivity() {
                     )
                     
                     Text(
-                        text = "The app encountered an unexpected error and crashed. Don't worry, this information helps us fix the issue!",
+                        text = "The app encountered an unexpected error and crashed. Here's what I collect.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         textAlign = TextAlign.Center,
@@ -173,7 +168,7 @@ class CrashActivity : ComponentActivity() {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        text = "✓ Crash log copied to clipboard",
+                        text = "Crash log copied to clipboard",
                         modifier = Modifier.padding(16.dp),
                         color = MaterialTheme.colorScheme.inverseOnSurface,
                         style = MaterialTheme.typography.bodyMedium
@@ -183,7 +178,7 @@ class CrashActivity : ComponentActivity() {
 
             // Error Details Section
             Text(
-                text = "Technical Details",
+                text = "Logs",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -213,14 +208,6 @@ class CrashActivity : ComponentActivity() {
                 }
             }
 
-            // Footer
-            Text(
-                text = "Please consider sharing this log with the developers to help improve the app.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
         }
     }
 }
