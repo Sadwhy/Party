@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import io.sadwhy.party.R
 import io.sadwhy.party.ui.theme.AppTheme
 import io.sadwhy.party.MainActivity
+import kotlinx.coroutines.launch
 
 class CrashActivity : ComponentActivity() {
 
@@ -82,36 +83,33 @@ fun CrashScreen(
     onCopyLog: () -> Unit,
     onRestartApp: () -> Unit
 ) {
-    var showToast by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-    LaunchedEffect(showToast) {
-        if (showToast) {
-            kotlinx.coroutines.delay(2000)
-            showToast = false
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            CrashHeaderSection()
+
+            ActionButtonsSection(
+                onCopyLog = {
+                    onCopyLog()
+                    scope.launch {
+                        snackbarHostState.showSnackbar("Crash log copied to clipboard")
+                    }
+                },
+                onRestartApp = onRestartApp
+            )
+
+            LogsDisplaySection(crashLog = crashLog)
         }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        CrashHeaderSection()
-        
-        ActionButtonsSection(
-            onCopyLog = {
-                onCopyLog()
-                showToast = true
-            },
-            onRestartApp = onRestartApp
-        )
-
-        if (showToast) {
-            ToastMessage(message = "Crash log copied to clipboard")
-        }
-
-        LogsDisplaySection(crashLog = crashLog)
     }
 }
 
@@ -145,7 +143,7 @@ fun CrashHeaderSection() {
             )
 
             Text(
-                text = "The app encountered an unexpected error and crashed. Here's what I collect.",
+                text = "The app encountered an unexpected error and crashed. Here's what I collected.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onErrorContainer,
                 textAlign = TextAlign.Center,
