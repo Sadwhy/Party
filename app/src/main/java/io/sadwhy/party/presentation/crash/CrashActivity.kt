@@ -8,19 +8,25 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import io.sadwhy.party.R
 import io.sadwhy.party.ui.theme.AppTheme
 import io.sadwhy.party.MainActivity
-import kotlinx.coroutines.delay
 
 class CrashActivity : ComponentActivity() {
 
@@ -46,16 +51,45 @@ class CrashActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                CrashScreen(crashLog, clipboardManager)
+                CrashScreen(
+                    crashLog = crashLog,
+                    onCopyLog = { copyLogToClipboard(crashLog) },
+                    onRestartApp = { restartApp() }
+                )
             }
         }
     }
+
+    private fun copyLogToClipboard(log: String) {
+        clipboardManager.setPrimaryClip(
+            ClipData.newPlainText("Crash Log", log)
+        )
+    }
+
+    private fun restartApp() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+        startActivity(intent)
+        finish()
+    }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CrashScreen(crashLog: String, clipboardManager: ClipboardManager) {
-    val context = LocalContext.current
+fun CrashScreen(
+    crashLog: String,
+    onCopyLog: () -> Unit,
+    onRestartApp: () -> Unit
+) {
     var showToast by remember { mutableStateOf(false) }
+
+    LaunchedEffect(showToast) {
+        if (showToast) {
+            kotlinx.coroutines.delay(2000)
+            showToast = false
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -63,30 +97,26 @@ fun CrashScreen(crashLog: String, clipboardManager: ClipboardManager) {
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        CrashHeader()
-        CrashActions(
-            crashLog = crashLog,
-            clipboardManager = clipboardManager,
-            onCopied = { showToast = true },
-            onRestart = {
-                val intent = Intent(context, MainActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                }
-                context.startActivity(intent)
-                (context as? Activity)?.finish()
-            }
+        CrashHeaderSection()
+        
+        ActionButtonsSection(
+            onCopyLog = {
+                onCopyLog()
+                showToast = true
+            },
+            onRestartApp = onRestartApp
         )
+
         if (showToast) {
-            CrashToast()
+            ToastMessage(message = "Crash log copied to clipboard")
         }
-        Box(modifier = Modifier.weight(1f)) {
-            CrashLogSection(crashLog)
-        }
+
+        LogsDisplaySection(crashLog = crashLog)
     }
 }
 
 @Composable
-fun CrashHeader() {
+fun CrashHeaderSection() {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -105,6 +135,7 @@ fun CrashHeader() {
                 tint = MaterialTheme.colorScheme.onErrorContainer,
                 modifier = Modifier.size(48.dp)
             )
+
             Text(
                 text = "Oops! Something went wrong",
                 style = MaterialTheme.typography.headlineSmall,
@@ -112,8 +143,9 @@ fun CrashHeader() {
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
+
             Text(
-                text = "The app encountered an unexpected error and crashed. Here's what I collected.",
+                text = "The app encountered an unexpected error and crashed. Here's what I collect.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onErrorContainer,
                 textAlign = TextAlign.Center,
@@ -124,23 +156,16 @@ fun CrashHeader() {
 }
 
 @Composable
-fun CrashActions(
-    crashLog: String,
-    clipboardManager: ClipboardManager,
-    onCopied: () -> Unit,
-    onRestart: () -> Unit
+fun ActionButtonsSection(
+    onCopyLog: () -> Unit,
+    onRestartApp: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         FilledTonalButton(
-            onClick = {
-                clipboardManager.setPrimaryClip(
-                    ClipData.newPlainText("Crash Log", crashLog)
-                )
-                onCopied()
-            },
+            onClick = onCopyLog,
             modifier = Modifier.weight(1f),
             colors = ButtonDefaults.filledTonalButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer
@@ -156,7 +181,7 @@ fun CrashActions(
         }
 
         Button(
-            onClick = onRestart,
+            onClick = onRestartApp,
             modifier = Modifier.weight(1f)
         ) {
             Icon(
@@ -171,25 +196,7 @@ fun CrashActions(
 }
 
 @Composable
-fun CrashToast() {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.inverseSurface
-        ),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Text(
-            text = "Crash log copied to clipboard",
-            modifier = Modifier.padding(16.dp),
-            color = MaterialTheme.colorScheme.inverseOnSurface,
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
-}
-
-@Composable
-fun CrashLogSection(crashLog: String) {
+fun LogsDisplaySection(crashLog: String) {
     Text(
         text = "Logs",
         style = MaterialTheme.typography.titleMedium,
@@ -199,27 +206,45 @@ fun CrashLogSection(crashLog: String) {
 
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .weight(1f),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .padding(16.dp)
-                .horizontalScroll(rememberScrollState())
-                .verticalScroll(rememberScrollState())
-        ) {
-            SelectionContainer {
-                Text(
-                    text = crashLog,
-                    fontFamily = FontFamily.Monospace,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 16.sp
-                )
-            }
+        SelectionContainer {
+            Text(
+                text = crashLog,
+                fontFamily = FontFamily.Monospace,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .horizontalScroll(rememberScrollState())
+                    .padding(16.dp),
+                lineHeight = 16.sp,
+                softWrap = false
+            )
         }
+    }
+}
+
+@Composable
+fun ToastMessage(message: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.inverseSurface
+        ),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Text(
+            text = message,
+            modifier = Modifier.padding(16.dp),
+            color = MaterialTheme.colorScheme.inverseOnSurface,
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
