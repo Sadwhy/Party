@@ -79,7 +79,9 @@ fun CrashScreen(crashLog: String, clipboardManager: ClipboardManager) {
         if (showToast) {
             CrashToast()
         }
-        CrashLogSection(crashLog)
+        Box(modifier = Modifier.weight(1f)) {
+            CrashLogSection(crashLog)
+        }
     }
 }
 
@@ -197,8 +199,7 @@ fun CrashLogSection(crashLog: String) {
 
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f),
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
         ),
