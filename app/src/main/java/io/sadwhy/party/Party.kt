@@ -13,10 +13,10 @@ import coil3.request.allowHardware
 import coil3.request.crossfade
 import com.google.android.material.color.DynamicColors
 import io.sadwhy.party.network.OkHttp
+import io.sadwhy.party.presentation.crash.CrashActivity
+import io.sadwhy.party.presentation.crash.GlobalExceptionHandler
 
-class Party :
-    Application(),
-    SingletonImageLoader.Factory {
+class Party : Application(), SingletonImageLoader.Factory {
 
     companion object {
         lateinit var appContext: Context
@@ -25,6 +25,7 @@ class Party :
 
     override fun onCreate() {
         super.onCreate()
+        Thread.setDefaultUncaughtExceptionHandler(GlobalExceptionHandler(applicationContext, CrashActivity::class.java))
         appContext = applicationContext
         DynamicColors.applyToActivitiesIfAvailable(this)
     }
