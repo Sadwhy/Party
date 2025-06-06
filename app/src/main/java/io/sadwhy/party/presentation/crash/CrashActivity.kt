@@ -13,15 +13,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import io.sadwhy.party.R
 import io.sadwhy.party.MainActivity
 
 class CrashActivity : ComponentActivity() {
@@ -75,7 +75,10 @@ class CrashActivity : ComponentActivity() {
                         ClipData.newPlainText("Crash Log", crashLog)
                     )
                 }) {
-                    Icon(Icons.Default.ContentCopy, contentDescription = null)
+                    Icon(
+                        painter = painterResource(R.drawable.content_copy),
+                        contentDescription = null
+                    )
                     Spacer(Modifier.width(8.dp))
                     Text("Copy Log")
                 }
