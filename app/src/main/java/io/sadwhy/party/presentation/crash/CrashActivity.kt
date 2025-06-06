@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.sadwhy.party.R
 import io.sadwhy.party.MainActivity
 
 class CrashActivity : ComponentActivity() {
@@ -134,7 +134,7 @@ class CrashActivity : ComponentActivity() {
                     )
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ContentCopy,
+                        painter = painterResource(R.drawable.content_copy),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
