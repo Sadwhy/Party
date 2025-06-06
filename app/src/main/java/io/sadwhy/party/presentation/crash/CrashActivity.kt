@@ -209,8 +209,8 @@ fun LogsDisplaySection(crashLog: String) {
             .fillMaxSize()
     ) {
         Text(
-            text = "Logs",
-            style = MaterialTheme.typography.titleMedium,
+            text = "Crash Logs:",
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -234,7 +234,7 @@ fun LogsDisplaySection(crashLog: String) {
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                         .horizontalScroll(rememberScrollState())
-                        .padding(16.dp),
+                        .padding(12.dp),
                     lineHeight = 16.sp,
                     softWrap = false
                 )
