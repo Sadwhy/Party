@@ -29,7 +29,9 @@
         <activity
             android:name=".presentation.crash.CrashActivity"
             android:exported="true"
-            android:theme="@style/Theme.App"/>
+            android:excludeFromRecents="true"
+            android:process=":error_process"
+            android:launchMode="singleTask" />
 
     </application>
 </manifest>
