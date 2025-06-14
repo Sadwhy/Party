@@ -31,6 +31,7 @@ fun ExpandableHtmlText(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val primaryColor = MaterialTheme.colorScheme.primary
 
     // Convert HTML to Spanned with proper formatting
     val spanned: Spanned = remember(htmlText) {
@@ -54,7 +55,7 @@ fun ExpandableHtmlText(
                 
                 addStyle(
                     style = SpanStyle(
-                        color = MaterialTheme.colorScheme.primary,
+                        color = primaryColor,
                         textDecoration = TextDecoration.Underline
                     ),
                     start = start,
