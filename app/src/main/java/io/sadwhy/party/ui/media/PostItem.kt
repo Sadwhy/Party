@@ -60,16 +60,17 @@ fun PostItem(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PostHeader(post)
+                PostHeader(post, domain)
                 PostText(post)
                 PostAttachments(post, domain, onImageLongClick)
+                PostBottom(post, false) { /* TODO */ }
             }
         } ?: LoadingPlaceholder()
     }
 }
 
 @Composable
-private fun PostHeader(post: Post) {
+private fun PostHeader(post: Post, domain: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -77,7 +78,7 @@ private fun PostHeader(post: Post) {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             AsyncImage(
-                model = "https://img.kemono.su/icons/${post.service}/${post.user}",
+                model = "https://img.${domain}.su/icons/${post.service}/${post.user}",
                 contentDescription = "Profile Image",
                 modifier = Modifier
                     .size(48.dp)
@@ -128,7 +129,9 @@ private fun PostAttachments(
     onImageClick: () -> Unit
 ) {
     post.attachments?.let { attachments ->
-        val pagerState = rememberPagerState(pageCount = { attachments.size })
+        val attachmentSize = attachments.size
+        val pagerState = rememberPagerState(pageCount = { attachmentSize } )
+        val displayPage = pagerState.currentPage + 1
 
         Box(
             modifier = Modifier
@@ -137,6 +140,7 @@ private fun PostAttachments(
                 .clip(RoundedCornerShape(12.dp))
                 .background(Color.Black)
         ) {
+            Text("${displayPage}/${attachmentSize}")
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
@@ -164,6 +168,52 @@ private fun PostAttachments(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun PostBottom(
+    post: Post,
+    isLiked: Boolean,
+    onLikeToggle: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        IconToggleButton(
+            checked = isLiked,
+            onCheckedChange = { onLikeToggle(it) }
+        ) {
+            Icon(
+                painter = painterResource(
+                    if (isLiked) R.drawable.ic_heart_filled
+                    else R.drawable.ic_heart_outline
+                ),
+                contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked"
+            )
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        IconButton(onClick = { /* TODO */ }) {
+            Icon(
+                painter = painterResource(R.drawable.comment),
+                contentDescription = "Comments button"
+            )
+        }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        IconButton(onClick = { /* TODO */ }) {
+            Icon(
+                painter = painterResource(R.drawable.ic_round_share),
+                contentDescription = "Share button"
+            )
         }
     }
 }

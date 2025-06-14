@@ -27,8 +27,7 @@ import androidx.core.text.HtmlCompat
 @Composable
 fun ExpandableHtmlText(
     htmlText: String,
-    minimizedMaxLines: Int = 3,
-    linkColor: Color = MaterialTheme.colorScheme.primary
+    minimizedMaxLines: Int = 3
 ) {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -55,7 +54,7 @@ fun ExpandableHtmlText(
                 
                 addStyle(
                     style = SpanStyle(
-                        color = linkColor,
+                        color = MaterialTheme.colorScheme.primary,
                         textDecoration = TextDecoration.Underline
                     ),
                     start = start,
@@ -114,12 +113,11 @@ fun ExpandableHtmlText(
     }
 }
 
-// better HTML parsing for complex content
+// Alternative version with better HTML parsing for complex content
 @Composable
 fun AdvancedHtmlText(
     htmlText: String,
-    minimizedMaxLines: Int = 3,
-    linkColor: Color = MaterialTheme.colorScheme.primary
+    minimizedMaxLines: Int = 3
 ) {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -144,7 +142,7 @@ fun AdvancedHtmlText(
                         BlockType.LINK -> {
                             Text(
                                 text = block.content,
-                                color = linkColor,
+                                color = MaterialTheme.colorScheme.primary,
                                 textDecoration = TextDecoration.Underline,
                                 modifier = Modifier.clickable {
                                     try {
