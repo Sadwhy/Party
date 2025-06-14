@@ -48,6 +48,7 @@ fun PostItem(
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         nullablePost?.let { post ->
+            var checked by remember { mutableStateOf(false) }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -64,7 +65,7 @@ fun PostItem(
                 PostHeader(post, domain)
                 PostText(post)
                 PostAttachments(post, domain, onImageLongClick)
-                PostBottom(post, false) { /* TODO */ }
+                PostBottom(post, checked) { checked = it }
             }
         } ?: LoadingPlaceholder()
     }
@@ -141,7 +142,6 @@ private fun PostAttachments(
                 .clip(RoundedCornerShape(12.dp))
                 .background(Color.Black)
         ) {
-            Text("${displayPage}/${attachmentSize}")
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
@@ -169,6 +169,11 @@ private fun PostAttachments(
                     }
                 }
             }
+            CounterBadge("${displayPage}/${attachmentSize}",
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(2.dp)
+            )
         }
     }
 }
@@ -181,8 +186,7 @@ private fun PostBottom(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -195,27 +199,52 @@ private fun PostBottom(
                     if (isLiked) R.drawable.ic_heart_filled
                     else R.drawable.ic_heart_outline
                 ),
-                contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked"
+                contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked",
+                modifier = Modifier.size(24.dp)
             )
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(4.dp))
 
         IconButton(onClick = { /* TODO */ }) {
             Icon(
                 painter = painterResource(R.drawable.comment),
-                contentDescription = "Comments button"
+                contentDescription = "Comments button",
+                modifier = Modifier.size(24.dp)
             )
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(4.dp))
 
         IconButton(onClick = { /* TODO */ }) {
             Icon(
                 painter = painterResource(R.drawable.ic_round_share),
-                contentDescription = "Share button"
+                contentDescription = "Share button",
+                modifier = Modifier.size(24.dp)
             )
         }
+    }
+}
+
+@Composable
+private fun CounterBadge(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        shadowElevation = 8.dp,
+        shape = RoundedCornerShape(12.dp),
+        color = Color.Black.copy(alpha = 0.7f)
+    ) {
+        Text(
+            text = text,
+            color = Color.White,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier
+                .padding(horizontal = 2.dp, vertical = 2.dp
+            )
+        )
     }
 }
 
