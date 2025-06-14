@@ -57,7 +57,7 @@ fun PostItem(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(12.dp)
                     .animateContentSize(
                         animationSpec = spring(
                         dampingRatio = Spring.DampingRatioNoBouncy,
@@ -177,7 +177,7 @@ private fun PostAttachments(
             CounterBadge("${displayPage}/${attachmentSize}",
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(2.dp)
+                    .padding(4.dp)
             )
         }
     }
@@ -196,6 +196,7 @@ private fun PostBottom(
         horizontalArrangement = Arrangement.Start
     ) {
         IconToggleButton(
+            modifier = Modifier.size(24.dp),
             checked = isLiked,
             onCheckedChange = { onLikeToggle(it) }
         ) {
@@ -205,27 +206,20 @@ private fun PostBottom(
                     else R.drawable.ic_heart_outline
                 ),
                 contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked",
-                modifier = Modifier.size(24.dp)
             )
         }
 
-        Spacer(modifier = Modifier.width(4.dp))
-
-        IconButton(onClick = { /* TODO */ }) {
+        IconButton(modifier = Modifier.size(24.dp), onClick = { /* TODO */ }) {
             Icon(
                 painter = painterResource(R.drawable.comment),
-                contentDescription = "Comments button",
-                modifier = Modifier.size(24.dp)
+                contentDescription = "Comments button"
             )
         }
 
-        Spacer(modifier = Modifier.width(4.dp))
-
-        IconButton(onClick = { /* TODO */ }) {
+        IconButton(modifier = Modifier.size(24.dp), onClick = { /* TODO */ }) {
             Icon(
                 painter = painterResource(R.drawable.ic_round_share),
-                contentDescription = "Share button",
-                modifier = Modifier.size(24.dp)
+                contentDescription = "Share button"
             )
         }
     }
@@ -239,7 +233,7 @@ private fun CounterBadge(
     Surface(
         modifier = modifier,
         shadowElevation = 8.dp,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         color = Color.Black.copy(alpha = 0.7f)
     ) {
         Text(
