@@ -33,9 +33,8 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
     
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(title: String, text: String) {
-    val vm = viewModel<SearchViewModel>()
-    val post by vm.post.collectAsState()
+fun SearchScreen(title: String, text: String, searchViewModel: SearchViewModel = viewModel()) {
+    val post by searchViewModel.post.collectAsState()
 
     val testUrl = "https://kemono.su/patreon/user/5349313/post/115030269"
     var url by remember { mutableStateOf(testUrl) }
@@ -86,7 +85,7 @@ fun SearchScreen(title: String, text: String) {
 
             Button(
                 onClick = {
-                    runFun(url, vm)
+                    runFun(url, searchViewModel)
                 }
             ) {
                 Text("Run Function")

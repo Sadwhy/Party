@@ -177,7 +177,7 @@ private fun PostAttachments(
             CounterBadge("${displayPage}/${attachmentSize}",
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(4.dp)
+                    .padding(6.dp)
             )
         }
     }
@@ -196,7 +196,6 @@ private fun PostBottom(
         horizontalArrangement = Arrangement.Start
     ) {
         IconToggleButton(
-            modifier = Modifier.size(24.dp),
             checked = isLiked,
             onCheckedChange = { onLikeToggle(it) }
         ) {
@@ -206,20 +205,23 @@ private fun PostBottom(
                     else R.drawable.ic_heart_outline
                 ),
                 contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked",
+                modifier = Modifier.size(24.dp)
             )
         }
 
-        IconButton(modifier = Modifier.size(24.dp), onClick = { /* TODO */ }) {
+        IconButton(onClick = { /* TODO */ }) {
             Icon(
                 painter = painterResource(R.drawable.comment),
-                contentDescription = "Comments button"
+                contentDescription = "Comments button",
+                modifier = Modifier.size(24.dp)
             )
         }
 
-        IconButton(modifier = Modifier.size(24.dp), onClick = { /* TODO */ }) {
+        IconButton(onClick = { /* TODO */ }) {
             Icon(
                 painter = painterResource(R.drawable.ic_round_share),
-                contentDescription = "Share button"
+                contentDescription = "Share button",
+                modifier = Modifier.size(24.dp)
             )
         }
     }
@@ -233,7 +235,7 @@ private fun CounterBadge(
     Surface(
         modifier = modifier,
         shadowElevation = 8.dp,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(10.dp),
         color = Color.Black.copy(alpha = 0.7f)
     ) {
         Text(
@@ -241,7 +243,7 @@ private fun CounterBadge(
             color = Color.White,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier
-                .padding(horizontal = 2.dp, vertical = 2.dp
+                .padding(horizontal = 4.dp, vertical = 4.dp
             )
         )
     }
