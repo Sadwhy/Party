@@ -119,6 +119,7 @@ fun CrashScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val logCopied = stringResource(R.string.log_copied)
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -137,7 +138,7 @@ fun CrashScreen(
                     onCopyLog()
                     scope.launch {
                         snackbarHostState.showSnackbar(
-                            message = stringResource(R.string.log_copied),
+                            message = logCopied,
                             duration = SnackbarDuration.Short
                         )
                     }

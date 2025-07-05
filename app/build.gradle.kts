@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "io.sadwhy.party"
-        minSdk = 24 // Increased for better Compose support
+        minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -26,10 +26,6 @@ android {
         buildConfig = true
         viewBinding = true
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
     }
 
     compileOptions {
@@ -72,6 +68,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+composeCompiler {
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 dependencies {
