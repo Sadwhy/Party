@@ -8,4 +8,14 @@
         Et magni quasi vel nemo omnis et voluptate quisquam vel corporis fuga ut consequatur voluptas At quis veniam. At assumenda illum id minus veritatis id consequatur ipsum est quod corrupti quo adipisci sint. Quo explicabo doloribus et excepturi internos est reiciendis laboriosam ut explicabo veniam ut culpa mollitia in ducimus sint aut autem voluptatem! In consectetur laudantium non omnis saepe nam sint fuga.
         Non quae tempore quo provident laudantium qui illo dolor vel quia dolor et exercitationem adipisci quo nemo aliquam ea numquam beatae. Eum Quis dolore aut quia accusantium sed vero autem vel quaerat eaque et beatae dicta non delectus galisum non ullam nulla.
     </string>
+
+
+    <!-- crash screeen  --->
+    <string name="crash_header">Oops! Something went wrong</string>
+    <string name="crash_description">The app encountered an unexpected error and crashed. Here's what was collected.</string>
+    <string name="copy_log">Copy Log</string>
+    <string name="crash_logs">Crash Logs:</string>
+    <string name="log_copied">Crash log copied to clipboard</string>
+
+    <string name="restart_app">Restart App</string>
 </resources>

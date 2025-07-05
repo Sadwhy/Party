@@ -13,7 +13,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -21,23 +30,41 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.sadwhy.party.MainActivity
 import io.sadwhy.party.R
 import io.sadwhy.party.ui.theme.AppTheme
-import io.sadwhy.party.MainActivity
 import kotlinx.coroutines.launch
 
 class CrashActivity : ComponentActivity() {
@@ -46,12 +73,10 @@ class CrashActivity : ComponentActivity() {
         getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     }
 
-    private lateinit var crashLog: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        crashLog = intent.getStringExtra("exception") ?: "No crash information available"
+        val crashLog = intent.getStringExtra("exception") ?: "No crash information available"
 
         setContent {
             enableEdgeToEdge(
@@ -111,7 +136,10 @@ fun CrashScreen(
                 onCopyLog = {
                     onCopyLog()
                     scope.launch {
-                        snackbarHostState.showSnackbar("Crash log copied to clipboard")
+                        snackbarHostState.showSnackbar(
+                            message = stringResource(R.string.log_copied),
+                            duration = SnackbarDuration.Short
+                        )
                     }
                 },
                 onRestartApp = onRestartApp
@@ -144,7 +172,7 @@ fun CrashHeaderSection() {
             )
 
             Text(
-                text = "Oops! Something went wrong",
+                text = stringResource(R.string.crash_header),
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onErrorContainer,
                 fontWeight = FontWeight.Bold,
@@ -152,7 +180,7 @@ fun CrashHeaderSection() {
             )
 
             Text(
-                text = "The app encountered an unexpected error and crashed. Here's what I collected.",
+                text = stringResource(R.string.crash_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onErrorContainer,
                 textAlign = TextAlign.Center,
@@ -184,7 +212,7 @@ fun ActionButtonsSection(
                 modifier = Modifier.size(18.dp)
             )
             Spacer(Modifier.width(8.dp))
-            Text("Copy Log")
+            Text( text = stringResource(R.string.copy_log))
         }
 
         Button(
@@ -197,19 +225,21 @@ fun ActionButtonsSection(
                 modifier = Modifier.size(18.dp)
             )
             Spacer(Modifier.width(8.dp))
-            Text("Restart App")
+            Text( text = stringResource(R.string.restart_app))
         }
     }
 }
 
 @Composable
 fun LogsDisplaySection(crashLog: String) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Text(
-            text = "Crash Logs:",
+            text = stringResource(R.string.crash_logs),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface
@@ -232,8 +262,8 @@ fun LogsDisplaySection(crashLog: String) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .horizontalScroll(rememberScrollState())
+                        .verticalScroll(scrollState)
+                        .horizontalScroll(scrollState)
                         .padding(12.dp),
                     lineHeight = 16.sp,
                     softWrap = false
