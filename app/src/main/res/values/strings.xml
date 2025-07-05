@@ -10,7 +10,7 @@
     </string>
 
 
-    <!-- crash screeen  --->
+    <!-- crash screen -->
     <string name="crash_header">Oops! Something went wrong</string>
     <string name="crash_description">The app encountered an unexpected error and crashed. Here's what was collected.</string>
     <string name="copy_log">Copy Log</string>
