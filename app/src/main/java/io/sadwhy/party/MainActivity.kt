@@ -21,7 +21,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import io.sadwhy.party.R
 import io.sadwhy.party.ui.main.home.HomeScreen
-import io.sadwhy.party.ui.main.library.LibraryFragment
+import io.sadwhy.party.ui.main.library.LibraryScreen
 import io.sadwhy.party.ui.main.search.SearchScreen
 import io.sadwhy.party.ui.theme.AppTheme
 
@@ -125,18 +125,7 @@ fun MainScreen() {
                     SearchScreen("Search", "Compose Search Screen")
                 }
                 composable("library") {
-                    androidx.compose.ui.viewinterop.AndroidView(
-                        factory = { context ->
-                            FragmentContainerView(context).apply {
-                                id = android.view.View.generateViewId()
-                                (context as AppCompatActivity).supportFragmentManager
-                                    .beginTransaction()
-                                    .replace(id, LibraryFragment())
-                                    .commit()
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize()
-                    )
+                    LibraryScreen()
                 }
             }
         }
