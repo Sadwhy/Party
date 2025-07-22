@@ -22,17 +22,17 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 @Composable
 fun ZoomableAttachmentImage(
     domain: String,
-    a: Attachment,
+    attachment: Attachment,
     onLongClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
 
-    val fullImageUrl = remember(domain, a.path, a.name) {
-        buildFullImageUrl(domain, a)
+    val fullImageUrl = remember(domain, attachment.path, attachment.name) {
+        buildFullImageUrl(domain, attachment)
     }
 
-    val thumbnailUrl = remember(domain, a.path) {
-        buildThumbnailUrl(domain, a)
+    val thumbnailUrl = remember(domain, attachment.path) {
+        buildThumbnailUrl(domain, attachment)
     }
 
     Box(

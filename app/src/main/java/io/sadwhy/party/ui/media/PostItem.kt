@@ -135,9 +135,8 @@ private fun PostAttachments(
     domain: String,
     onImageClick: () -> Unit
 ) {
-    post.attachments?.let { attachments ->
-        val attachmentSize = attachments.size
-        val pagerState = rememberPagerState(pageCount = { attachmentSize } )
+    post.attachments?.takeIf { it.isNotEmpty() }?.let { attachments ->
+        val pagerState = rememberPagerState(pageCount = { attachments.size } )
         val displayPage = pagerState.currentPage + 1
 
         Box(
@@ -156,7 +155,7 @@ private fun PostAttachments(
                     MediaType.IMAGE -> {
                         ZoomableAttachmentImage(
                             domain = domain,
-                            a = attachment,
+                            attachment = attachment,
                             onLongClick = onImageClick
                         )
                     }
@@ -174,7 +173,7 @@ private fun PostAttachments(
                     }
                 }
             }
-            CounterBadge("${displayPage}/${attachmentSize}",
+            CounterBadge("${displayPage}/${attachments.size}",
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(6.dp)
