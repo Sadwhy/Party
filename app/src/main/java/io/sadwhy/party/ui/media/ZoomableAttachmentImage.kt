@@ -17,7 +17,6 @@ import me.saket.telephoto.zoomable.rememberZoomablePeekOverlayState
 import me.saket.telephoto.zoomable.zoomablePeekOverlay
 import io.sadwhy.party.data.model.Attachment
 import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 @Composable
 fun ZoomableAttachmentImage(
@@ -70,25 +69,24 @@ fun ZoomableAttachmentImage(
 }
 
 private fun buildFullImageUrl(domain: String, attachment: Attachment): String {
-    return "https://$domain.su".toHttpUrlOrNull()
-        ?.newBuilder()
-        ?.addPathSegment("data${attachment.path}")
-        ?.apply {
-            attachment.name?.takeIf { it.isNotEmpty() }?.let {
-                addQueryParameter("f", it)
-            }
-        }
-        ?.build()
-        ?.toString()
-        .orEmpty()
+    val urlBuilder = HttpUrl.Builder()
+        .scheme("https")
+        .host("$domain.su")
+        .addPathSegment("data${attachment.path}")
+
+    if (!attachment.name.isNullOrBlank()) {
+        urlBuilder.addQueryParameter("f", attachment.name)
+    }
+
+    return urlBuilder.build().toString()
 }
 
 private fun buildThumbnailUrl(domain: String, attachment: Attachment): String {
-    return "https://img.$domain.su".toHttpUrlOrNull()
-        ?.newBuilder()
-        ?.addPathSegment("thumbnail")
-        ?.addPathSegment("data${attachment.path}")
-        ?.build()
-        ?.toString()
-        .orEmpty()
+    return HttpUrl.Builder()
+        .scheme("https")
+        .host("img.$domain.su")
+        .addPathSegment("thumbnail")
+        .addPathSegment("data${attachment.path}")
+        .build()
+        .toString()
 }
