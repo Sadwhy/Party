@@ -6,7 +6,7 @@ import io.sadwhy.party.data.model.Creator
 import io.sadwhy.party.network.RetrofitClient
 import retrofit2.Response
 
-object CreatorRepository {
+class CreatorRepository {
     private val creatorService = RetrofitClient.retrofit.create(CreatorService::class.java)
 
     suspend fun getAllCreators(): Response<List<Creator>> {
