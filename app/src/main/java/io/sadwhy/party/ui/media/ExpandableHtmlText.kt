@@ -40,23 +40,23 @@ fun ExpandableHtmlText(
 
     val context = LocalContext.current
 
-    val annotatedString = remember(htmlText) {
+    val textColor = MaterialTheme.colorScheme.onSurface
+    val linkColor = MaterialTheme.colorScheme.primary
+
+    val annotatedString = remember(htmlText, textColor, linkColor) {
         val spanned = HtmlCompat.fromHtml(htmlText, HtmlCompat.FROM_HTML_MODE_COMPACT)
         buildAnnotatedString {
-            withStyle(
-                style = SpanStyle(color = MaterialTheme.colorScheme.onSurface)
-            ) {
+            withStyle(style = SpanStyle(color = textColor)) {
                 append(spanned)
             }
 
-            // Find all URL spans and apply a custom style
             val urlSpans = spanned.getSpans(0, spanned.length, android.text.style.URLSpan::class.java)
             urlSpans.forEach { span ->
                 val start = spanned.getSpanStart(span)
                 val end = spanned.getSpanEnd(span)
                 addStyle(
                     style = SpanStyle(
-                        color = MaterialTheme.colorScheme.primary, // Use theme's primary color for links
+                        color = linkColor,
                         textDecoration = TextDecoration.Underline
                     ),
                     start = start,
@@ -73,10 +73,8 @@ fun ExpandableHtmlText(
     }
 
     Column(
-        modifier = modifier
-            .animateContentSize() // animates expanding/collapsing
+        modifier = modifier.animateContentSize() // animates expanding/collapsing
     ) {
-        // ClickableText is used to handle both link clicks and expansion toggling
         ClickableText(
             text = annotatedString,
             style = MaterialTheme.typography.bodyLarge,
@@ -95,7 +93,7 @@ fun ExpandableHtmlText(
                     ?: run {
                         // toggle the expanded state if the text is overflowing
                         if (isOverflowing || isExpanded) {
-                           isExpanded = !isExpanded
+                            isExpanded = !isExpanded
                         }
                     }
             }
