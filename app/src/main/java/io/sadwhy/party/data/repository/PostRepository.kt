@@ -7,7 +7,7 @@ import io.sadwhy.party.data.model.PostResponse
 import io.sadwhy.party.network.RetrofitClient
 import retrofit2.Response
 
-class PostRepository(private val postService: PostService) : BaseRepository() {
+class PostRepository : BaseRepository() {
     private val postService = RetrofitClient.retrofit.create(PostService::class.java)
 
     suspend fun getRecentPosts(): Response<PostRecent> {
