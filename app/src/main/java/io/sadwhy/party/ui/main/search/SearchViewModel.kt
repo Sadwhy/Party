@@ -2,6 +2,7 @@ package io.sadwhy.party.ui.main.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.sadwhy.party.data.model.ApiResult
 import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.data.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,12 +28,21 @@ class SearchViewModel : ViewModel() {
         viewModelScope.launch {
             _post.value = null
             val response = api.getPost(service, user, id)
-            if (response.isSuccessful) {
-                val res = response.body()
-                _post.value = res?.post
-            } else {
-                _post.value = null
+            when (response) {
+                is ApiResult.Success -> {
+                    _post.value = response.data.post
+                }
+
+                is ApiResult.Failure -> {
+                    _post.value = null
+                }
+
+                is ApiResult.Exception -> {
+                    throw response.throwable
+                }
+
             }
         }
+
     }
 }
