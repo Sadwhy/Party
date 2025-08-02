@@ -1,18 +1,11 @@
 package io.sadwhy.party.network
 
-import kotlinx.serialization.json.Json
-import io.sadwhy.party.network.OkHttp
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "https://kemono.su/api/"
-
-    private val json = Json {
-        ignoreUnknownKeys = true
-        prettyPrint = false
-    }
+    private const val BASE_URL = "https://kemono.cr/api/"
 
     private val contentType = "application/json; charset=UTF-8".toMediaType()
 
@@ -20,7 +13,7 @@ object RetrofitClient {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(OkHttp.client)
-            .addConverterFactory(json.asConverterFactory(contentType))
+            .addConverterFactory(JsonProvider.json.asConverterFactory(contentType))
             .build()
     }
 }
