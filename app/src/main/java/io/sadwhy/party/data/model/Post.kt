@@ -19,9 +19,3 @@ data class Post(
     val attachments: List<Attachment>? = null,
     val substring: String? = null,
 )
-
-@Serializable
-data class File(
-    val name: String? = null,
-    val path: String? = null,
-)
