@@ -1,9 +1,16 @@
 package io.sadwhy.party
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -17,6 +24,13 @@ import androidx.navigation.compose.rememberNavController
 import io.sadwhy.party.screen.home.HomeScreen
 import io.sadwhy.party.screen.library.LibraryScreen
 import io.sadwhy.party.screen.search.SearchScreen
+
+data class BottomNavItem(
+    val route: String,
+    val label: String,
+    @DrawableRes val iconSelected: Int,
+    @DrawableRes val iconUnselected: Int
+)
 
 @Composable
 fun MainScreen() {
@@ -57,7 +71,7 @@ fun MainScreen() {
 
                         NavigationBarItem(
                             icon = {
-                                Crossfade(targetState = isSelected, label = "nav_icon") { selected ->
+                                Crossfade(targetState = isSelected) { selected ->
                                     Icon(
                                         painter = painterResource(
                                             id = if (selected) item.iconSelected else item.iconUnselected

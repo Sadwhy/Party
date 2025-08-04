@@ -1,6 +1,6 @@
 package io.sadwhy.party
 
-import android.graphics.Color.TRANSPARENT
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -13,8 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge(
-            SystemBarStyle.auto(TRANSPARENT, TRANSPARENT),
-            SystemBarStyle.dark(TRANSPARENT)
+            SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
+            SystemBarStyle.dark(Color.TRANSPARENT)
         )
 
         setContent {
