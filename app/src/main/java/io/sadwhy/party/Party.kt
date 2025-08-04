@@ -13,8 +13,8 @@ import coil3.request.allowHardware
 import coil3.request.crossfade
 import com.google.android.material.color.DynamicColors
 import io.sadwhy.party.network.OkHttp
-import io.sadwhy.party.presentation.crash.CrashActivity
-import io.sadwhy.party.presentation.crash.GlobalExceptionHandler
+import io.sadwhy.party.core.crash.CrashActivity
+import io.sadwhy.party.core.crash.GlobalExceptionHandler
 
 class Party : Application(), SingletonImageLoader.Factory {
 

@@ -20,10 +20,10 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import io.sadwhy.party.R
-import io.sadwhy.party.ui.main.home.HomeScreen
-import io.sadwhy.party.ui.main.library.LibraryScreen
-import io.sadwhy.party.ui.main.search.SearchScreen
-import io.sadwhy.party.ui.theme.AppTheme
+import io.sadwhy.party.screen.home.HomeScreen
+import io.sadwhy.party.screen.library.LibraryScreen
+import io.sadwhy.party.screen.search.SearchScreen
+import io.sadwhy.party.core.theme.AppTheme
 
 data class BottomNavItem(
     val route: String,
