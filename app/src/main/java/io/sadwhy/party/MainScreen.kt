@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -20,12 +19,31 @@ import io.sadwhy.party.screen.library.LibraryScreen
 import io.sadwhy.party.screen.search.SearchScreen
 
 @Composable
-fun MainScreen(
-    viewModel: MainViewModel = viewModel()
-) {
+fun MainScreen() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+
+    val bottomNavItems = listOf(
+        BottomNavItem(
+            route = "home",
+            label = "Home",
+            iconSelected = R.drawable.ic_home_filled,
+            iconUnselected = R.drawable.ic_home_outline
+        ),
+        BottomNavItem(
+            route = "search",
+            label = "Search",
+            iconSelected = R.drawable.ic_search_filled,
+            iconUnselected = R.drawable.ic_search_outline
+        ),
+        BottomNavItem(
+            route = "library",
+            label = "Library",
+            iconSelected = R.drawable.ic_bookmark_filled,
+            iconUnselected = R.drawable.ic_bookmark_outline
+        )
+    )
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -34,7 +52,7 @@ fun MainScreen(
         Scaffold(
             bottomBar = {
                 NavigationBar {
-                    viewModel.bottomNavItems.forEach { item ->
+                    bottomNavItems.forEach { item ->
                         val isSelected = currentDestination?.hierarchy?.any { it.route == item.route } == true
 
                         NavigationBarItem(
@@ -51,7 +69,13 @@ fun MainScreen(
                             label = { Text(item.label) },
                             selected = isSelected,
                             onClick = {
-                                viewModel.navigateToDestination(navController, item.route)
+                                navController.navigate(item.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         )
                     }
