@@ -30,9 +30,8 @@ class Party : Application(), SingletonImageLoader.Factory {
         DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
-    override fun newImageLoader(context: PlatformContext): ImageLoader =
-        ImageLoader
-            .Builder(context)
+    override fun newImageLoader(context: PlatformContext): ImageLoader {
+        return ImageLoader.Builder(context)
             .components {
                 add(
                     OkHttpNetworkFetcherFactory(
@@ -41,14 +40,12 @@ class Party : Application(), SingletonImageLoader.Factory {
                 )
             }
             .memoryCache {
-                MemoryCache
-                    .Builder()
+                MemoryCache.Builder()
                     .maxSizePercent(context, 0.25)
                     .build()
             }
             .diskCache {
-                DiskCache
-                    .Builder()
+                DiskCache.Builder()
                     .directory(cacheDir.resolve("image_cache"))
                     .maxSizeBytes(1024 * 1024 * 100) // 100MB
                     .build()
@@ -56,4 +53,6 @@ class Party : Application(), SingletonImageLoader.Factory {
             .allowHardware(false)
             .crossfade(true)
             .build()
+    }
+
 }

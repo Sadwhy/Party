@@ -34,11 +34,11 @@ class SearchViewModel : ViewModel() {
                 }
 
                 is ApiResult.Failure -> {
-                    _post.value = null
+                    _post.value = null // TODO
                 }
 
                 is ApiResult.Exception -> {
-                    throw response.throwable
+                    throw response.throwable // TODO
                 }
 
             }
