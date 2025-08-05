@@ -10,7 +10,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,11 +38,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -104,7 +101,7 @@ internal fun FloatingConsoleView(viewModel: FloatingConsoleViewModel) {
             targetState = isExpanded,
             transitionSpec = {
                 (fadeIn(tween(300)) + scaleIn(initialScale = 0.9f)) togetherWith
-                (fadeOut(tween(200)) + scaleOut(targetScale = 0.9f))
+                        (fadeOut(tween(200)) + scaleOut(targetScale = 0.9f))
             },
             label = "FloatingConsoleAnimation"
         ) { expanded ->
@@ -143,9 +140,6 @@ internal fun FloatingHeadIcon(onClick: () -> Unit) {
 internal fun ConsolePanel(logs: List<Logger.LogEntry>, onClose: () -> Unit) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    var fontSize by remember { mutableFloatStateOf(12f) }
-
-    // Always scroll to the bottom when logs change
     LaunchedEffect(logs) {
         snapshotFlow { logs.size }
             .collect {
@@ -164,11 +158,6 @@ internal fun ConsolePanel(logs: List<Logger.LogEntry>, onClose: () -> Unit) {
             .shadow(8.dp, RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFF2B2B2B))
-            .pointerInput(Unit) {
-                detectTransformGestures { _, _, zoom, _ ->
-                    fontSize = (fontSize * zoom).coerceIn(8f, 24f)
-                }
-            }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -196,7 +185,7 @@ internal fun ConsolePanel(logs: List<Logger.LogEntry>, onClose: () -> Unit) {
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 items(logs) { log ->
-                    LogItem(log, fontSize.sp)
+                    LogItem(log, 12.sp)
                 }
             }
         }
