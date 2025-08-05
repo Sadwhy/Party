@@ -3,7 +3,7 @@ package io.sadwhy.party.core.debug.console
 import androidx.compose.ui.unit.IntOffset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-imoort io.sadwhy.party.core.debug.Logger
+import io.sadwhy.party.core.debug.Logger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

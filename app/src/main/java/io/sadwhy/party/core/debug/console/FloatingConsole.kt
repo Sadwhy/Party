@@ -11,7 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Terminal
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -96,7 +96,7 @@ internal fun FloatingHeadIcon(onClick: () -> Unit) {
             .size(56.dp)
     ) {
         Icon(
-            imageVector = Icons.Default.Terminal,
+            imageVector = Icons.Default.MoreVert,
             contentDescription = "Open Console",
             tint = MaterialTheme.colorScheme.onPrimary
         )
