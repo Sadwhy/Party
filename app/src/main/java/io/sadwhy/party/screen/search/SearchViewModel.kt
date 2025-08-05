@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import io.sadwhy.party.core.debug.Logger
 
 class SearchViewModel : ViewModel() {
     private val api = PostRepository()
@@ -26,11 +27,13 @@ class SearchViewModel : ViewModel() {
         currentId = id
 
         viewModelScope.launch {
+            Logger.log("Clicked on button")
             _post.value = null
             val response = api.getPost(service, user, id)
             when (response) {
                 is ApiResult.Success -> {
                     _post.value = response.data.post
+                    Logger.log(response.data.post.toString())
                 }
 
                 is ApiResult.Failure -> {

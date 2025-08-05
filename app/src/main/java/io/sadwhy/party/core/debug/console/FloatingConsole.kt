@@ -35,9 +35,7 @@ import kotlin.math.roundToInt
  * Disabled in release.
  *
  * Usage:
- * FloatingConsole {
- * MainScreen()
- * }
+ * FloatingConsole { MainScreen() }
  */
 @Composable
 fun FloatingConsole(content: @Composable () -> Unit) {
