@@ -100,7 +100,7 @@ private fun BottomBar(
                 selected = isSelected,
                 onClick = {
                     if (!isSelected) {
-                        NavControl.goToSingleTop(navController, item.destination)
+                        NavControl.goToAndClearBackStack(navController, item.destination)
                     }
                 }
             )
