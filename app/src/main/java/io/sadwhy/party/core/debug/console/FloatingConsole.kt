@@ -129,7 +129,7 @@ internal fun ConsolePanel(logs: List<Logger.LogEntry>, onClose: () -> Unit) {
                     .background(Color.Black.copy(alpha = 0.3f))
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Space-Between
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text("Debug Console", color = Color.White)
                 IconButton(onClick = onClose, modifier = Modifier.size(24.dp)) {
