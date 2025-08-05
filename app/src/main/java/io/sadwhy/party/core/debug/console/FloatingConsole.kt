@@ -168,7 +168,6 @@ internal fun ConsolePanel(logs: List<Logger.LogEntry>, onClose: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Debug Console", color = Color.White)
                 IconButton(onClick = onClose, modifier = Modifier.size(24.dp)) {
                     Icon(
                         Icons.Default.Close,
@@ -176,6 +175,7 @@ internal fun ConsolePanel(logs: List<Logger.LogEntry>, onClose: () -> Unit) {
                         tint = Color.White
                     )
                 }
+                Text("Debug Console", color = Color.White)
             }
 
             LazyColumn(

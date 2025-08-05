@@ -37,7 +37,11 @@ class SearchViewModel : ViewModel() {
                 }
 
                 is ApiResult.Failure -> {
-                    _post.value = null // TODO
+                    _post.value = null
+                    Logger.log(
+                        message = "Http ${response.code}: ${response.message}",
+                        level = Logger.LogLevel.ERROR
+                    )
                 }
 
                 is ApiResult.Exception -> {
