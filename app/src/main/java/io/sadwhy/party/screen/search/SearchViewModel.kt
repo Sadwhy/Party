@@ -20,6 +20,7 @@ class SearchViewModel : ViewModel() {
     private var currentId: String? = null
 
     fun fetchPost(service: String, user: String, id: String) {
+        Logger.log("Clicked on button")
         if (id == currentId && _post.value != null) {
             return
         }
@@ -27,7 +28,6 @@ class SearchViewModel : ViewModel() {
         currentId = id
 
         viewModelScope.launch {
-            Logger.log("Clicked on button")
             _post.value = null
             val response = api.getPost(service, user, id)
             when (response) {
