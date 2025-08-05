@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -41,13 +42,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.consume
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.IntOffset
@@ -57,7 +58,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.sadwhy.party.core.debug.Logger
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.snapshotFlow
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -94,7 +94,6 @@ internal fun FloatingConsoleView(viewModel: FloatingConsoleViewModel) {
             .offset { offset }
             .pointerInput(Unit) {
                 detectDragGestures { change, dragAmount ->
-                    change.consume()
                     viewModel.onDrag(
                         IntOffset(dragAmount.x.roundToInt(), dragAmount.y.roundToInt())
                     )
@@ -106,7 +105,8 @@ internal fun FloatingConsoleView(viewModel: FloatingConsoleViewModel) {
             transitionSpec = {
                 (fadeIn(tween(300)) + scaleIn(initialScale = 0.9f)) togetherWith
                 (fadeOut(tween(200)) + scaleOut(targetScale = 0.9f))
-            }
+            },
+            label = "FloatingConsoleAnimation"
         ) { expanded ->
             if (expanded) {
                 val logs by viewModel.logs.collectAsState()
@@ -145,6 +145,7 @@ internal fun ConsolePanel(logs: List<Logger.LogEntry>, onClose: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     var fontSize by remember { mutableFloatStateOf(12f) }
 
+    // Always scroll to the bottom when logs change
     LaunchedEffect(logs) {
         snapshotFlow { logs.size }
             .collect {
