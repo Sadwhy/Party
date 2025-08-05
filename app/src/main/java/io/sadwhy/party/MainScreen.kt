@@ -3,66 +3,88 @@ package io.sadwhy.party
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.NavDestination.Companion.hierarchy
-import io.sadwhy.party.core.navigation.MainNavHost
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import io.sadwhy.party.core.navigation.NavRoute
+import io.sadwhy.party.core.navigation.NavControl
+import io.sadwhy.party.core.navigation.NavControllerProvider
+import io.sadwhy.party.screen.home.HomeScreen
+import io.sadwhy.party.screen.library.LibraryScreen
+import io.sadwhy.party.screen.search.SearchScreen
 
 data class BottomNavItem(
-    val route: String,
+    val destination: NavRoute,
     val label: String,
     @DrawableRes val iconSelected: Int,
     @DrawableRes val iconUnselected: Int
 )
 
+fun getBottomNavItems() = listOf(
+    BottomNavItem(
+        destination = NavRoute.Home,
+        label = "Home",
+        iconSelected = R.drawable.ic_home_filled,
+        iconUnselected = R.drawable.ic_home_outline
+    ),
+    BottomNavItem(
+        destination = NavRoute.Search,
+        label = "Search",
+        iconSelected = R.drawable.ic_search_filled,
+        iconUnselected = R.drawable.ic_search_outline
+    ),
+    BottomNavItem(
+        destination = NavRoute.Library,
+        label = "Library",
+        iconSelected = R.drawable.ic_bookmark_filled,
+        iconUnselected = R.drawable.ic_bookmark_outline
+    )
+)
+
 @Composable
 fun MainScreen() {
-    val navController = rememberNavController()
-    val bottomNavItems = listOf(
-        BottomNavItem("home", "Home", R.drawable.ic_home_filled, R.drawable.ic_home_outline),
-        BottomNavItem("search", "Search", R.drawable.ic_search_filled, R.drawable.ic_search_outline),
-        BottomNavItem("library", "Library", R.drawable.ic_bookmark_filled, R.drawable.ic_bookmark_outline)
-    )
+    val navController = NavControllerProvider.getNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val currentDestination = NavRoute.fromRoute(currentRoute)
+    val bottomNavItems = getBottomNavItems()
 
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        MainScaffold(navController = navController, bottomNavItems = bottomNavItems)
+        Scaffold(
+            bottomBar = {
+                BottomBar(
+                    navController = navController,
+                    currentDestination = currentDestination,
+                    bottomNavItems = bottomNavItems
+                )
+            }
+        ) { innerPadding ->
+            NavHostContent(
+                navController = navController,
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
     }
 }
 
 @Composable
-private fun MainScaffold(
-    navController: NavHostController,
+private fun BottomBar(
+    navController: androidx.navigation.NavHostController,
+    currentDestination: NavRoute?,
     bottomNavItems: List<BottomNavItem>
 ) {
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navController = navController, items = bottomNavItems)
-        }
-    ) { innerPadding ->
-        MainNavHost(navController = navController, innerPadding = innerPadding)
-    }
-}
-
-@Composable
-private fun BottomNavigationBar(
-    navController: NavHostController,
-    items: List<BottomNavItem>
-) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-
     NavigationBar {
-        items.forEach { item ->
-            val isSelected = currentDestination?.hierarchy?.any { it.route == item.route } == true
-
+        bottomNavItems.forEach { item ->
+            val isSelected = currentDestination == item.destination
             NavigationBarItem(
                 icon = {
                     Crossfade(targetState = isSelected) { selected ->
@@ -77,15 +99,28 @@ private fun BottomNavigationBar(
                 label = { Text(item.label) },
                 selected = isSelected,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
+                    if (!isSelected) {
+                        NavControl.goToSingleTop(navController, item.destination)
                     }
                 }
             )
         }
+    }
+}
+
+
+@Composable
+private fun NavHostContent(
+    navController: androidx.navigation.NavHostController,
+    modifier: Modifier = Modifier
+) {
+    NavHost(
+        navController = navController,
+        startDestination = NavRoute.Home.route,
+        modifier = modifier
+    ) {
+        composable(NavRoute.Home.route) { HomeScreen() }
+        composable(NavRoute.Search.route) { SearchScreen("Search", "Compose Search Screen") }
+        composable(NavRoute.Library.route) { LibraryScreen() }
     }
 }
