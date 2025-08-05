@@ -125,4 +125,5 @@ dependencies {
     implementation("me.saket.telephoto:zoomable-peek-overlay:0.16.0")
     implementation("com.webtoonscorp.android:readmore-view:1.4.0")
     implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
+    implementation("com.github.jeziellago:compose-markdown:0.5.7")
 }

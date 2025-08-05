@@ -125,7 +125,7 @@ private fun PostText(post: Post) {
     }
 
     bodyText?.let {
-        ExpandableHtmlText(it)
+        ExpandableText(it)
     }
 }
 
