@@ -6,9 +6,11 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import io.sadwhy.party.core.debug.console.FloatingConsole
 import io.sadwhy.party.core.theme.AppTheme
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -19,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             AppTheme {
-                MainScreen()
+                FloatingConsole { MainScreen() }
             }
         }
     }
