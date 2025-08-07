@@ -14,8 +14,8 @@ fun DialogHandler() {
     val currentDialog by DialogController.currentDialog
 
     when (val dialog = currentDialog) {
-        is UrlDialog -> UrlDialog(content = dialog)
-        is ConfirmationDialog -> ConfirmationDialog(content = dialog)
+        is UrlDialog -> UrlDialogContent(content = dialog)
+        is ConfirmationDialog -> ConfirmationDialogContent(content = dialog)
         null -> {}
     }
 }

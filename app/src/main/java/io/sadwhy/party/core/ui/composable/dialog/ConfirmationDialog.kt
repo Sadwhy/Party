@@ -12,7 +12,7 @@ data class ConfirmationDialog(
     val title: String,
     val message: String,
     val confirmButtonText: String = "Confirm",
-    val onConfirm: () -> Unit, // The action to perform on confirmation
+    val onConfirm: () -> Unit,
 ) : DialogContent
 
 @Composable
