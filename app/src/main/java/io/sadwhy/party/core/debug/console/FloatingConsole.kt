@@ -48,12 +48,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.sadwhy.party.core.debug.Logger
+import io.sadwhy.party.R
 import io.sadwhy.party.core.ui.components.clipToDeviceCornerRadius
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -133,7 +135,7 @@ internal fun FloatingHeadIcon(onClick: () -> Unit) {
             .size(56.dp)
     ) {
         Icon(
-            imageVector = Icons.Default.MoreVert,
+            painter = painterResource(R.drawable.terminal),
             contentDescription = "Open Console",
             tint = MaterialTheme.colorScheme.onPrimary
         )
