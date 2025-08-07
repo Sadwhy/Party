@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.sadwhy.party.core.debug.Logger
+import io.sadwhy.party.core.ui.components.clipToDeviceCornerRadius
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -71,7 +72,10 @@ fun FloatingConsole(content: @Composable () -> Unit) {
     if (true) {
         val consoleViewModel: FloatingConsoleViewModel = viewModel()
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .clipToDeviceCornerRadius()
+        ) {
             content()
             FloatingConsoleView(viewModel = consoleViewModel)
         }
