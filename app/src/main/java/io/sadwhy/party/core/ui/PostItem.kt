@@ -51,20 +51,24 @@ fun PostItem(
     domain: String,
     onImageLongClick: () -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 200,
+                    delayMillis = 0,
+                    easing = EaseInSine
+                )
+            )
+    ) {
         nullablePost?.let { post ->
             var checked by remember { mutableStateOf(false) }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)
-                    .animateContentSize(
-                        animationSpec = tween(
-                            durationMillis = 200,
-                            delayMillis = 0,
-                            easing = EaseInSine
-                        )
-                    ),
+                    .padding(12.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -204,8 +208,9 @@ private fun PostBottom(
                     if (isLiked) R.drawable.ic_heart_filled
                     else R.drawable.ic_heart_outline
                 ),
+                tint = if (isLiked) Color.Red else Color.Unspecified
                 contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked",
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
 
@@ -213,7 +218,7 @@ private fun PostBottom(
             Icon(
                 painter = painterResource(R.drawable.comment),
                 contentDescription = "Comments button",
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
 
@@ -221,7 +226,7 @@ private fun PostBottom(
             Icon(
                 painter = painterResource(R.drawable.ic_round_share),
                 contentDescription = "Share button",
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
     }
