@@ -209,7 +209,7 @@ private fun PostBottom(
                     if (isLiked) R.drawable.ic_heart_filled
                     else R.drawable.ic_heart_outline
                 ),
-                tint = ColorProducer { if (isLiked) Color.Red else Color.Unspecified },
+                tint = ColorProducer { if (isLiked) Color.Red else MaterialTheme.colorScheme.onSurface },
                 contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked",
                 modifier = Modifier.size(24.dp)
             )
