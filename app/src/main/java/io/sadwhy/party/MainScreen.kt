@@ -15,6 +15,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import io.sadwhy.party.core.navigation.NavRoute
 import io.sadwhy.party.core.navigation.NavControl
 import io.sadwhy.party.core.navigation.NavControllerProvider
+import io.sadwhy.party.core.ui.composable.dialog.DialogHandler
 import io.sadwhy.party.screen.home.HomeScreen
 import io.sadwhy.party.screen.library.LibraryScreen
 import io.sadwhy.party.screen.search.SearchScreen
@@ -68,6 +69,7 @@ fun MainScreen() {
                 )
             }
         ) { innerPadding ->
+            DialogHandler()
             NavHostContent(
                 navController = navController,
                 modifier = Modifier.padding(innerPadding)

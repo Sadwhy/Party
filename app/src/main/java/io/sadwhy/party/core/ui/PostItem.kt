@@ -42,6 +42,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.sadwhy.party.R
+import io.sadwhy.party.core.ui.composable.dialog.DialogController
+import io.sadwhy.party.core.ui.composable.dialog.UrlDialog
 import io.sadwhy.party.data.model.Attachment
 import io.sadwhy.party.data.model.MediaType
 import io.sadwhy.party.data.model.Post
@@ -129,9 +131,10 @@ private fun PostText(post: Post, modifier: Modifier) {
         !post.content.isNullOrEmpty() -> post.content
         else -> null
     }
-
+    
+    // TODO: move this dialog function to screen level
     bodyText?.let {
-        ExpandableText(it, 4, modifier)
+        ExpandableText(it, 4, modifier) { url -> DialogController.show(UrlDialog(url)) }
     }
 }
 
