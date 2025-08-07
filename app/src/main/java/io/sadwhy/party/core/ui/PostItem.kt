@@ -74,7 +74,7 @@ fun PostItem(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 PostHeader(post, domain)
-                PostText(post)
+                PostText(post, Modifier.wrapContentHeight())
                 PostAttachments(post, domain, onImageLongClick)
                 PostBottom(post, checked) { checked = it }
             }
@@ -116,7 +116,7 @@ private fun PostHeader(post: Post, domain: String) {
 }
 
 @Composable
-private fun PostText(post: Post) {
+private fun PostText(post: Post, modifier: Modifier) {
     if (!post.title.isNullOrEmpty()) {
         Text(
             text = post.title,
@@ -131,7 +131,7 @@ private fun PostText(post: Post) {
     }
 
     bodyText?.let {
-        ExpandableText(it)
+        ExpandableText(it, 4, modifier)
     }
 }
 
