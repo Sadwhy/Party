@@ -1,0 +1,21 @@
+package io.sadwhy.party.core.ui.composable.dialog
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+
+/**
+ * A central composable responsible for displaying the correct dialog
+ * based on the state in the DialogController.
+ *
+ * Place this in the Scaffold at main screen.
+ */
+@Composable
+fun DialogHandler() {
+    val currentDialog by DialogController.currentDialog
+
+    when (val dialog = currentDialog) {
+        is UrlDialog -> UrlDialog(content = dialog)
+        is ConfirmationDialog -> ConfirmationDialog(content = dialog)
+        null -> {}
+    }
+}
