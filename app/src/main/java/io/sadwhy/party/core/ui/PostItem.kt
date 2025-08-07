@@ -21,6 +21,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ColorProvider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.IconButton
@@ -208,7 +209,7 @@ private fun PostBottom(
                     if (isLiked) R.drawable.ic_heart_filled
                     else R.drawable.ic_heart_outline
                 ),
-                tint = if (isLiked) Color.Red else Color.Unspecified
+                tint = ColorProvider { if (isLiked) Color.Red else Color.Unspecified },
                 contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked",
                 modifier = Modifier.size(24.dp)
             )
