@@ -1,8 +1,8 @@
 package io.sadwhy.party.core.ui
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.EaseInSine
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -59,9 +59,10 @@ fun PostItem(
                     .fillMaxWidth()
                     .padding(12.dp)
                     .animateContentSize(
-                        animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioNoBouncy,
-                            stiffness = Spring.StiffnessHigh
+                        animationSpec = tween(
+                            durationMillis = 200,
+                            delayMillis = 0,
+                            easing = EaseInSine
                         )
                     ),
                 verticalArrangement = Arrangement.Center,
@@ -204,7 +205,7 @@ private fun PostBottom(
                     else R.drawable.ic_heart_outline
                 ),
                 contentDescription = if (isLiked) "Like button - Liked" else "Like button - Unliked",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
 
@@ -212,7 +213,7 @@ private fun PostBottom(
             Icon(
                 painter = painterResource(R.drawable.comment),
                 contentDescription = "Comments button",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
 
@@ -220,7 +221,7 @@ private fun PostBottom(
             Icon(
                 painter = painterResource(R.drawable.ic_round_share),
                 contentDescription = "Share button",
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
     }
