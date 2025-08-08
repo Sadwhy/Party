@@ -104,6 +104,7 @@ fun SearchScreen(title: String, text: String, searchViewModel: SearchViewModel =
                 onProfileClick = {
                     CreatorScreen(
                         post = it,
+                        creator = null,
                         onBackClick = {} // { NavControl.backTo(navController)) }
                     ) 
                 }
