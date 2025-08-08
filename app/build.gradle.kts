@@ -125,5 +125,10 @@ dependencies {
     implementation("me.saket.telephoto:zoomable-peek-overlay:0.16.0")
     implementation("com.webtoonscorp.android:readmore-view:1.4.0")
     implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
-    implementation("com.github.Sadwhy:compose-markdown:b10ac7d83f")
+    implementation("com.github.Sadwhy:compose-markdown:02a2cfe269") {
+        exclude(group = "androidx.compose")
+        exclude(group = "io.coil-kt.coil3")
+        exclude(group = "androidx.core", module = "core-ktx")
+        exclude(group = "androidx.appcompat", module = "appcompat")
+    }
 }
