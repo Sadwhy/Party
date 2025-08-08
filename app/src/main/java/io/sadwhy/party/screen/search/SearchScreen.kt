@@ -27,6 +27,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.sadwhy.party.core.navigation.NavControl
+import io.sadwhy.party.core.navigation.NavControllerProvider
 import io.sadwhy.party.core.ui.PostItem
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -96,7 +98,8 @@ fun SearchScreen(title: String, text: String, searchViewModel: SearchViewModel =
             PostItem(
                 nullablePost = post,
                 domain = "kemono",
-                onImageLongClick = {}
+                onImageLongClick = {},
+                onProfileClick = { CreatorScreen(it) { NavControl.backTo(NavControllerProvider) } }
             )
         }
     }

@@ -52,7 +52,8 @@ import io.sadwhy.party.data.model.Post
 fun PostItem(
     nullablePost: Post?,
     domain: String,
-    onImageLongClick: () -> Unit
+    onImageLongClick: () -> Unit,
+    onProfileClick: (Post) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -75,7 +76,7 @@ fun PostItem(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PostHeader(post, domain)
+                PostHeader(post, domain) { onProfileClick(post) }
                 PostText(post, Modifier.wrapContentHeight())
                 PostAttachments(post, domain, onImageLongClick)
                 PostBottom(post, checked) { checked = it }
@@ -85,7 +86,7 @@ fun PostItem(
 }
 
 @Composable
-private fun PostHeader(post: Post, domain: String) {
+private fun PostHeader(post: Post, domain: String, onProfileClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -98,7 +99,8 @@ private fun PostHeader(post: Post, domain: String) {
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surface),
+                    .background(MaterialTheme.colorScheme.surface)
+                    .clickable { onProfileClick },
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(8.dp))
