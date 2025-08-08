@@ -27,7 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.sadwhy.party.screen.CreatorScreen
+import io.sadwhy.party.screen.creator.CreatorScreen
 import io.sadwhy.party.core.navigation.NavControl
 import io.sadwhy.party.core.navigation.NavControllerProvider
 import io.sadwhy.party.core.ui.PostItem
@@ -104,7 +104,7 @@ fun SearchScreen(title: String, text: String, searchViewModel: SearchViewModel =
                 onProfileClick = {
                     CreatorScreen(
                         post = it,
-                        onBackClick = { NavControl.backTo(navController) }
+                        onBackClick = {} // { NavControl.backTo(navController)) }
                     ) 
                 }
             )
