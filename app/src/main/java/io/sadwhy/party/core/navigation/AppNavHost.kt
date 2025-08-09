@@ -35,7 +35,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController(), modif
 
         composable<CreatorProfile> { entry ->
             val args = entry.toRoute<CreatorProfile>()
-            CreatorScreen(post = args.post, creator = args.creator)
+            CreatorScreen(creatorId = args.creatorId, creatorService = args.creatorService)
         }
     }
 }

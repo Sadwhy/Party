@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,6 +30,8 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -45,38 +48,41 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
-import io.sadwhy.party.data.model.Post
 import io.sadwhy.party.data.model.Creator
-import kotlin.math.max
 import kotlin.math.min
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreatorScreen(
-    post: Post,
-    creator: Creator?,
-    onBackClick: () -> Unit = {}
+    creatorId: String,
+    creatorService: String,
+    onBackClick: () -> Unit,
+    viewModel: CreatorViewModel = viewModel()
 ) {
-    val name = remember(creator, post) { creator?.name ?: post.user }
-    
+    LaunchedEffect(creatorId, creatorService) {
+        viewModel.fetchCreator(creatorId, creatorService)
+    }
+
+    val creator by viewModel.creator.collectAsState()
+
     val tabs = remember { listOf("Posts", "Media", "About") }
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val listState = rememberLazyListState()
-    
-    // Calculate collapse progress for animations
+
     val density = LocalDensity.current
-    val collapseRange = with(density) { 200.dp.toPx() } // Banner height
-    val scrollOffset = remember {
+    val collapseRange = with(density) { 200.dp.toPx() }
+    val scrollOffset by remember {
         derivedStateOf {
             min(listState.firstVisibleItemScrollOffset.toFloat(), collapseRange)
         }
     }
-    val collapseProgress = remember {
+    val collapseProgress by remember {
         derivedStateOf {
-            (scrollOffset.value / collapseRange).coerceIn(0f, 1f)
+            (scrollOffset / collapseRange).coerceIn(0f, 1f)
         }
     }
 
@@ -84,40 +90,45 @@ fun CreatorScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CollapsibleTopBar(
-                title = name,
-                onBackClick = onBackClick,
-                collapseProgress = collapseProgress.value,
+                title = creator?.name ?: "",
+                onBackClick = { }, // TODO
+                collapseProgress = collapseProgress,
                 scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            state = listState,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            // Banner and Profile Header
-            item(key = "header") {
-                CreatorHeader(
-                    post = post,
-                    name = name,
-                    collapseProgress = collapseProgress.value
-                )
+        if (creator == null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
-            
-            // Tab Row
-            item(key = "tabs") {
-                CreatorTabRow(
-                    tabs = tabs,
-                    selectedTabIndex = selectedTabIndex,
-                    onTabSelected = { selectedTabIndex = it }
-                )
-            }
-            
-            // Content based on selected tab
-            item(key = "content_$selectedTabIndex") {
-                CreatorTabContent(selectedTabIndex = selectedTabIndex)
+        } else {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                item("header") {
+                    CreatorHeader(
+                        creator = creator,
+                        collapseProgress = collapseProgress
+                    )
+                }
+                item("tabs") {
+                    CreatorTabRow(
+                        tabs = tabs,
+                        selectedTabIndex = selectedTabIndex,
+                        onTabSelected = { selectedTabIndex = it }
+                    )
+                }
+                item("content_$selectedTabIndex") {
+                    CreatorTabContent(selectedTabIndex)
+                }
             }
         }
     }
@@ -132,7 +143,7 @@ private fun CollapsibleTopBar(
     scrollBehavior: androidx.compose.material3.TopAppBarScrollBehavior
 ) {
     LargeTopAppBar(
-        title = { 
+        title = {
             Text(
                 text = title,
                 modifier = Modifier.graphicsLayer {
@@ -143,16 +154,16 @@ private fun CollapsibleTopBar(
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
-                    Icons.Default.ArrowBack, 
+                    imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back",
                     tint = Color.White
                 )
             }
         },
         actions = {
-            IconButton(onClick = { /* Handle menu */ }) {
+            IconButton(onClick = { /* TODO menu action */ }) {
                 Icon(
-                    Icons.Default.MoreVert,
+                    imageVector = Icons.Default.MoreVert,
                     contentDescription = "More options",
                     tint = Color.White
                 )
@@ -168,8 +179,7 @@ private fun CollapsibleTopBar(
 
 @Composable
 private fun CreatorHeader(
-    post: Post,
-    name: String,
+    creator: Creator,
     collapseProgress: Float
 ) {
     Box(
@@ -177,9 +187,8 @@ private fun CreatorHeader(
             .fillMaxWidth()
             .height(300.dp)
     ) {
-        // Banner Image with parallax effect
         AsyncImage(
-            model = "https://img.kemono.su/banners/${post.service}/${post.user}",
+            model = "https://img.kemono.su/banners/${creator.service}/${creator.id}",
             contentDescription = "Banner",
             modifier = Modifier
                 .fillMaxWidth()
@@ -190,19 +199,14 @@ private fun CreatorHeader(
                 },
             contentScale = ContentScale.Crop
         )
-        
-        // Dark overlay for text readability
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
                 .background(Color.Black.copy(alpha = 0.3f))
         )
-        
-        // Profile section at bottom
         ProfileSection(
-            post = post,
-            name = name,
+            creator = creator,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(16.dp)
@@ -216,8 +220,7 @@ private fun CreatorHeader(
 
 @Composable
 private fun ProfileSection(
-    post: Post,
-    name: String,
+    creator: Creator,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -226,7 +229,7 @@ private fun ProfileSection(
         horizontalArrangement = Arrangement.Start
     ) {
         AsyncImage(
-            model = "https://img.kemono.su/icons/${post.service}/${post.user}",
+            model = "https://img.kemono.su/icons/${creator.service}/${creator.id}",
             contentDescription = "Profile Image",
             modifier = Modifier
                 .size(64.dp)
@@ -234,18 +237,16 @@ private fun ProfileSection(
                 .background(MaterialTheme.colorScheme.surface),
             contentScale = ContentScale.Crop
         )
-        
         Spacer(modifier = Modifier.width(16.dp))
-        
         Column {
             Text(
-                text = name,
+                text = creator.name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
                 color = Color.White
             )
             Text(
-                text = "Favorites: -1",
+                text = "Favorites: ${creator.favorites ?: 0}",
                 fontSize = 14.sp,
                 color = Color.White.copy(alpha = 0.8f)
             )
@@ -291,20 +292,9 @@ private fun PostsContent() {
     ) {
         Text("Posts Content", style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
-        
-        // Simulate long content for scrolling
-        repeat(50) { index ->
-            Text(
-                text = "Post item $index",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                style = MaterialTheme.typography.bodyMedium
-            )
+        repeat(10) { index ->
+            Text("Post item $index", style = MaterialTheme.typography.bodyMedium)
         }
-        
-        // Add extra space to test scrolling
-        Spacer(modifier = Modifier.height(1000.dp))
     }
 }
 
@@ -317,18 +307,9 @@ private fun MediaContent() {
     ) {
         Text("Media Content", style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
-        
-        repeat(30) { index ->
-            Text(
-                text = "Media item $index",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                style = MaterialTheme.typography.bodyMedium
-            )
+        repeat(10) { index ->
+            Text("Media item $index", style = MaterialTheme.typography.bodyMedium)
         }
-        
-        Spacer(modifier = Modifier.height(1000.dp))
     }
 }
 
@@ -341,12 +322,9 @@ private fun AboutContent() {
     ) {
         Text("About Content", style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
-        
         Text(
-            text = "This is the about section with creator information and details.",
+            "This is the about section with creator information.",
             style = MaterialTheme.typography.bodyMedium
         )
-        
-        Spacer(modifier = Modifier.height(1000.dp))
     }
 }
