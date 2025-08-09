@@ -25,10 +25,6 @@
     public static *** throwUninitializedPropertyAccessException(...);
 }
 
-# Compose
--keep class androidx.compose.** { *; }
--dontwarn androidx.compose.**
-
 # Serialization
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.SerializationKt
