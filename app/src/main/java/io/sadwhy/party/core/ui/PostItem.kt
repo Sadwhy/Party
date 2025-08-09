@@ -54,7 +54,7 @@ fun PostItem(
     nullablePost: Post?,
     domain: String,
     onImageLongClick: () -> Unit,
-    onProfileClick: @Composable (Post) -> Unit
+    onProfileClick: @Composable (Post) -> Unit // TODO: Remove composable here for nav
 ) {
     Card(
         modifier = Modifier
@@ -77,7 +77,7 @@ fun PostItem(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PostHeader(post, domain) { onProfileClick(post) }
+                PostHeader(post, domain) { @Composable onProfileClick(post) } // TODO: Remove composable here for nav
                 PostText(post, Modifier.wrapContentHeight())
                 PostAttachments(post, domain, onImageLongClick)
                 PostBottom(post, checked) { checked = it }
