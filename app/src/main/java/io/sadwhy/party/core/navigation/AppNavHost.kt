@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import io.sadwhy.party.screen.creator.CreatorProfile
 import io.sadwhy.party.screen.creator.CreatorScreen
 import io.sadwhy.party.screen.home.Home
@@ -32,7 +33,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController(), modif
             LibraryScreen()
         }
 
-        composable<CreatorProfile> {
+        composable<CreatorProfile> { entry ->
             val args = entry.toRoute<CreatorProfile>()
             CreatorScreen(post = args.post, creator = args.creator)
         }
