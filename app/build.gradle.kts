@@ -104,8 +104,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
 
     // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.0")
     implementation("androidx.navigation:navigation-compose:2.9.0")
 
     // Networking
@@ -116,15 +114,12 @@ dependencies {
 
     // Image Loading
     implementation(platform("io.coil-kt.coil3:coil-bom:3.2.0"))
-    implementation("io.coil-kt.coil3:coil")
-    implementation("io.coil-kt.coil3:coil-network-okhttp")
     implementation("io.coil-kt.coil3:coil-compose")
+    implementation("io.coil-kt.coil3:coil-network-okhttp")
     implementation("io.coil-kt.coil3:coil-gif")
 
     // Custom UI
     implementation("me.saket.telephoto:zoomable-peek-overlay:0.16.0")
-    implementation("com.webtoonscorp.android:readmore-view:1.4.0")
-    implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
     implementation("com.github.Sadwhy:compose-markdown:02a2cfe269") {
         exclude(group = "androidx.compose")
         exclude(group = "io.coil-kt.coil3")
