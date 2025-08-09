@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -12,41 +13,39 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import io.sadwhy.party.core.navigation.NavRoute
-import io.sadwhy.party.core.navigation.NavControl
-import io.sadwhy.party.core.navigation.NavControllerProvider
-import io.sadwhy.party.core.ui.composable.dialog.DialogHandler
-import io.sadwhy.party.screen.home.HomeScreen
-import io.sadwhy.party.screen.library.LibraryScreen
-import io.sadwhy.party.screen.search.SearchScreen
+import io.party.sadwhy.core.navigation.AppNavHost
+import io.party.sadwhy.core.navigation.Navigator
+import io.party.sadwhy.core.ui.composable.dialog.DialogHandler
+import io.party.sadwhy.screen.home.Home
+import io.party.sadwhy.screen.library.Library
+import io.party.sadwhy.screen.search.Search
 
 data class BottomNavItem(
-    val destination: NavRoute,
+    val destination: Any,
     val label: String,
     @DrawableRes val iconSelected: Int,
     @DrawableRes val iconUnselected: Int
 )
 
-fun getBottomNavItems() = listOf(
+fun getBottomNavItems(): List<BottomNavItem> = listOf(
     BottomNavItem(
-        destination = NavRoute.Home,
+        destination = Home,
         label = "Home",
         iconSelected = R.drawable.ic_home_filled,
         iconUnselected = R.drawable.ic_home_outline
     ),
     BottomNavItem(
-        destination = NavRoute.Search,
+        destination = Search(title = "Search", text = "Compose Search Screen"),
         label = "Search",
         iconSelected = R.drawable.ic_search_filled,
         iconUnselected = R.drawable.ic_search_outline
     ),
     BottomNavItem(
-        destination = NavRoute.Library,
+        destination = Library,
         label = "Library",
         iconSelected = R.drawable.ic_bookmark_filled,
         iconUnselected = R.drawable.ic_bookmark_outline
@@ -55,10 +54,13 @@ fun getBottomNavItems() = listOf(
 
 @Composable
 fun MainScreen() {
-    val navController = NavControllerProvider.getNavController()
+    val navController = NavControllerHolder.getNavController()
+
+    val navigator = remember(navController) { Navigator(navController) }
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-    val currentDestination = NavRoute.fromRoute(currentRoute)
+    val currentRoute: String? = navBackStackEntry?.destination?.route
+
     val bottomNavItems = getBottomNavItems()
 
     Surface(
@@ -68,30 +70,31 @@ fun MainScreen() {
         Scaffold(
             bottomBar = {
                 BottomBar(
-                    navController = navController,
-                    currentDestination = currentDestination,
-                    bottomNavItems = bottomNavItems
+                    currentRoute = currentRoute,
+                    bottomNavItems = bottomNavItems,
+                    onNavigate = { destination ->
+                        navigator.clearAndNavigate(destination)
+                    }
                 )
             }
         ) { innerPadding ->
             DialogHandler()
-            NavHostContent(
-                navController = navController,
-                modifier = Modifier.padding(innerPadding)
-            )
+            AppNavHost(navController = navController, modifier = Modifier.padding(innerPadding))
         }
     }
 }
 
 @Composable
 private fun BottomBar(
-    navController: androidx.navigation.NavHostController,
-    currentDestination: NavRoute?,
-    bottomNavItems: List<BottomNavItem>
+    currentRoute: String?,
+    bottomNavItems: List<BottomNavItem>,
+    onNavigate: (Any) -> Unit
 ) {
     NavigationBar {
         bottomNavItems.forEach { item ->
-            val isSelected = currentDestination == item.destination
+            val destinationQualifiedName = item.destination::class.qualifiedName
+            val isSelected = currentRoute == destinationQualifiedName
+
             NavigationBarItem(
                 icon = {
                     Crossfade(targetState = isSelected) { selected ->
@@ -107,27 +110,10 @@ private fun BottomBar(
                 selected = isSelected,
                 onClick = {
                     if (!isSelected) {
-                        NavControl.goToAndClearBackStack(navController, item.destination)
+                        onNavigate(item.destination)
                     }
                 }
             )
         }
-    }
-}
-
-
-@Composable
-private fun NavHostContent(
-    navController: androidx.navigation.NavHostController,
-    modifier: Modifier = Modifier
-) {
-    NavHost(
-        navController = navController,
-        startDestination = NavRoute.Home.route,
-        modifier = modifier
-    ) {
-        composable(NavRoute.Home.route) { HomeScreen() }
-        composable(NavRoute.Search.route) { SearchScreen("Search", "Compose Search Screen") }
-        composable(NavRoute.Library.route) { LibraryScreen() }
     }
 }

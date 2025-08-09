@@ -27,9 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.sadwhy.party.screen.creator.CreatorScreen
-import io.sadwhy.party.core.navigation.NavControl
-import io.sadwhy.party.core.navigation.NavControllerProvider
 import io.sadwhy.party.core.ui.PostItem
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -37,7 +34,6 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(title: String, text: String, searchViewModel: SearchViewModel = viewModel()) {
-    val navController = NavControllerProvider.getNavController()
     val post by searchViewModel.post.collectAsState()
 
     val testUrl = "https://kemono.su/patreon/user/5349313/post/115030269"
@@ -101,13 +97,7 @@ fun SearchScreen(title: String, text: String, searchViewModel: SearchViewModel =
                 nullablePost = post,
                 domain = "kemono",
                 onImageLongClick = {},
-                onProfileClick = {
-                    CreatorScreen(
-                        post = it,
-                        creator = null,
-                        onBackClick = {} // { NavControl.backTo(navController)) }
-                    )
-                }
+                onProfileClick = {}
             )
         }
     }
