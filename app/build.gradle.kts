@@ -77,10 +77,7 @@ composeCompiler {
 dependencies {
     // Core Android
     implementation("androidx.core:core-ktx:1.16.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.13.0-alpha12")
-    implementation("androidx.fragment:fragment-ktx:1.8.7")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
     // Compose BOM
     implementation(platform("androidx.compose:compose-bom:2025.06.00"))
@@ -102,9 +99,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
-
-    // Navigation
-    implementation("androidx.navigation:navigation-compose:2.9.0")
 
     // Networking
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
