@@ -77,7 +77,7 @@ fun PostItem(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PostHeader(post, domain) { @Composable onProfileClick(post) } // TODO: Remove composable here for nav
+                PostHeader(post, domain) { onProfileClick(post) }
                 PostText(post, Modifier.wrapContentHeight())
                 PostAttachments(post, domain, onImageLongClick)
                 PostBottom(post, checked) { checked = it }
@@ -86,8 +86,8 @@ fun PostItem(
     }
 }
 
-@Composable
-private fun PostHeader(post: Post, domain: String, onProfileClick: () -> Unit) {
+@Composable                                     // TODO: Remove composable here for nav
+private fun PostHeader(post: Post, domain: String, onProfileClick: @Composable () -> Unit) { 
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
