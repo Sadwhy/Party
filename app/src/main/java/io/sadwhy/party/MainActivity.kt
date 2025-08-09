@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import io.sadwhy.party.core.debug.console.FloatingConsole
 import io.sadwhy.party.core.theme.AppTheme
-import io.party.sadwhy.core.navigation.Navigator
+import io.sadwhy.party.core.navigation.Navigator
 
 /**
  * Small holder so NavHostController can be accessed anywhere without threading it through parameters.

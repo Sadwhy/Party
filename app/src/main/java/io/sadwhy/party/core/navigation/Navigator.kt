@@ -1,4 +1,4 @@
-package io.party.sadwhy.core.navigation
+package io.sadwhy.party.core.navigation
 
 import androidx.navigation.NavHostController
 

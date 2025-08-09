@@ -17,12 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.currentBackStackEntryAsState
-import io.party.sadwhy.core.navigation.AppNavHost
-import io.party.sadwhy.core.navigation.Navigator
-import io.party.sadwhy.core.ui.composable.dialog.DialogHandler
-import io.party.sadwhy.screen.home.Home
-import io.party.sadwhy.screen.library.Library
-import io.party.sadwhy.screen.search.Search
+import io.sadwhy.party.core.navigation.AppNavHost
+import io.sadwhy.party.core.navigation.Navigator
+import io.sadwhy.party.core.ui.composable.dialog.DialogHandler
+import io.sadwhy.party.screen.home.Home
+import io.sadwhy.party.screen.library.Library
+import io.sadwhy.party.screen.search.Search
 
 data class BottomNavItem(
     val destination: Any,
