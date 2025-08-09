@@ -36,6 +36,8 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
+-optimizeaggressively
+
 -keep class * extends android.app.Activity
 -keep class * implements androidx.viewbinding.ViewBinding {
     <init>();
