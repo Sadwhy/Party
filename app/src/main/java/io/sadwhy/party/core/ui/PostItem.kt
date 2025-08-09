@@ -54,7 +54,7 @@ fun PostItem(
     nullablePost: Post?,
     domain: String,
     onImageLongClick: () -> Unit,
-    onProfileClick: (Post) -> Unit
+    onProfileClick: @Composable (Post) -> Unit
 ) {
     Card(
         modifier = Modifier
