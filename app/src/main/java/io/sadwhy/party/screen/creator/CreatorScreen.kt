@@ -29,6 +29,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -58,7 +59,6 @@ import kotlin.math.min
 fun CreatorScreen(
     creatorId: String,
     creatorService: String,
-    onBackClick: () -> Unit,
     viewModel: CreatorViewModel = viewModel()
 ) {
     LaunchedEffect(creatorId, creatorService) {
@@ -91,22 +91,13 @@ fun CreatorScreen(
         topBar = {
             CollapsibleTopBar(
                 title = creator?.name ?: "",
-                onBackClick = { }, // TODO
+                onBackClick = { /* TODO */ },
                 collapseProgress = collapseProgress,
                 scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->
-        if (creator == null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
+        creator?.let {
             LazyColumn(
                 state = listState,
                 modifier = Modifier
@@ -115,7 +106,7 @@ fun CreatorScreen(
             ) {
                 item("header") {
                     CreatorHeader(
-                        creator = creator,
+                        creator = it,
                         collapseProgress = collapseProgress
                     )
                 }
@@ -130,6 +121,15 @@ fun CreatorScreen(
                     CreatorTabContent(selectedTabIndex)
                 }
             }
+        } ?: run {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
@@ -140,7 +140,7 @@ private fun CollapsibleTopBar(
     title: String,
     onBackClick: () -> Unit,
     collapseProgress: Float,
-    scrollBehavior: androidx.compose.material3.TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
     LargeTopAppBar(
         title = {
@@ -246,7 +246,7 @@ private fun ProfileSection(
                 color = Color.White
             )
             Text(
-                text = "Favorites: ${creator.favorites ?: 0}",
+                text = "Favorites: ${creator.favorited}",
                 fontSize = 14.sp,
                 color = Color.White.copy(alpha = 0.8f)
             )
