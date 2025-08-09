@@ -2,7 +2,6 @@ package io.sadwhy.party.screen.library
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import android.util.Log
 import io.sadwhy.party.data.model.PostRecent
 import io.sadwhy.party.data.repository.PostRepository
 import kotlinx.coroutines.flow.MutableStateFlow
