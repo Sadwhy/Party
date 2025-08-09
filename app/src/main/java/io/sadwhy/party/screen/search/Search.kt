@@ -1,4 +1,4 @@
-package io.sadwhy.party.screen.Search
+package io.sadwhy.party.screen.search
 
 import kotlinx.serialization.Serializable
 
